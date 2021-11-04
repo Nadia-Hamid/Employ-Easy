@@ -21,3 +21,47 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# compiled output
+employee-manager-app/dist
+employee-manager-app/tmp
+employee-manager-app/out-tsc
+# Only exists if Bazel was run
+employee-manager-app/bazel-out
+
+# dependencies
+employee-manager-app/node_modules
+
+# profiling files
+chrome-profiler-events*.json
+
+# IDEs and editors
+employee-manager-app/.idea
+employee-manager-app/.project
+employee-manager-app/.classpath
+employee-manager-app/.c9/
+*.launch
+employee-manager-app/.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+employee-manager-app/.vscode/*
+!employee-manager-app/.vscode/settings.json
+!employee-manager-app/.vscode/tasks.json
+!employee-manager-app/.vscode/launch.json
+!employee-manager-app/.vscode/extensions.json
+employee-manager-app/.history/*
+
+# misc
+employee-manager-app/.sass-cache
+employee-manager-app/connect.lock
+employee-manager-app/coverage
+employee-manager-app/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+employee-manager-app/typings
+
+# System Files
+.DS_Store
+Thumbs.db
