@@ -1,2 +1,2 @@
 # Projektarbete
-Projektarbete &amp; entreprenörskap - A company salary payment system 
+Projektarbete &amp; entreprenörskap - Employee Management System
