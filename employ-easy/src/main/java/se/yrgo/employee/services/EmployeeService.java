@@ -3,6 +3,8 @@ package se.yrgo.employee.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.Query;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +22,7 @@ public class EmployeeService {
 		this.employeeRepository = employeeRepository;
 	}
 
-	@GetMapping
+//	@GetMapping
 	public List<Employee> findAll() {
 		return employeeRepository.findAll();
 	}
@@ -32,5 +34,10 @@ public class EmployeeService {
 	public Optional<Employee> findById(Long id) {
 		Optional<Employee> employee = employeeRepository.findById(id);
 		return employee;
+	}
+
+	public List<Employee> findByJobTitle(String jobTitle) {
+		List<Employee> employees = employeeRepository.findByJobTitle(jobTitle);
+		return employees;
 	}
 }

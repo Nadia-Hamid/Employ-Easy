@@ -40,4 +40,10 @@ public class EmployeeController {
 		Optional<Employee> employee = employeeService.findById(id);
 		return employee;
 	}
+
+	@GetMapping(value = "/jobTitle/{jobTitle}")
+	public List<Employee> findByJobTitle(@PathVariable String jobTitle) {
+		List<Employee> employees = employeeService.findByJobTitle(jobTitle);
+		return employees;
+	}
 }
