@@ -14,10 +14,10 @@ export class AppComponent implements OnInit {
   constructor(private employeeService: EmployeeService){}
 
   ngOnInit() {
-    this.getEmployees();
+    //this.getEmployees();
   }
 
-  getEmployees(): void {
+  /*getEmployees(): void {
       this.employeeService.getEmployees().subscribe(
           (response: Employee[]) => {
             this.employees = response;
@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
             alert(error.message);
           }
       )
-  }
+  }*/
 
   public onOpenModal(mode: string):void {
     const container = document.getElementById('main-container')
