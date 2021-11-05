@@ -1,4 +1,4 @@
-package se.yrgo.employee;
+package se.yrgo.employee.domain;
 
 import java.time.LocalDate;
 
@@ -29,7 +29,6 @@ public class Employee {
 	private LocalDate endDate;
 
 	public Employee() {
-
 	}
 
 	public Employee(Long id, String employeeId, String firstName, String lastName, String personalNumber, String email,
@@ -68,8 +67,6 @@ public class Employee {
 		this.parentCompany = parentCompany;
 		this.startDate = startDate;
 	}
-	
-	
 
 	public Employee(String employeeId, String firstName, String lastName, String personalNumber, String email,
 			String phoneNumber, String street, String zip, String city, String jobTitle, String parentCompany,
@@ -203,8 +200,8 @@ public class Employee {
 
 	@Override
 	public String toString() {
-		return "Employee [id=" + id + ", employeeId=" + employeeId + ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", personalNumber=" + personalNumber + ", email=" + email + ", phoneNumber=" + phoneNumber
+		return "Employee [id=" + id + ", employeeId=" + employeeId + ", firstName=" + firstName + ", lastName="
+				+ lastName + ", personalNumber=" + personalNumber + ", email=" + email + ", phoneNumber=" + phoneNumber
 				+ ", street=" + street + ", zip=" + zip + ", city=" + city + ", jobTitle=" + jobTitle
 				+ ", parentCompany=" + parentCompany + ", startDate=" + startDate + ", endDate=" + endDate + "]";
 	}
