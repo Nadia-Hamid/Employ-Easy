@@ -28,8 +28,7 @@
           </button>
        </div>
        <div class="modal-body">
-          <!-- form (ngSubmit)="onAddEmloyee(addForm)" #addForm="ngForm"-->
-          <form>
+          <form #addForm="ngForm" (ngSubmit)="onAddEmployee(addForm)">
           <div class="form-group">
              <label for="first-name">First name</label>
              <input ngModel type="text" name="first-name" class="form-control" id="first-name" placeholder="First name" required>
@@ -80,8 +79,7 @@
          </div>
           <div class="modal-footer">
              <button type="button" id="add-employee-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
-             <!-- button [disabled]="addForm.invalid"-->
-             <button type="submit" class="btn btn-primary" >Save changes</button>
+             <button  [disabled]="addForm.invalid" type="submit" class="btn btn-primary" >Save changes</button>
           </div>
           </form>
        </div>

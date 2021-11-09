@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Employee } from './employee';
 import { EmployeeService } from './employee.service';
 
@@ -27,6 +28,18 @@ export class AppComponent implements OnInit {
           }
       )
   }*/
+
+  public onAddEmployee(addForm: NgForm): void {
+   /* this.employeeService.addEmployee(addForm.value).subscribe(
+        (response: Employee) => {
+            console.log(response);
+        },
+        (error: HttpErrorResponse) => {
+            alert(error.message);
+        },
+    );*/
+    console.log(this.employeeService.addEmployee(addForm.value))
+  }
 
   public onOpenModal(mode: string):void {
     const container = document.getElementById('main-container')

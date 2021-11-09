@@ -1,5 +1,5 @@
 export interface Employee {
-    employeeId: string;
+    employeeId?: string;
     firstName: string;
     lastName: string;
     personalNumber: string,
@@ -9,9 +9,9 @@ export interface Employee {
     zip: string,
     city: string,
     jobTitle: string;
-    parentCompany: string;
+    parentCompany?: string;
     startDate: Date;
-    endDate: Date;
+    endDate?: Date;
     imageUrl: string;
 }
 
