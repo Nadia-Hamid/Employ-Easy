@@ -11,14 +11,14 @@ import { EmployeeService } from './employee.service';
 })
 export class AppComponent implements OnInit {
   title = 'employee-manager-app';
-  employees?: Employee[];
+  public employees?: Employee[];
   constructor(private employeeService: EmployeeService){}
 
   ngOnInit() {
-    //this.getEmployees();
+    this.getEmployees();
   }
 
-  /*getEmployees(): void {
+  getEmployees(): void {
       this.employeeService.getEmployees().subscribe(
           (response: Employee[]) => {
             this.employees = response;
@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
             alert(error.message);
           }
       )
-  }*/
+  }
 
   public onAddEmployee(addForm: NgForm): void {
     document.getElementById('add-employee-form')?.click();
