@@ -3,14 +3,14 @@ package se.yrgo.employee.services;
 import java.util.List;
 import java.util.Optional;
 
-
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-
 import se.yrgo.employee.domain.Employee;
+import se.yrgo.employee.dto.EmployeeDTO;
 import se.yrgo.employee.repositories.EmployeeRepository;
+import se.yrgo.employee.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class EmployeeService {
@@ -22,18 +22,17 @@ public class EmployeeService {
 		this.employeeRepository = employeeRepository;
 	}
 
-//	@GetMapping
 	public List<Employee> findAll() {
 		return employeeRepository.findAll();
 	}
 
-	public void addEmployee(Employee employee) {
-		employeeRepository.save(employee);
+	public Employee addEmployee(Employee employee) {
+		return employeeRepository.save(employee);
 	}
 
-	public Optional<Employee> findById(Long id) {
-		Optional<Employee> employee = employeeRepository.findById(id);
-		return employee;
+	public Employee findById(Long id) {
+		Optional<Employee> object = employeeRepository.findById(id);
+		return object.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
 	public List<Employee> findByJobTitle(String jobTitle) {
@@ -41,8 +40,46 @@ public class EmployeeService {
 		return employees;
 	}
 
-	public void save(Employee employee) {
-		employeeRepository.save(employee);
-		
+	public Employee updateEmployee(Long id, Employee object) {
+		Employee entity = employeeRepository.getById(id);
+		updateData(entity, object);
+		return employeeRepository.save(entity);
+	}
+
+	public void deleteEmployee(Long id) {
+		try {
+			employeeRepository.deleteById(id);
+		} catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException(id);
+		}
+	}
+
+	private void updateData(Employee entity, Employee object) {
+		entity.setfirstName(object.getfirstName());
+		entity.setLastName(object.getLastName());
+//		entity.setJobTitle(entity.getJobTitle());
+//		entity.setPhoneNumber(entity.getPhoneNumber());
+//		entity.setEmail(entity.getEmail());
+//		entity.setStreet(entity.getStreet());
+//		entity.setZip(entity.getZip());
+//		entity.setCity(entity.getCity());
+//		entity.setEndDate(entity.getEndDate());
+	}
+	
+	public Employee fromDTO(EmployeeDTO dto) {
+		return new Employee(
+				dto.getId(),
+				dto.getFirstName(),
+				dto.getLastName(),
+				dto.getPersonalNumber(),
+				dto.getEmail(),
+				dto.getPhoneNumber(),
+				dto.getStreet(),
+				dto.getZip(),
+				dto.getCity(),
+				dto.getJobTitle(),
+				dto.getParentCompany(),
+				dto.getStartDate(),
+				dto.getEndDate());
 	}
 }
