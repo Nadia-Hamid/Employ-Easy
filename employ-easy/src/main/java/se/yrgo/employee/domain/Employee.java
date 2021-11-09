@@ -1,6 +1,7 @@
 package se.yrgo.employee.domain;
 
 import java.time.LocalDate;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,11 +32,11 @@ public class Employee {
 	public Employee() {
 	}
 
-	public Employee(Long id, String employeeId, String firstName, String lastName, String personalNumber, String email,
+	public Employee(Long id, String firstName, String lastName, String personalNumber, String email,
 			String phoneNumber, String street, String zip, String city, String jobTitle, String parentCompany,
 			LocalDate startDate, LocalDate endDate) {
 		this.id = id;
-		this.employeeId = employeeId;
+		this.employeeId = generateEmployeeId(firstName, lastName);
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.personalNumber = personalNumber;
@@ -50,11 +51,11 @@ public class Employee {
 		this.endDate = endDate;
 	}
 
-	public Employee(Long id, String employeeId, String firstName, String lastName, String personalNumber, String email,
+	public Employee(Long id, String firstName, String lastName, String personalNumber, String email,
 			String phoneNumber, String street, String zip, String city, String jobTitle, String parentCompany,
 			LocalDate startDate) {
 		this.id = id;
-		this.employeeId = employeeId;
+		this.employeeId = generateEmployeeId(firstName, lastName);
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.personalNumber = personalNumber;
@@ -68,11 +69,10 @@ public class Employee {
 		this.startDate = startDate;
 	}
 
-	public Employee(String employeeId, String firstName, String lastName, String personalNumber, String email,
+	public Employee(String firstName, String lastName, String personalNumber, String email,
 			String phoneNumber, String street, String zip, String city, String jobTitle, String parentCompany,
 			LocalDate startDate) {
-		super();
-		this.employeeId = employeeId;
+		this.employeeId = generateEmployeeId(firstName, lastName);
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.personalNumber = personalNumber;
@@ -84,6 +84,15 @@ public class Employee {
 		this.jobTitle = jobTitle;
 		this.parentCompany = parentCompany;
 		this.startDate = startDate;
+	}
+	
+	public String generateEmployeeId(String firstName, String lastName) {
+		String firstTemp = firstName.substring(0,3);
+		String lastTemp = lastName.substring(0,3);
+		int randomNum = ThreadLocalRandom.current().nextInt(0, 9999 + 1);
+		String employeeId = firstTemp + lastTemp;
+		return employeeId.toLowerCase() + randomNum;
+		
 	}
 
 	public Long getId() {

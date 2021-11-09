@@ -3,11 +3,11 @@ package se.yrgo.employee.services;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.Query;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
+
 
 import se.yrgo.employee.domain.Employee;
 import se.yrgo.employee.repositories.EmployeeRepository;
@@ -39,5 +39,10 @@ public class EmployeeService {
 	public List<Employee> findByJobTitle(String jobTitle) {
 		List<Employee> employees = employeeRepository.findByJobTitle(jobTitle);
 		return employees;
+	}
+
+	public void save(Employee employee) {
+		employeeRepository.save(employee);
+		
 	}
 }
