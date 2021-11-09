@@ -40,6 +40,7 @@ export class AppComponent implements OnInit {
         },
     );*/
     console.log(this.employeeService.addEmployee(addForm.value))
+    addForm.reset();
   }
 
   public onOpenModal(mode: string):void {
