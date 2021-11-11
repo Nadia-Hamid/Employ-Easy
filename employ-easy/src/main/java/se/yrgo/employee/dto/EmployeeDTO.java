@@ -3,13 +3,12 @@ package se.yrgo.employee.dto;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import se.yrgo.employee.domain.Employee;
+import se.yrgo.employee.entities.Employee;
 
 public class EmployeeDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private Long id;
-	private String employeeId;
+	private String userId;
 	private String firstName;
 	private String lastName;
 	private String personalNumber;
@@ -27,8 +26,7 @@ public class EmployeeDTO implements Serializable {
 	}
 
 	public EmployeeDTO(Employee object) {
-		id = object.getId();
-		employeeId = object.getEmployeeId();
+		userId = object.getuserId();
 		firstName = object.getfirstName();
 		lastName = object.getLastName();
 		personalNumber = object.getPersonalNumber();
@@ -43,20 +41,12 @@ public class EmployeeDTO implements Serializable {
 		endDate = object.getEndDate();
 	}
 
-	public Long getId() {
-		return id;
+	public String getuserId() {
+		return userId;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getEmployeeId() {
-		return employeeId;
-	}
-
-	public void setEmployeeId(String employeeId) {
-		this.employeeId = employeeId;
+	public void setuserId(String userId) {
+		this.userId = userId;
 	}
 
 	public String getFirstName() {

@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import se.yrgo.employee.domain.Employee;
 import se.yrgo.employee.dto.EmployeeDTO;
+import se.yrgo.employee.entities.Employee;
 import se.yrgo.employee.services.EmployeeService;
 
 @RestController
@@ -46,14 +46,14 @@ public class EmployeeController {
 		return ResponseEntity.ok().body(new EmployeeDTO(object));
 	}
 
-	@GetMapping(value = "/jobTitle/{jobTitle}")
+	@RequestMapping(value = "/jobTitle/{jobTitle}", method = RequestMethod.GET)
 	public ResponseEntity<List<EmployeeDTO>> findByJobTitle(@PathVariable String jobTitle) {
 		List<Employee> list = employeeService.findByJobTitle(jobTitle);
 		List<EmployeeDTO> listDTO = list.stream().map(x -> new EmployeeDTO(x)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDTO);
 	}
 
-	@PostMapping
+	@RequestMapping(value= "/addEmployees", method=RequestMethod.POST)
 	public ResponseEntity<EmployeeDTO> registerEmployee(@RequestBody EmployeeDTO employeeDTO) {
 		Employee entity = employeeService.fromDTO(employeeDTO);
 		entity = employeeService.addEmployee(entity);
@@ -73,11 +73,5 @@ public class EmployeeController {
 		Employee object = employeeService.fromDTO(employeeDTO);
 		object = employeeService.updateEmployee(id, object);
 		return ResponseEntity.ok().body(new EmployeeDTO(object));
-	}
-
-	@RequestMapping(value = "/addemployee", method = RequestMethod.POST)
-	public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
-		employeeService.addEmployee(employee);
-		return new ResponseEntity<Employee>(employee, HttpStatus.CREATED);
 	}
 }

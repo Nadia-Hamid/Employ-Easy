@@ -1,4 +1,4 @@
-package se.yrgo.employee.domain;
+package se.yrgo.employee.entities;
 
 import java.time.LocalDate;
 import java.util.concurrent.ThreadLocalRandom;
@@ -12,10 +12,11 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Employee")
 public class Employee {
-	@GeneratedValue(strategy = GenerationType.AUTO)
+
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private String employeeId;
+	private String userId;
 	private String firstName;
 	private String lastName;
 	private String personalNumber;
@@ -32,11 +33,10 @@ public class Employee {
 	public Employee() {
 	}
 
-	public Employee(Long id, String firstName, String lastName, String personalNumber, String email,
-			String phoneNumber, String street, String zip, String city, String jobTitle, String parentCompany,
-			LocalDate startDate, LocalDate endDate) {
-		this.id = id;
-		this.employeeId = generateEmployeeId(firstName, lastName);
+	public Employee(String firstName, String lastName, String personalNumber, String email, String phoneNumber,
+			String street, String zip, String city, String jobTitle, String parentCompany, LocalDate startDate,
+			LocalDate endDate) {
+		this.userId = generateUserId(firstName, lastName);
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.personalNumber = personalNumber;
@@ -51,48 +51,22 @@ public class Employee {
 		this.endDate = endDate;
 	}
 
-	public Employee(Long id, String firstName, String lastName, String personalNumber, String email,
+	public Employee(String userId, String firstName, String lastName, String personalNumber, String email,
 			String phoneNumber, String street, String zip, String city, String jobTitle, String parentCompany,
-			LocalDate startDate) {
-		this.id = id;
-		this.employeeId = generateEmployeeId(firstName, lastName);
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.personalNumber = personalNumber;
-		this.email = email;
-		this.phoneNumber = phoneNumber;
-		this.street = street;
-		this.zip = zip;
-		this.city = city;
-		this.jobTitle = jobTitle;
-		this.parentCompany = parentCompany;
-		this.startDate = startDate;
+			LocalDate startDate, LocalDate endDate) {
+		this(firstName, lastName, personalNumber, email, phoneNumber, street, zip, city, jobTitle, parentCompany,
+				startDate, endDate);
+		this.userId = generateUserId(firstName, lastName);
 	}
 
-	public Employee(String firstName, String lastName, String personalNumber, String email,
-			String phoneNumber, String street, String zip, String city, String jobTitle, String parentCompany,
-			LocalDate startDate) {
-		this.employeeId = generateEmployeeId(firstName, lastName);
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.personalNumber = personalNumber;
-		this.email = email;
-		this.phoneNumber = phoneNumber;
-		this.street = street;
-		this.zip = zip;
-		this.city = city;
-		this.jobTitle = jobTitle;
-		this.parentCompany = parentCompany;
-		this.startDate = startDate;
-	}
-	
-	public String generateEmployeeId(String firstName, String lastName) {
-		String firstTemp = firstName.substring(0,3);
-		String lastTemp = lastName.substring(0,3);
-		int randomNum = ThreadLocalRandom.current().nextInt(0, 9999 + 1);
-		String employeeId = firstTemp + lastTemp;
-		return employeeId.toLowerCase() + randomNum;
-		
+	public String generateUserId(String firstName, String lastName) {
+
+		StringBuilder sb = new StringBuilder();
+		sb.append(firstName.substring(0, 3));
+		sb.append(lastName.substring(0, 3));
+		sb.append(ThreadLocalRandom.current().nextInt(0, 9999 + 1));
+		String userId = sb.toString();
+		return userId.toLowerCase();
 	}
 
 	public Long getId() {
@@ -103,12 +77,12 @@ public class Employee {
 		this.id = id;
 	}
 
-	public String getEmployeeId() {
-		return employeeId;
+	public String getuserId() {
+		return userId;
 	}
 
-	public void setEmployeeId(String employeeId) {
-		this.employeeId = employeeId;
+	public void setuserId(String userId) {
+		this.userId = userId;
 	}
 
 	public String getfirstName() {
@@ -209,10 +183,9 @@ public class Employee {
 
 	@Override
 	public String toString() {
-		return "Employee [id=" + id + ", employeeId=" + employeeId + ", firstName=" + firstName + ", lastName="
-				+ lastName + ", personalNumber=" + personalNumber + ", email=" + email + ", phoneNumber=" + phoneNumber
+		return "Employee [id=" + id + ", userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", personalNumber=" + personalNumber + ", email=" + email + ", phoneNumber=" + phoneNumber
 				+ ", street=" + street + ", zip=" + zip + ", city=" + city + ", jobTitle=" + jobTitle
 				+ ", parentCompany=" + parentCompany + ", startDate=" + startDate + ", endDate=" + endDate + "]";
 	}
-
 }

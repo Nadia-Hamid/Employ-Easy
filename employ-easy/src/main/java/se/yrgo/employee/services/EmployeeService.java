@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import se.yrgo.employee.domain.Employee;
 import se.yrgo.employee.dto.EmployeeDTO;
+import se.yrgo.employee.entities.Employee;
 import se.yrgo.employee.repositories.EmployeeRepository;
 import se.yrgo.employee.services.exceptions.ResourceNotFoundException;
 
@@ -68,7 +68,7 @@ public class EmployeeService {
 	
 	public Employee fromDTO(EmployeeDTO dto) {
 		return new Employee(
-				dto.getId(),
+				dto.getuserId(),
 				dto.getFirstName(),
 				dto.getLastName(),
 				dto.getPersonalNumber(),

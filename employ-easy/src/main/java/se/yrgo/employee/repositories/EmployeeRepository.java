@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import se.yrgo.employee.domain.Employee;
+import se.yrgo.employee.entities.Employee;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
