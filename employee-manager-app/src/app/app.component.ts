@@ -19,14 +19,15 @@ export class AppComponent implements OnInit {
   }
 
   getEmployees(): void {
-      this.employeeService.getEmployees().subscribe(
+      /*this.employeeService.getEmployees().subscribe(
           (response: Employee[]) => {
             this.employees = response;
           },
           (error: HttpErrorResponse) => {
             alert(error.message);
           }
-      )
+      )*/
+      console.log(this.employeeService.getEmployees())
   }
 
   public onAddEmployee(addForm: NgForm): void {
