@@ -53,7 +53,7 @@ public class EmployeeController {
 		return ResponseEntity.ok().body(listDTO);
 	}
 
-	@RequestMapping(value= "/addEmployees", method=RequestMethod.POST)
+	@RequestMapping(value= "", method=RequestMethod.POST)
 	public ResponseEntity<EmployeeDTO> registerEmployee(@RequestBody EmployeeDTO employeeDTO) {
 		Employee entity = employeeService.fromDTO(employeeDTO);
 		entity = employeeService.addEmployee(entity);
@@ -61,6 +61,14 @@ public class EmployeeController {
 				.toUri();
 		return ResponseEntity.created(uri).body(new EmployeeDTO(entity));
 	}
+
+	/*@RequestMapping(value= "", method=RequestMethod.POST)
+	public ResponseEntity<Employee> registerEmployee(@RequestBody EmployeeDTO employeeDTO) {
+		Employee entity = employeeService.fromDTO(employeeDTO);
+		entity = employeeService.addEmployee(entity);
+		return ResponseEntity.ok().body(entity);
+	}*/
+
 
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {

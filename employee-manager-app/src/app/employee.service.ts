@@ -31,9 +31,9 @@ export class EmployeeService {
         return arr;
     }
 
-   // public addEmployee(employee: Employee): Observable<Employee> {
-       //return this.http.post<Employee>(`${this.apiServerUrl}/v1/employees/`, employee);
-       public addEmployee(employee: Employee): Employee {
+    public addEmployee(employee: Employee): Observable<Employee> {
+       return this.http.post<Employee>(`${this.apiServerUrl}/v1/employees`, employee);
+       /*public addEmployee(employee: Employee): Employee {
         const emp: Employee = {
             userId: 'anaand1234',
             firstName: 'Ana',
@@ -50,8 +50,7 @@ export class EmployeeService {
             endDate: undefined,
             //imageUrl: "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png",
         }
-
-        return emp
+        return emp*/
     }
 
     /*public updateEmployee(employee: Employee): Observable<Employee> {
