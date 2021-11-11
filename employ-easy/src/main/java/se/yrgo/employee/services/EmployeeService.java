@@ -27,7 +27,6 @@ public class EmployeeService {
 	}
 
 	public Employee addEmployee(Employee employee) {
-		Employee entity = employeeRepository.findByMail(employee.getEmail());
 		return employeeRepository.save(employee);
 	}
 
