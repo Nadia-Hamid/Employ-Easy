@@ -29,13 +29,14 @@ public class Employee {
 	private String parentCompany;
 	private LocalDate startDate;
 	private LocalDate endDate;
+	private String imageURL;
 
 	public Employee() {
 	}
 
 	public Employee(String firstName, String lastName, String personalNumber, String email, String phoneNumber,
 			String street, String zip, String city, String jobTitle, String parentCompany, LocalDate startDate,
-			LocalDate endDate) {
+			LocalDate endDate, String imageURL) {
 		this.userId = generateUserId(firstName, lastName);
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -49,13 +50,14 @@ public class Employee {
 		this.parentCompany = parentCompany;
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.imageURL = imageURL;
 	}
 
 	public Employee(String userId, String firstName, String lastName, String personalNumber, String email,
 			String phoneNumber, String street, String zip, String city, String jobTitle, String parentCompany,
-			LocalDate startDate, LocalDate endDate) {
+			LocalDate startDate, LocalDate endDate, String imageURL) {
 		this(firstName, lastName, personalNumber, email, phoneNumber, street, zip, city, jobTitle, parentCompany,
-				startDate, endDate);
+				startDate, endDate, imageURL);
 		this.userId = generateUserId(firstName, lastName);
 	}
 
@@ -179,6 +181,14 @@ public class Employee {
 
 	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
+	}
+
+	public String getImageURL() {
+		return imageURL;
+	}
+
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
 	}
 
 	@Override

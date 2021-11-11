@@ -54,6 +54,11 @@ public class EmployeeService {
 		}
 	}
 
+	public Employee findByEmail(String email) {
+		Employee entity = employeeRepository.findByMail(email);
+		return entity;
+	}
+	
 	private void updateData(Employee entity, Employee object) {
 		entity.setfirstName(object.getfirstName());
 		entity.setLastName(object.getLastName());
@@ -80,6 +85,7 @@ public class EmployeeService {
 				dto.getJobTitle(),
 				dto.getParentCompany(),
 				dto.getStartDate(),
-				dto.getEndDate());
+				dto.getEndDate(),
+				dto.getImageURL());
 	}
 }

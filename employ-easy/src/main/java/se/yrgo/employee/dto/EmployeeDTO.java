@@ -21,6 +21,7 @@ public class EmployeeDTO implements Serializable {
 	private String parentCompany;
 	private LocalDate startDate;
 	private LocalDate endDate;
+	private String imageURL;
 
 	public EmployeeDTO() {
 	}
@@ -39,6 +40,7 @@ public class EmployeeDTO implements Serializable {
 		parentCompany = object.getParentCompany();
 		startDate = object.getStartDate();
 		endDate = object.getEndDate();
+		imageURL = object.getImageURL();
 	}
 
 	public String getuserId() {
@@ -143,5 +145,13 @@ public class EmployeeDTO implements Serializable {
 
 	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
+	}
+
+	public String getImageURL() {
+		return imageURL;
+	}
+
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
 	}
 }
