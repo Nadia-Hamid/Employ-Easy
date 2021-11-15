@@ -29,13 +29,33 @@ public class Employee {
 	private String parentCompany;
 	private LocalDate startDate;
 	private LocalDate endDate;
+	//private String imageURL;
 
 	public Employee() {
 	}
 
-	public Employee(String firstName, String lastName, String personalNumber, String email, String phoneNumber,
-			String street, String zip, String city, String jobTitle, String parentCompany, LocalDate startDate,
-			LocalDate endDate) {
+	//, String imageURL
+	public Employee(String userId, String firstName, String lastName, String personalNumber, String email,
+			String phoneNumber, String street, String zip, String city, String jobTitle, String parentCompany,
+			LocalDate startDate, LocalDate endDate) {
+		this.userId = userId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.personalNumber = personalNumber;
+		this.email = email;
+		this.phoneNumber = phoneNumber;
+		this.street = street;
+		this.zip = zip;
+		this.city = city;
+		this.jobTitle = jobTitle;
+		this.parentCompany = parentCompany;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		//this.imageURL = imageURL;
+	}
+
+	//, String imageURL
+	public Employee(String firstName, String lastName, String personalNumber, String email, String phoneNumber, String street, String zip, String city, String jobTitle, String parentCompany, LocalDate startDate, LocalDate endDate) {
 		this.userId = generateUserId(firstName, lastName);
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -49,14 +69,7 @@ public class Employee {
 		this.parentCompany = parentCompany;
 		this.startDate = startDate;
 		this.endDate = endDate;
-	}
-
-	public Employee(String userId, String firstName, String lastName, String personalNumber, String email,
-			String phoneNumber, String street, String zip, String city, String jobTitle, String parentCompany,
-			LocalDate startDate, LocalDate endDate) {
-		this(firstName, lastName, personalNumber, email, phoneNumber, street, zip, city, jobTitle, parentCompany,
-				startDate, endDate);
-		this.userId = generateUserId(firstName, lastName);
+		//this.imageURL = imageURL;
 	}
 
 	public String generateUserId(String firstName, String lastName) {
@@ -77,7 +90,7 @@ public class Employee {
 		this.id = id;
 	}
 
-	public String getuserId() {
+	public String getUserId() {
 		return userId;
 	}
 
@@ -180,6 +193,14 @@ public class Employee {
 	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
+
+	/*public String getImageURL() {
+		return imageURL;
+	}
+
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
+	}*/
 
 	@Override
 	public String toString() {
