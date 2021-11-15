@@ -19,28 +19,27 @@ export class AppComponent implements OnInit {
   }
 
   getEmployees(): void {
-      /*this.employeeService.getEmployees().subscribe(
+      this.employeeService.getEmployees().subscribe(
           (response: Employee[]) => {
             this.employees = response;
           },
           (error: HttpErrorResponse) => {
             alert(error.message);
           }
-      )*/
-      console.log(this.employeeService.getEmployees())
+      )
+      //console.log(this.employeeService.getEmployees())
   }
 
   public onAddEmployee(addForm: NgForm): void {
     document.getElementById('add-employee-form')?.click();
-   /* this.employeeService.addEmployee(addForm.value).subscribe(
+    this.employeeService.addEmployee(addForm.value).subscribe(
         (response: Employee) => {
             console.log(response);
         },
         (error: HttpErrorResponse) => {
             alert(error.message);
         },
-    );*/
-    console.log(this.employeeService.addEmployee(addForm.value))
+    );
     addForm.reset();
   }
 

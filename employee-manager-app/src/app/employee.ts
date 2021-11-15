@@ -1,10 +1,10 @@
 export interface Employee {
-    employeeId?: string;
+    userId?: string;
     firstName: string;
     lastName: string;
     personalNumber: string,
     email: string;
-    phone: string;
+    phoneNumber: string;
     street: string,
     zip: string,
     city: string,
@@ -12,7 +12,7 @@ export interface Employee {
     parentCompany?: string;
     startDate: Date;
     endDate?: Date;
-    imageUrl: string;
+    //imageUrl: string;
 }
 
 /*
