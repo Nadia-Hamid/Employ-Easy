@@ -54,6 +54,11 @@ public class EmployeeService {
 		}
 	}
 
+	public Employee findByEmail(String email) {
+		Employee entity = employeeRepository.findByMail(email);
+		return entity;
+	}
+
 	private void updateData(Employee entity, Employee object) {
 		entity.setfirstName(object.getfirstName());
 		entity.setLastName(object.getLastName());
@@ -65,21 +70,10 @@ public class EmployeeService {
 //		entity.setCity(entity.getCity());
 //		entity.setEndDate(entity.getEndDate());
 	}
-	
+
 	public Employee fromDTO(EmployeeDTO dto) {
-		return new Employee(
-				dto.getuserId(),
-				dto.getFirstName(),
-				dto.getLastName(),
-				dto.getPersonalNumber(),
-				dto.getEmail(),
-				dto.getPhoneNumber(),
-				dto.getStreet(),
-				dto.getZip(),
-				dto.getCity(),
-				dto.getJobTitle(),
-				dto.getParentCompany(),
-				dto.getStartDate(),
-				dto.getEndDate());
+		return new Employee(dto.getuserId(), dto.getFirstName(), dto.getLastName(), dto.getPersonalNumber(),
+				dto.getEmail(), dto.getPhoneNumber(), dto.getStreet(), dto.getZip(), dto.getCity(), dto.getJobTitle(),
+				dto.getParentCompany(), dto.getStartDate(), dto.getEndDate(), dto.getImageURL());
 	}
 }

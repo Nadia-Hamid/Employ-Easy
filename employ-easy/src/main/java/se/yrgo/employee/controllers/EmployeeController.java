@@ -5,12 +5,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +34,9 @@ public class EmployeeController {
 	@GetMapping
 	public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
 		List<Employee> list = employeeService.findAll();
-		List<EmployeeDTO> listDTO = list.stream().map(x -> new EmployeeDTO(x)).collect(Collectors.toList());
+		List<EmployeeDTO> listDTO = list.stream()
+				.map(x -> new EmployeeDTO(x))
+				.collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDTO);
 	}
 
@@ -53,7 +53,7 @@ public class EmployeeController {
 		return ResponseEntity.ok().body(listDTO);
 	}
 
-	@RequestMapping(value= "/addEmployees", method=RequestMethod.POST)
+	@RequestMapping(value = "/addEmployees", method = RequestMethod.POST)
 	public ResponseEntity<EmployeeDTO> registerEmployee(@RequestBody EmployeeDTO employeeDTO) {
 		Employee entity = employeeService.fromDTO(employeeDTO);
 		entity = employeeService.addEmployee(entity);
@@ -73,5 +73,11 @@ public class EmployeeController {
 		Employee object = employeeService.fromDTO(employeeDTO);
 		object = employeeService.updateEmployee(id, object);
 		return ResponseEntity.ok().body(new EmployeeDTO(object));
+	}
+
+	@RequestMapping(value = "/email/{email}", method = RequestMethod.GET)
+	public ResponseEntity<EmployeeDTO> findEqualEmail(@PathVariable String email) {
+		Employee entity = employeeService.findByEmail(email);
+		return ResponseEntity.ok().body(new EmployeeDTO(entity));
 	}
 }
