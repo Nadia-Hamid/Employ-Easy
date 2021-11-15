@@ -27,20 +27,21 @@ export class AppComponent implements OnInit {
             alert(error.message);
           }
       )
-      //console.log(this.employeeService.getEmployees())
   }
 
   public onAddEmployee(addForm: NgForm): void {
     document.getElementById('add-employee-form')?.click();
     this.employeeService.addEmployee(addForm.value).subscribe(
         (response: Employee) => {
-            console.log(response);
+          console.log(response);
+          this.getEmployees();
+          addForm.reset();
         },
         (error: HttpErrorResponse) => {
-            alert(error.message);
-        },
-    );
-    addForm.reset();
+          alert(error.message);
+          addForm.reset();
+        }
+      );
   }
 
   public onOpenModal(mode: string):void {

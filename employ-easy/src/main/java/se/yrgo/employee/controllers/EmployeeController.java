@@ -44,7 +44,7 @@ public class EmployeeController {
 		return ResponseEntity.ok().body(new EmployeeDTO(object));
 	}
 
-	@RequestMapping(value = "/jobTitle/{jobTitle}", method = RequestMethod.GET)
+	@RequestMapping(value = "/jobtitle/{jobTitle}", method = RequestMethod.GET)
 	public ResponseEntity<List<EmployeeDTO>> findByJobTitle(@PathVariable String jobTitle) {
 		List<Employee> list = employeeService.findByJobTitle(jobTitle);
 		List<EmployeeDTO> listDTO = list.stream()
@@ -54,16 +54,10 @@ public class EmployeeController {
 	}
 
 	@RequestMapping(value= "", method=RequestMethod.POST)
-	public ResponseEntity<EmployeeDTO> registerEmployee(@RequestBody EmployeeDTO employeeDTO) {
-		Employee entity = employeeService.fromDTO(employeeDTO);
-		entity = employeeService.addEmployee(entity);
-		/*URI uri = ServletUriComponentsBuilder
-				.fromCurrentRequestUri()
-				.path("/{id}")
-				.buildAndExpand(entity.getId())
-				.toUri();*/
+	public ResponseEntity<EmployeeDTO> registerEmployee(@RequestBody EmployeeDTO registerDTO) {
+		Employee entity = employeeService.generateUserId(registerDTO);
+		employeeService.addEmployee(entity);
 		return ResponseEntity.ok().body(new EmployeeDTO(entity));
-		//return ResponseEntity.created(uri).body(new EmployeeDTO(entity));
 	}
 
 	@DeleteMapping(value = "/{id}")

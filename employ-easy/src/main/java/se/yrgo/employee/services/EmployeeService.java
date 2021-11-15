@@ -26,8 +26,8 @@ public class EmployeeService {
 		return employeeRepository.findAll();
 	}
 
-	public Employee addEmployee(Employee employee) {
-		return employeeRepository.save(employee);
+	public void addEmployee(Employee employee) {
+		employeeRepository.save(employee);
 	}
 
 	public Employee findById(Long id) {
@@ -60,20 +60,20 @@ public class EmployeeService {
 	}
 
 	private void updateData(Employee entity, Employee object) {
-		entity.setfirstName(object.getfirstName());
-		entity.setLastName(object.getLastName());
-//		entity.setJobTitle(entity.getJobTitle());
-//		entity.setPhoneNumber(entity.getPhoneNumber());
-//		entity.setEmail(entity.getEmail());
-//		entity.setStreet(entity.getStreet());
-//		entity.setZip(entity.getZip());
-//		entity.setCity(entity.getCity());
-//		entity.setEndDate(entity.getEndDate());
+		//TODO
 	}
 
 	public Employee fromDTO(EmployeeDTO dto) {
-		return new Employee(dto.getuserId(), dto.getFirstName(), dto.getLastName(), dto.getPersonalNumber(),
+		return new Employee(dto.getUserId(), dto.getFirstName(), dto.getLastName(), dto.getPersonalNumber(),
 				dto.getEmail(), dto.getPhoneNumber(), dto.getStreet(), dto.getZip(), dto.getCity(), dto.getJobTitle(),
-				dto.getParentCompany(), dto.getStartDate(), dto.getEndDate(), dto.getImageURL());
+				dto.getParentCompany(), dto.getStartDate(), dto.getEndDate());
+		//, dto.getImageURL()
+	}
+
+	public Employee generateUserId(EmployeeDTO dto) {
+		return new Employee(dto.getFirstName(), dto.getLastName(), dto.getPersonalNumber(),
+				dto.getEmail(), dto.getPhoneNumber(), dto.getStreet(), dto.getZip(), dto.getCity(), dto.getJobTitle(),
+				dto.getParentCompany(), dto.getStartDate(), dto.getEndDate());
+		//, dto.getImageURL()
 	}
 }
