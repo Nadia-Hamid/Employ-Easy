@@ -32,9 +32,7 @@ public class EmployeeController {
 	@GetMapping
 	public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
 		List<Employee> list = employeeService.findAll();
-		List<EmployeeDTO> listDTO = list.stream()
-				.map(EmployeeDTO::new)
-				.collect(Collectors.toList());
+		List<EmployeeDTO> listDTO = list.stream().map(EmployeeDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDTO);
 	}
 
@@ -47,34 +45,15 @@ public class EmployeeController {
 	@RequestMapping(value = "/jobtitle/{jobTitle}", method = RequestMethod.GET)
 	public ResponseEntity<List<EmployeeDTO>> findByJobTitle(@PathVariable String jobTitle) {
 		List<Employee> list = employeeService.findByJobTitle(jobTitle);
-		List<EmployeeDTO> listDTO = list.stream()
-<<<<<<< HEAD
-				.map(EmployeeDTO::new)
-=======
-				.map(x -> new EmployeeDTO(x))
->>>>>>> 8f56ba3 (Got enums & exceptions)
-				.collect(Collectors.toList());
+		List<EmployeeDTO> listDTO = list.stream().map(EmployeeDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDTO);
 	}
 
-<<<<<<< HEAD
-	@RequestMapping(value= "", method=RequestMethod.POST)
+	@RequestMapping(value = "", method = RequestMethod.POST)
 	public ResponseEntity<EmployeeDTO> registerEmployee(@RequestBody EmployeeDTO registerDTO) {
 		Employee entity = employeeService.generateUserId(registerDTO);
 		employeeService.addEmployee(entity);
 		return ResponseEntity.ok().body(new EmployeeDTO(entity));
-=======
-	@RequestMapping(value = "/addEmployees", method = RequestMethod.POST)
-	public ResponseEntity<EmployeeDTO> registerEmployee(@RequestBody EmployeeDTO employeeDTO) {
-		Employee entity = employeeService.fromDTO(employeeDTO);
-		entity = employeeService.addEmployee(entity);
-		URI uri = ServletUriComponentsBuilder
-				.fromCurrentRequestUri()
-				.path("/{id}")
-				.buildAndExpand(entity.getId())
-				.toUri();
-		return ResponseEntity.created(uri).body(new EmployeeDTO(entity));
->>>>>>> 8f56ba3 (Got enums & exceptions)
 	}
 
 	@DeleteMapping(value = "/{id}")

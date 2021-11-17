@@ -9,6 +9,8 @@ public class EmployeeDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String userId;
+	private Long id;
+	private String employeeId;
 	private String firstName;
 	private String lastName;
 	private String personalNumber;
@@ -21,7 +23,7 @@ public class EmployeeDTO implements Serializable {
 	private String parentCompany;
 	private LocalDate startDate;
 	private LocalDate endDate;
-	//private String imageURL;
+	// private String imageURL;
 
 	public EmployeeDTO() {
 	}
@@ -40,7 +42,7 @@ public class EmployeeDTO implements Serializable {
 		parentCompany = object.getParentCompany();
 		startDate = object.getStartDate();
 		endDate = object.getEndDate();
-		//imageURL = object.getImageURL();
+		// imageURL = object.getImageURL();
 	}
 
 	public String getUserId() {
@@ -147,11 +149,8 @@ public class EmployeeDTO implements Serializable {
 		this.endDate = endDate;
 	}
 
-	/*public String getImageURL() {
-		return imageURL;
-	}
-
-	public void setImageURL(String imageURL) {
-		this.imageURL = imageURL;
-	}*/
+	/*
+	 * public String getImageURL() { return imageURL; } public void
+	 * setImageURL(String imageURL) { this.imageURL = imageURL; }
+	 */
 }
