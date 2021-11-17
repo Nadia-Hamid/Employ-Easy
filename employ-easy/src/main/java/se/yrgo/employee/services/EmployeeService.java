@@ -4,13 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import se.yrgo.employee.dto.EmployeeDTO;
 import se.yrgo.employee.entities.Employee;
 import se.yrgo.employee.repositories.EmployeeRepository;
-import se.yrgo.employee.services.exceptions.ResourceNotFoundException;
+import se.yrgo.employee.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class EmployeeService {
@@ -26,13 +25,22 @@ public class EmployeeService {
 		return employeeRepository.findAll();
 	}
 
+<<<<<<< HEAD
 	public void addEmployee(Employee employee) {
 		employeeRepository.save(employee);
+=======
+	public Employee addEmployee(Employee employee) {
+		Employee entity = employeeRepository.findByMail(employee.getEmail());
+//		if (entity.getEmail() == employee.getEmail()) {
+//			throw new IllegalArgumentException("Email already existent.");
+//		}
+		return employeeRepository.save(employee);
+>>>>>>> 8f56ba3 (Got enums & exceptions)
 	}
 
 	public Employee findById(Long id) {
 		Optional<Employee> object = employeeRepository.findById(id);
-		return object.orElseThrow(() -> new ResourceNotFoundException(id));
+		return object.orElseThrow(() -> new ObjectNotFoundException("Object not found."));
 	}
 
 	public List<Employee> findByJobTitle(String jobTitle) {
@@ -47,11 +55,7 @@ public class EmployeeService {
 	}
 
 	public void deleteEmployee(Long id) {
-		try {
 			employeeRepository.deleteById(id);
-		} catch (EmptyResultDataAccessException e) {
-			throw new ResourceNotFoundException(id);
-		}
 	}
 
 	public Employee findByEmail(String email) {

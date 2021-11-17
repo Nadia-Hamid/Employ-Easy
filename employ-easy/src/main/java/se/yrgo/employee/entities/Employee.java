@@ -94,7 +94,7 @@ public class Employee {
 		return userId;
 	}
 
-	public void setuserId(String userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 

@@ -1,9 +1,9 @@
 package se.yrgo.employee.services.exceptions;
 
-public class ResourceNotFoundException extends RuntimeException {
+public class ObjectNotFoundException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
-	
-	public ResourceNotFoundException(Object id) {
-		super("Resource not found. Id " + id);
+
+	public ObjectNotFoundException(String msg) {
+		super(msg);
 	}
 }
