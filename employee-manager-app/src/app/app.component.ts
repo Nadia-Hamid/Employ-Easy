@@ -44,6 +44,11 @@ export class AppComponent implements OnInit {
       );
   }
 
+  public onDeleteEmployee(employee: Employee) {
+    console.log(employee.userId);
+    this.employeeService.deleteEmployee(employee);
+  }
+
   public onOpenModal(mode: string):void {
     const container = document.getElementById('main-container')
     const button = document.createElement('button');
