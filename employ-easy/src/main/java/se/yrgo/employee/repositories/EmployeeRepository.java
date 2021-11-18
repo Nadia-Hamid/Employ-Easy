@@ -15,4 +15,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
 	@Query(value = "SELECT * FROM EMPLOYEE e WHERE e.email = ?1", nativeQuery = true)
 	public Employee findByMail(@Param(value = "email") String userId);
+	
+	@Query(value = "SELECT * FROM EMPLOYEE e WHERE e.user_id = ?1", nativeQuery = true)
+	public Employee findEmployeeByUserId(String userId);
+
 }
