@@ -1,62 +1,57 @@
 package se.yrgo.employee.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.tomcat.util.codec.binary.StringUtils;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.servlet.MockMvc;
 import se.yrgo.employee.dto.EmployeeDTO;
 import se.yrgo.employee.entities.Employee;
 import se.yrgo.employee.services.EmployeeService;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.test.web.servlet.MvcResult;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@WebMvcTest(EmployeeController.class)
 class EmployeeControllerTest {
 
     @MockBean
     private EmployeeService mockedEmployeeService;
 
-    @Test
-    void getAllEmployees() {
-        /*public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
-		List<Employee> list = employeeService.findAll();
-		List<EmployeeDTO> listDTO = list.stream()
-				.map(EmployeeDTO::new)
-				.collect(Collectors.toList());
-		return ResponseEntity.ok().body(listDTO);
-	}*/
-        List<EmployeeDTO> employeeList= new ArrayList<>();
-        EmployeeDTO marius = new EmployeeDTO("marmar1234", "Marius", "Marthinussen", "890519-XXXX", "Marius@gmail.com", "12345678",
-                "Södra Vägen", "44556", "Göteborg", "Developer", LocalDate.of(2000, 1, 1));
-        marius.setParentCompany("Volvo");
-        employeeList.add(marius);
+    @Autowired
+    private MockMvc mockMvc;
 
-        /*
-        userId = object.getUserId();
-		firstName = object.getfirstName();
-		lastName = object.getLastName();
-		personalNumber = object.getPersonalNumber();
-		email = object.getEmail();
-		phoneNumber = object.getPhoneNumber();
-		street = object.getStreet();
-		zip = object.getZip();
-		city = object.getCity();
-		jobTitle = object.getJobTitle();
-		parentCompany = object.getParentCompany();
-		startDate = object.getStartDate();
-		endDate = object.getEndDate();
-         */
-/*
-        when(mockedEmployeeService.getAllEmployees()).thenReturn(employeeList);
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Test
+    void getAllEmployees() throws Exception {
+        List<EmployeeDTO> employeeDTOList= new ArrayList<>();
+        List<Employee> employeeList= new ArrayList<>();
+        Employee emp = new Employee("Marius", "Marthinussen", "890519-XXXX", "Marius@gmail.com", "12345678",
+                "Sodra Vagen", "44556", "Goteborg", "developer", "volvo", LocalDate.of(2000, 1, 1), null);
+        employeeList.add(emp);
+        EmployeeDTO dto = new EmployeeDTO(emp);
+        employeeDTOList.add(dto);
+        emp = new Employee("Nadia", "Hamid", "900519-XXXX", "Nadia@gmail.com", "87654321",
+                "Norra Vagen", "44556", "Goteborg", "developer", "saab", LocalDate.of(2005, 1, 1), null);
+        employeeList.add(emp);
+        dto = new EmployeeDTO(emp);
+        employeeDTOList.add(dto);
+        when(mockedEmployeeService.findAll()).thenReturn(employeeList);
         String url="/v1/employees";
         MvcResult result = mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
-
         String actualResponseJson= result.getResponse().getContentAsString();
-        System.out.println( actualResponseJson);
-
-        String expectedResultJson= objectMapper.writeValueAsString(listOfChallenge);
-        assertEquals(expectedResultJson,actualResponseJson);*/
+        String expectedResultJson= objectMapper.writeValueAsString(employeeDTOList);
+        assertEquals(expectedResultJson,actualResponseJson);
     }
 }

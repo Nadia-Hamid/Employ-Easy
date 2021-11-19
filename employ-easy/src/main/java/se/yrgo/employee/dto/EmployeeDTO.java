@@ -24,20 +24,6 @@ public class EmployeeDTO implements Serializable {
 	private LocalDate endDate;
 	//private String imageURL;
 
-	public EmployeeDTO(String userId, String firstName, String lastName, String personalNumber, String email, String phoneNumber, String street, String zip, String city, String jobTitle, LocalDate startDate) {
-		this.userId = userId;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.personalNumber = personalNumber;
-		this.email = email;
-		this.phoneNumber = phoneNumber;
-		this.street = street;
-		this.zip = zip;
-		this.city = city;
-		this.jobTitle = jobTitle;
-		this.startDate = startDate;
-	}
-
 	public EmployeeDTO(Employee object) {
 		userId = object.getUserId();
 		firstName = object.getfirstName();
