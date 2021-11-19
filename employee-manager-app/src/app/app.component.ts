@@ -1,66 +1,80 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { Employee } from './employee';
-import { EmployeeService } from './employee.service';
+import { HttpErrorResponse } from '@angular/common/http'
+import { Component, OnInit } from '@angular/core'
+import { NgForm } from '@angular/forms'
+import { Employee } from './employee'
+import { EmployeeService } from './employee.service'
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  title = 'employee-manager-app';
+  title = 'employee-manager-app'
   public employees?: Employee[];
-  constructor(private employeeService: EmployeeService){}
+  public deleteEmployee: Employee;
+
+  constructor(private employeeService: EmployeeService) {}
 
   ngOnInit() {
-    this.getEmployees();
+    this.getEmployees()
   }
 
   getEmployees(): void {
-      this.employeeService.getEmployees().subscribe(
-          (response: Employee[]) => {
-            this.employees = response;
-          },
-          (error: HttpErrorResponse) => {
-            alert(error.message);
-          }
-      )
+    this.employeeService.getEmployees().subscribe(
+      (response: Employee[]) => {
+        this.employees = response
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message)
+      }
+    )
   }
 
   public onAddEmployee(addForm: NgForm): void {
-    document.getElementById('add-employee-form')?.click();
+    document.getElementById('add-employee-form')?.click()
     this.employeeService.addEmployee(addForm.value).subscribe(
-        (response: Employee) => {
-          console.log(response);
-          this.getEmployees();
-          addForm.reset();
-        },
-        (error: HttpErrorResponse) => {
-          alert(error.message);
-          addForm.reset();
-        }
-      );
+      (response: Employee) => {
+        console.log(response)
+        this.getEmployees()
+        addForm.reset()
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message)
+        addForm.reset()
+      }
+    )
   }
 
-  public onDeleteEmployee(employee: Employee) {
-    console.log(employee.userId);
-    this.employeeService.deleteEmployee(employee);
+  public onDeleteEmployee(userId: String) {
+    console.log(userId)
+    this.employeeService.deleteEmployee(userId).subscribe(
+      (response: void) => {
+        this.getEmployees()
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message)
+      });
   }
 
-  public onOpenModal(mode: string):void {
+  public onOpenModal(employee: Employee, mode: string): void {
     const container = document.getElementById('main-container')
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.style.display = 'none';
-    button.setAttribute('data-toggle', 'modal');
-    if(mode === 'add'){
-      button.setAttribute('data-target', '#addEmployeeModal');
+    const button = document.createElement('button')
+    button.type = 'button'
+    button.style.display = 'none'
+    button.setAttribute('data-toggle', 'modal')
+    if (mode === 'add') {
+      button.setAttribute('data-target', '#addEmployeeModal')
     }
+
+    if (mode === 'delete') {
+      this.deleteEmployee = employee
+      button.setAttribute('data-target', '#deleteEmployeeModal')
+    }
+
     //TODO add parameter employee: Employee before mode above
     //TODO if mode for edit and delete
-    container?.appendChild(button);
-    button.click();
+    container?.appendChild(button)
+    button.click()
   }
 }
