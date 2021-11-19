@@ -1,4 +1,4 @@
-package se.yrgo.employee.controllers.exceptions;
+package se.yrgo.employee.exceptions;
 
 import java.io.Serializable;
 

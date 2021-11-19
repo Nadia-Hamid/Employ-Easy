@@ -1,4 +1,4 @@
-package se.yrgo.employee.services.exceptions;
+package se.yrgo.employee.exceptions;
 
 public class ObjectNotFoundException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
