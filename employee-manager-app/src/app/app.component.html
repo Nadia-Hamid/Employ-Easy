@@ -14,7 +14,7 @@
   <div class="collapse navbar-collapse" id="navbarColor02">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" a (click)="onOpenModal('add')">Add Employee <span class="sr-only">(current)</span></a>
+        <a class="nav-link" a (click)="onOpenModal(null, 'add')">Add Employee <span class="sr-only">(current)</span></a>
       </li>
     </ul>
     <form class="form-inline my-2 my-lg-0" hidden="true">
@@ -62,7 +62,7 @@
               ><i class="fa fa-pencil"></i>
             </a>
             <!-- a (click)="onOpenModal(employee, 'delete')"-->
-            <a class="btn btn-secondary tooltips" data-placement="top" data-original-title="Delete"
+            <a class="btn btn-secondary tooltips" a (click)="onOpenModal(employee, 'delete')" data-placement="top" data-original-title="Delete"
               ><i class="fa fa-times"></i
             ></a>
           </div>
@@ -210,4 +210,25 @@
       </div>
     </div>
   </div>
-</div>
+  <!-- Delete Modal -->
+<div class="modal fade" id="deleteEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+       <div class="modal-content">
+          <div class="modal-header">
+             <h5 class="modal-title" id="deleteModelLabel">Delete Employee</h5>
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span>
+             </button>
+          </div>
+          <div class="modal-body">
+             <p>Are you sure you want to delete employee {{deleteEmployee?.firstName}}?</p>
+             <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <button (click)="onDeleteEmployee(deleteEmployee.userId)" class="btn btn-danger" data-dismiss="modal">Yes</button>
+             </div>
+          </div>
+       </div>
+    </div>
+  </div>
+  </div>
+
