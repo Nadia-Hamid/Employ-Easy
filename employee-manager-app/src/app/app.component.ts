@@ -13,6 +13,7 @@ export class AppComponent implements OnInit {
   title = 'employee-manager-app'
   public employees?: Employee[];
   public deleteEmployee: Employee;
+  public editEmployee: Employee;
 
   constructor(private employeeService: EmployeeService) {}
 
@@ -57,6 +58,20 @@ export class AppComponent implements OnInit {
       });
   }
 
+  public onUpdateEmployee(employee: Employee): void {
+    document.getElementById('add-employee-form')?.click()
+    this.employeeService.updateEmployee(employee).subscribe(
+      (response: Employee) => {
+        console.log(response)
+        this.getEmployees()
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message)
+      }
+    )
+  }
+
+
   public onOpenModal(employee: Employee, mode: string): void {
     const container = document.getElementById('main-container')
     const button = document.createElement('button')
@@ -66,12 +81,15 @@ export class AppComponent implements OnInit {
     if (mode === 'add') {
       button.setAttribute('data-target', '#addEmployeeModal')
     }
-
     if (mode === 'delete') {
       this.deleteEmployee = employee
       button.setAttribute('data-target', '#deleteEmployeeModal')
     }
-
+    if (mode == 'edit') {
+        this.editEmployee = employee;
+        button.setAttribute('data-target', '#updateEmployeeModal')
+    }
+    
     //TODO add parameter employee: Employee before mode above
     //TODO if mode for edit and delete
     container?.appendChild(button)
