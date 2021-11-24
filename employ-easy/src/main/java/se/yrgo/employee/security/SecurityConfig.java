@@ -28,11 +28,11 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.httpBasic(withDefaults())
 				.authorizeRequests(authz -> authz.antMatchers(HttpMethod.GET, "/v1/employees")
-						.permitAll()
+						.hasRole("ADMIN")
 						.antMatchers(HttpMethod.POST, "/v1/employees")
 						.hasRole("ADMIN")
 						.antMatchers("/v1/greeting")
-						.permitAll()
+						.hasRole("EMPLOYEE")
 						.anyRequest()
 						.authenticated());
 		return http.build();
@@ -41,13 +41,13 @@ public class SecurityConfig {
 	@Bean
 	protected UserDetailsService userDetailsService() {
 		UserDetails user = User.builder()
-				.username("user")
+				.username("marten")
 				.password(passwordEncoder.encode("password"))
 				.roles("EMPLOYEE")
 				.build();
 		
 		UserDetails admin = User.builder()
-				.username("user2")
+				.username("admin")
 				.password(passwordEncoder.encode("password123"))
 				.roles("ADMIN")
 				.build();
