@@ -1,6 +1,6 @@
 package se.yrgo.employee.security;
 
-public enum ApplicationUserPermission {
+public enum UserPermission {
 	
 	STUDENT_READ("student:read"),
 	STUDENT_WRITE("student:write"),
@@ -9,7 +9,7 @@ public enum ApplicationUserPermission {
 	
 	private final String permission;
 
-	private ApplicationUserPermission(String permission) {
+	private UserPermission(String permission) {
 		this.permission = permission;
 	}
 
