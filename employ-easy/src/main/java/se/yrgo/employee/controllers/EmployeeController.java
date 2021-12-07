@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,7 +49,7 @@ public class EmployeeController {
 		List<EmployeeDTO> listDTO = list.stream().map(EmployeeDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDTO);
 	}
-
+	
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public ResponseEntity<EmployeeDTO> registerEmployee(@RequestBody EmployeeDTO registerDTO) {
 		Employee entity = employeeService.generateUserId(registerDTO);
@@ -56,9 +57,9 @@ public class EmployeeController {
 		return ResponseEntity.ok().body(new EmployeeDTO(entity));
 	}
 
-	@RequestMapping(value = "/{userId}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> deleteEmployee(@PathVariable String userId) {
-		employeeService.deleteEmployee(userId);
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
+		employeeService.deleteEmployee(id);
 		return ResponseEntity.noContent().build();
 	}
 

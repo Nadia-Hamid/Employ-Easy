@@ -46,10 +46,9 @@ public class EmployeeService {
 		return employeeRepository.save(entity);
 	}
 
-	public void deleteEmployee(String userId) {
-			try {
-				Employee employee = employeeRepository.findEmployeeByUserId(userId);
-				employeeRepository.delete(employee);
+	public void deleteEmployee(Long id) {
+		try {
+			employeeRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
 			throw new ObjectNotFoundException("Object not found");
 		}

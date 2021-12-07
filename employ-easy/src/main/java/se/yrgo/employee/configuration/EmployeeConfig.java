@@ -14,6 +14,8 @@ import se.yrgo.employee.repositories.EmployeeRepository;
 
 @Configuration
 public class EmployeeConfig {
+	
+	
 
 	@Bean
 	CommandLineRunner commandLineRunner(EmployeeRepository data) {
