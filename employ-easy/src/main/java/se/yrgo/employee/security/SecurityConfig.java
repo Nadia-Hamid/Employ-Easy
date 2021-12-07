@@ -41,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.GET, "/v1/employees").hasAnyRole("ADMIN", "EMPLOYEE")
 				.antMatchers("/login*").permitAll()
 				.anyRequest().fullyAuthenticated().and().httpBasic();
-	};
+	}
 
 	@Bean
 	public CorsFilter corsFilter() {
