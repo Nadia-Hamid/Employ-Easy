@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import se.yrgo.employee.dto.EmployeeDTO;
 import se.yrgo.employee.entities.Employee;
+import se.yrgo.employee.entities.enums.EmployeeStatus;
+import se.yrgo.employee.entities.enums.SystemStatus;
 import se.yrgo.employee.services.EmployeeService;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -35,23 +37,24 @@ class EmployeeControllerTest {
 
     @Test
     void getAllEmployees() throws Exception {
-        List<EmployeeDTO> employeeDTOList= new ArrayList<>();
-        List<Employee> employeeList= new ArrayList<>();
+        List<EmployeeDTO> employeeDTOList = new ArrayList<>();
+        List<Employee> employeeList = new ArrayList<>();
         Employee emp = new Employee("Marius", "Marthinussen", "890519-XXXX", "Marius@gmail.com", "12345678",
-                "Sodra Vagen", "44556", "Goteborg", "developer", "volvo", LocalDate.of(2000, 1, 1), null);
+                "Sodra Vagen", "44556", "Goteborg", "developer", "volvo", LocalDate.of(2000, 1, 1), null, EmployeeStatus.ACTIVE, SystemStatus.USER);
         employeeList.add(emp);
         EmployeeDTO dto = new EmployeeDTO(emp);
         employeeDTOList.add(dto);
         emp = new Employee("Nadia", "Hamid", "900519-XXXX", "Nadia@gmail.com", "87654321",
-                "Norra Vagen", "44556", "Goteborg", "developer", "saab", LocalDate.of(2005, 1, 1), null);
+                "Norra Vagen", "44556", "Goteborg", "developer", "saab", LocalDate.of(2005, 1, 1), null, EmployeeStatus.VACATION,
+                SystemStatus.SYSTEM_ADMIN);
         employeeList.add(emp);
         dto = new EmployeeDTO(emp);
         employeeDTOList.add(dto);
         when(mockedEmployeeService.findAll()).thenReturn(employeeList);
-        String url="/v1/employees";
+        String url = "/v1/employees";
         MvcResult result = mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
-        String actualResponseJson= result.getResponse().getContentAsString();
-        String expectedResultJson= objectMapper.writeValueAsString(employeeDTOList);
-        assertEquals(expectedResultJson,actualResponseJson);
+        String actualResponseJson = result.getResponse().getContentAsString();
+        String expectedResultJson = objectMapper.writeValueAsString(employeeDTOList);
+        assertEquals(expectedResultJson, actualResponseJson);
     }
 }

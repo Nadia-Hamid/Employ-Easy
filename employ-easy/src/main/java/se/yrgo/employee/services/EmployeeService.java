@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import se.yrgo.employee.dto.EmployeeDTO;
 import se.yrgo.employee.entities.Employee;
 import se.yrgo.employee.repositories.EmployeeRepository;
-import se.yrgo.employee.services.exceptions.ResourceNotFoundException;
+import se.yrgo.employee.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class EmployeeService {
@@ -32,7 +32,7 @@ public class EmployeeService {
 
 	public Employee findById(Long id) {
 		Optional<Employee> object = employeeRepository.findById(id);
-		return object.orElseThrow(() -> new ResourceNotFoundException(id));
+		return object.orElseThrow(() -> new ObjectNotFoundException("Object not found."));
 	}
 
 	public List<Employee> findByJobTitle(String jobTitle) {
@@ -50,7 +50,7 @@ public class EmployeeService {
 		try {
 			employeeRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
-			throw new ResourceNotFoundException(id);
+			throw new ObjectNotFoundException("Object not found");
 		}
 	}
 
@@ -60,20 +60,20 @@ public class EmployeeService {
 	}
 
 	private void updateData(Employee entity, Employee object) {
-		//TODO
+		// TODO
 	}
 
 	public Employee fromDTO(EmployeeDTO dto) {
 		return new Employee(dto.getUserId(), dto.getFirstName(), dto.getLastName(), dto.getPersonalNumber(),
 				dto.getEmail(), dto.getPhoneNumber(), dto.getStreet(), dto.getZip(), dto.getCity(), dto.getJobTitle(),
 				dto.getParentCompany(), dto.getStartDate(), dto.getEndDate());
-		//, dto.getImageURL()
+		// , dto.getImageURL()
 	}
 
 	public Employee generateUserId(EmployeeDTO dto) {
-		return new Employee(dto.getFirstName(), dto.getLastName(), dto.getPersonalNumber(),
-				dto.getEmail(), dto.getPhoneNumber(), dto.getStreet(), dto.getZip(), dto.getCity(), dto.getJobTitle(),
-				dto.getParentCompany(), dto.getStartDate(), dto.getEndDate());
-		//, dto.getImageURL()
+		return new Employee(dto.getFirstName(), dto.getLastName(), dto.getPersonalNumber(), dto.getEmail(),
+				dto.getPhoneNumber(), dto.getStreet(), dto.getZip(), dto.getCity(), dto.getJobTitle(),
+				dto.getParentCompany(), dto.getStartDate(), dto.getEndDate(), null, null);
+		// , dto.getImageURL()
 	}
 }

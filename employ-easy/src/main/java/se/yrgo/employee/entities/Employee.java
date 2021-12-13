@@ -9,6 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import se.yrgo.employee.entities.enums.EmployeeStatus;
+import se.yrgo.employee.entities.enums.SystemStatus;
+
 @Entity
 @Table(name = "Employee")
 public class Employee {
@@ -29,12 +32,15 @@ public class Employee {
 	private String parentCompany;
 	private LocalDate startDate;
 	private LocalDate endDate;
-	//private String imageURL;
+	// private String imageURL;
+
+	private Integer employeeStatus;
+	private Integer systemStatus;
 
 	public Employee() {
 	}
 
-	//, String imageURL
+	// , String imageURL
 	public Employee(String userId, String firstName, String lastName, String personalNumber, String email,
 			String phoneNumber, String street, String zip, String city, String jobTitle, String parentCompany,
 			LocalDate startDate, LocalDate endDate) {
@@ -51,11 +57,14 @@ public class Employee {
 		this.parentCompany = parentCompany;
 		this.startDate = startDate;
 		this.endDate = endDate;
-		//this.imageURL = imageURL;
+		// this.imageURL = imageURL;
 	}
 
-	//, String imageURL
-	public Employee(String firstName, String lastName, String personalNumber, String email, String phoneNumber, String street, String zip, String city, String jobTitle, String parentCompany, LocalDate startDate, LocalDate endDate) {
+	// , String imageURL
+	public Employee(String firstName, String lastName, String personalNumber, String email, String phoneNumber,
+			String street, String zip, String city, String jobTitle, String parentCompany, LocalDate startDate,
+			LocalDate endDate, EmployeeStatus employeeStatus, SystemStatus systemStatus) {
+
 		this.userId = generateUserId(firstName, lastName);
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -69,7 +78,9 @@ public class Employee {
 		this.parentCompany = parentCompany;
 		this.startDate = startDate;
 		this.endDate = endDate;
-		//this.imageURL = imageURL;
+		// this.imageURL = imageURL;
+		setEmployeeStatus(employeeStatus);
+		setSystemStatus(systemStatus);
 	}
 
 	public String generateUserId(String firstName, String lastName) {
@@ -94,7 +105,7 @@ public class Employee {
 		return userId;
 	}
 
-	public void setuserId(String userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
@@ -194,19 +205,46 @@ public class Employee {
 		this.endDate = endDate;
 	}
 
-	/*public String getImageURL() {
-		return imageURL;
+	/*
+	 * public String getImageURL() { return imageURL; }
+	 * 
+	 * public void setImageURL(String imageURL) { this.imageURL = imageURL; }
+	 */
+
+	public EmployeeStatus getEmployeeStatus() {
+		return EmployeeStatus.valueOf(employeeStatus);
 	}
 
-	public void setImageURL(String imageURL) {
-		this.imageURL = imageURL;
-	}*/
+	public void setEmployeeStatus(EmployeeStatus employeeStatus) {
+		if (employeeStatus != null) {
+			this.employeeStatus = employeeStatus.getCode();
+		}
+	}
+
+	public SystemStatus getSystemStatus() {
+		return SystemStatus.valueOf(systemStatus);
+	}
+
+	public void setSystemStatus(SystemStatus systemStatus) {
+		if (systemStatus != null) {
+			this.systemStatus = systemStatus.getCode();
+		}
+	}
 
 	@Override
 	public String toString() {
 		return "Employee [id=" + id + ", userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName
 				+ ", personalNumber=" + personalNumber + ", email=" + email + ", phoneNumber=" + phoneNumber
 				+ ", street=" + street + ", zip=" + zip + ", city=" + city + ", jobTitle=" + jobTitle
-				+ ", parentCompany=" + parentCompany + ", startDate=" + startDate + ", endDate=" + endDate + "]";
+				+ ", parentCompany=" + parentCompany + ", startDate=" + startDate + ", endDate=" + endDate
+				+ ", employeeStatus=" + employeeStatus + ", systemStatus=" + systemStatus + "]";
 	}
+
+//	@Override
+//	public String toString() {
+//		return "Employee [id=" + id + ", userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName
+//				+ ", personalNumber=" + personalNumber + ", email=" + email + ", phoneNumber=" + phoneNumber
+//				+ ", street=" + street + ", zip=" + zip + ", city=" + city + ", jobTitle=" + jobTitle
+//				+ ", parentCompany=" + parentCompany + ", startDate=" + startDate + ", endDate=" + endDate + "]";
+//	}
 }
