@@ -7,7 +7,7 @@ import se.yrgo.employee.entities.Employee;
 
 public class EmployeeDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	// Mandatory fields
 	private String userId;
 	private Long id;
 	private String employeeId;
@@ -20,13 +20,11 @@ public class EmployeeDTO implements Serializable {
 	private String zip;
 	private String city;
 	private String jobTitle;
-	private String parentCompany;
 	private LocalDate startDate;
+	// Optional fields
+	private String parentCompany;
 	private LocalDate endDate;
 	// private String imageURL;
-
-	public EmployeeDTO() {
-	}
 
 	public EmployeeDTO(Employee object) {
 		userId = object.getUserId();
@@ -44,6 +42,8 @@ public class EmployeeDTO implements Serializable {
 		endDate = object.getEndDate();
 		// imageURL = object.getImageURL();
 	}
+
+	public EmployeeDTO(){}
 
 	public String getUserId() {
 		return userId;
