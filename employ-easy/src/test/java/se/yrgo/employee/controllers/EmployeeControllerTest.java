@@ -1,50 +1,70 @@
 package se.yrgo.employee.controllers;
 
-import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.test.web.servlet.MvcResult;
 
-import java.nio.charset.StandardCharsets;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import se.yrgo.employee.dto.EmployeeDTO;
+import se.yrgo.employee.entities.Employee;
+import se.yrgo.employee.services.EmployeeService;
 
-@SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@WebMvcTest(EmployeeController.class)
 class EmployeeControllerTest {
 
-    @Autowired
-    private WebApplicationContext context;
+	@MockBean
+	private EmployeeService mockedEmployeeService;
 
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @BeforeEach
-    public void setup() {
-        mockMvc = MockMvcBuilders
-                .webAppContextSetup(context)
-                .apply(springSecurity())
-                .build();
-    }
+	@Autowired
+	private ObjectMapper objectMapper;
 
-    @Test
-    void getAllEmployeesWithoutAccess() throws Exception {
-        this.mockMvc.perform(get("/v1/employees"))
-                .andExpect(status().isUnauthorized());
-    }
+	@Test
+	void getAllEmployees() throws Exception {
 
-    @Test
-    void getAllEmployeesAsAdmin() throws Exception {
-        this.mockMvc.perform(get("/v1/employees")
-                .with(user("admin").roles("ADMIN")))
-                .andExpect(status().isOk())
-                .andExpect(content().encoding(StandardCharsets.ISO_8859_1));
-    }
-}
+		List<EmployeeDTO> employeeDTOList = new ArrayList<>();
+
+		List<Employee> employeeList = new ArrayList<>();
+
+		Employee emp = new Employee("Marius", "Marthinussen", "890519-XXXX", "Marius@gmail.com", "12345678",
+				"Sodra Vagen", "44556", "Goteborg", "developer", "volvo", LocalDate.of(2000, 1, 1), null);
+
+		employeeList.add(emp);
+
+		EmployeeDTO dto = new EmployeeDTO(emp);
+
+		employeeDTOList.add(dto);
+
+		emp = new Employee("Nadia", "Hamid", "900519-XXXX", "Nadia@gmail.com", "87654321", "Norra Vagen", "44556",
+				"Goteborg", "developer", "saab", LocalDate.of(2005, 1, 1), null);
+
+		employeeList.add(emp);
+
+		dto = new EmployeeDTO(emp);
+
+		employeeDTOList.add(dto);
+
+		when(mockedEmployeeService.findAll()).thenReturn(employeeList);
+
+		String url = "/v1/employees";
+		MvcResult result = mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
+		String actualResponseJson = result.getResponse().getContentAsString();
+		String expectedResultJson = objectMapper.writeValueAsString(employeeDTOList);
+		assertEquals(expectedResultJson, actualResponseJson);
+		
+	}

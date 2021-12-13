@@ -13,7 +13,7 @@
 	<artifactId>employ-easy</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>employ-easy</name>
-	<description>Server application for projekt employ-easy</description>
+	<description>Server application for project employ-easy</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
