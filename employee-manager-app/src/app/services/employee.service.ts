@@ -20,8 +20,8 @@ export class EmployeeService {
     }
 
     public updateEmployee(employee: Employee): Observable<Employee> {
-        return this.http.put<Employee>(`${this.apiServerUrl}/v1/employees/${employee.userId}`, employee, { withCredentials: true });
-    }
+        return this.http.put<Employee>(`${this.apiServerUrl}/v1/employees`, employee, { withCredentials: true });
+      }
 
     public deleteEmployee(userId: String): Observable<void> {
        return this.http.delete<void>(`${this.apiServerUrl}/v1/employees/${userId}`, { withCredentials: true });

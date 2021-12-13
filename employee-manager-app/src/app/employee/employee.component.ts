@@ -58,7 +58,6 @@ export class EmployeeComponent implements OnInit {
     document.getElementById('add-employee-form')?.click()
     this.employeeService.updateEmployee(employee).subscribe(
       (response: Employee) => {
-        console.log(response)
         this.getEmployees()
       },
       (error: HttpErrorResponse) => {

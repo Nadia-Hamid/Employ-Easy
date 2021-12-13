@@ -52,7 +52,7 @@
           <ul class="list-group list-group-flush">
             <li class="list-group-item"><i class="fa fa-envelope float-right"></i>{{ employee?.email }}</li>
             <li class="list-group-item">
-              <i class="fa fa-phoneNumber float-right"></i>phoneNumber : {{ employee?.phoneNumber }}
+              <i class="fa fa-phoneNumber float-right"></i>phone : {{ employee?.phoneNumber }}
             </li>
           </ul>
           <div class="card-body">
@@ -90,6 +90,17 @@
           </div>
           <div class="modal-body">
             <form #editForm="ngForm">
+                <div class="form-group">
+                    <input
+                      ngModel="{{editEmployee?.userId}}"
+                      type="text"
+                      name="userId"
+                      class="form-control"
+                      id="user-id"
+                      placeholder="userId"
+                      hidden
+                    />
+                  </div>
               <div class="form-group">
                 <label for="first-name">First name</label>
                 <input
