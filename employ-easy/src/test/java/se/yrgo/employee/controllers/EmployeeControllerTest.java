@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -29,11 +30,21 @@ class EmployeeControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
+	private static final String URL = "/v1/employees";
+
 	@Test
 	void getAllEmployees() throws Exception {
 		when(mockedEmployeeService.findAll()).thenReturn(new ArrayList<>());
-		String url = "/v1/employees";
-		MvcResult result = mockMvc.perform(get(url).with(user("admin").roles("ADMIN"))).andExpect(status().isNotFound()).andReturn();
+		MvcResult result = mockMvc.perform(get(URL).with(user("admin").roles("ADMIN"))).andExpect(status().isNotFound()).andReturn();
+		String actualResponseJson = result.getResponse().getContentAsString();
+		assertEquals("", actualResponseJson);
+	}
+
+	@Test
+	void deleteEmployee() throws Exception {
+		final String user = "marher1234";
+		MvcResult result = mockMvc.perform(delete(URL + "/" + user).with(user("admin").roles("ADMIN")))
+				.andExpect(status().isNotFound()).andReturn();
 		String actualResponseJson = result.getResponse().getContentAsString();
 		assertEquals("", actualResponseJson);
 	}
