@@ -48,13 +48,20 @@ class EmployeeServiceTest {
 	}
 
 	@Test
-	void addEmployeeTest() {
-
+	void addEmployee() {
 		Employee emp = new Employee("Ana", "Beatriz", "890519-XXXX", "anna@gmail.com", "12345678", "Södra Vägen",
 				"44556", "Göteborg", "developer", "volvo", LocalDate.of(2000, 1, 1), null, EmployeeStatus.VACATION,
 				SystemStatus.SYSTEM_ADMIN);
-		
 		employeeServiceTest.addEmployee(emp);
 		verify(mockedEmployeeRepository, times(1)).save(emp);
+	}
+
+	@Test
+	void deleteEmployee() {
+		Employee emp = new Employee("Marius", "Marthinussen", "890519-XXXX", "Marius@gmail.com", "12345678",
+				"Södra Vägen", "44556", "Göteborg", "developer", "volvo", LocalDate.of(2000, 1, 1), null, EmployeeStatus.ACTIVE, SystemStatus.USER);
+		when(mockedEmployeeRepository.findEmployeeByUserId(emp.getUserId())).thenReturn(emp);
+		employeeServiceTest.deleteEmployee(emp.getUserId());
+		verify(mockedEmployeeRepository, times(1)).delete(emp);
 	}
 }
