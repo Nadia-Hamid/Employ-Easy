@@ -1,5 +1,5 @@
 #Prop files
-employ-easy/src/main/resources/
+employ-easy/src/main/resources/application.properties
 
 # Compiled class file
 *.class
