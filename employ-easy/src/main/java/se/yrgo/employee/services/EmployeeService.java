@@ -2,17 +2,17 @@ package se.yrgo.employee.services;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import se.yrgo.employee.dto.EmployeeDTO;
 import se.yrgo.employee.entities.Employee;
 import se.yrgo.employee.repositories.EmployeeRepository;
 import se.yrgo.employee.services.exceptions.ObjectNotFoundException;
 
 @Service
+@Transactional
 public class EmployeeService {
 
 	private EmployeeRepository employeeRepository;
@@ -40,15 +40,33 @@ public class EmployeeService {
 		return employees;
 	}
 
-	public Employee updateEmployee(Long id, Employee object) {
-		Employee entity = employeeRepository.getById(id);
-		updateData(entity, object);
-		return employeeRepository.save(entity);
+	public Employee updateEmployee(Employee employee) {
+		try {
+		Employee updatedEmployee = employeeRepository.findEmployeeByUserId(employee.getUserId());
+		updatedEmployee.setId(updatedEmployee.getId());
+		updatedEmployee.setUserId(employee.getUserId());
+		updatedEmployee.setCity(employee.getCity());
+		updatedEmployee.setEmail(employee.getEmail());
+		updatedEmployee.setEndDate(employee.getEndDate());
+		updatedEmployee.setfirstName(employee.getfirstName());
+		updatedEmployee.setJobTitle(employee.getJobTitle());
+		updatedEmployee.setLastName(employee.getLastName());
+		updatedEmployee.setPersonalNumber(employee.getPersonalNumber());
+		updatedEmployee.setPhoneNumber(employee.getPhoneNumber());
+		updatedEmployee.setParentCompany(employee.getParentCompany());
+		updatedEmployee.setStartDate(employee.getStartDate());
+		updatedEmployee.setStreet(employee.getStreet());
+		updatedEmployee.setZip(employee.getZip());
+		return employeeRepository.save(updatedEmployee);
+		} catch (EmptyResultDataAccessException e) {
+			throw new ObjectNotFoundException("Employee not found");
+		}
 	}
 
-	public void deleteEmployee(Long id) {
+	public void deleteEmployee(String userId) {
 		try {
-			employeeRepository.deleteById(id);
+			Employee employee = employeeRepository.findEmployeeByUserId(userId);
+			employeeRepository.delete(employee);
 		} catch (EmptyResultDataAccessException e) {
 			throw new ObjectNotFoundException("Object not found");
 		}
@@ -57,10 +75,6 @@ public class EmployeeService {
 	public Employee findByEmail(String email) {
 		Employee entity = employeeRepository.findByMail(email);
 		return entity;
-	}
-
-	private void updateData(Employee entity, Employee object) {
-		// TODO
 	}
 
 	public Employee fromDTO(EmployeeDTO dto) {
