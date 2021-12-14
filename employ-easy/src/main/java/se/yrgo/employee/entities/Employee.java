@@ -239,12 +239,4 @@ public class Employee {
 				+ ", parentCompany=" + parentCompany + ", startDate=" + startDate + ", endDate=" + endDate
 				+ ", employeeStatus=" + employeeStatus + ", systemStatus=" + systemStatus + "]";
 	}
-
-//	@Override
-//	public String toString() {
-//		return "Employee [id=" + id + ", userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName
-//				+ ", personalNumber=" + personalNumber + ", email=" + email + ", phoneNumber=" + phoneNumber
-//				+ ", street=" + street + ", zip=" + zip + ", city=" + city + ", jobTitle=" + jobTitle
-//				+ ", parentCompany=" + parentCompany + ", startDate=" + startDate + ", endDate=" + endDate + "]";
-//	}
 }

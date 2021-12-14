@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import se.yrgo.employee.dto.EmployeeDTO;
 import se.yrgo.employee.entities.Employee;
 import se.yrgo.employee.repositories.EmployeeRepository;
-import se.yrgo.employee.services.exceptions.ObjectNotFoundException;
+import se.yrgo.employee.exceptions.ObjectNotFoundException;
 
 @Service
 @Transactional
