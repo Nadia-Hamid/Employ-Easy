@@ -35,10 +35,10 @@ public class EmployeeController {
 		return ResponseEntity.ok().body(listDTO);
 	}
 
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<EmployeeDTO> findById(@PathVariable Long id) {
-		Employee object = employeeService.findById(id);
-		return ResponseEntity.ok().body(new EmployeeDTO(object));
+	@GetMapping(value = "/{userId}")
+	public ResponseEntity<EmployeeDTO> getByUserId(@PathVariable String userId) {
+		EmployeeDTO theOne = employeeService.getByUserId(userId);
+		return ResponseEntity.ok().body(theOne);
 	}
 
 	@RequestMapping(value = "/jobtitle/{jobTitle}", method = RequestMethod.GET)

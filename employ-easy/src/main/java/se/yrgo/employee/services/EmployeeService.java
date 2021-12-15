@@ -30,6 +30,11 @@ public class EmployeeService {
 		employeeRepository.save(employee);
 	}
 
+	public EmployeeDTO getByUserId(String userId) {
+		Employee entity = employeeRepository.findEmployeeByUserId(userId);
+		return new EmployeeDTO(entity);
+	}
+
 	public Employee findById(Long id) {
 		Optional<Employee> object = employeeRepository.findById(id);
 		return object.orElseThrow(() -> new ObjectNotFoundException("Object not found."));
