@@ -40,23 +40,23 @@ public class EmployeeService {
 		return employees;
 	}
 
-	public Employee updateEmployee(Employee employee) {
+	public Employee updateEmployee(EmployeeDTO employeeDTO) {
 		try {
-		Employee updatedEmployee = employeeRepository.findEmployeeByUserId(employee.getUserId());
+		Employee updatedEmployee = employeeRepository.findEmployeeByUserId(employeeDTO.getUserId());
 		updatedEmployee.setId(updatedEmployee.getId());
-		updatedEmployee.setUserId(employee.getUserId());
-		updatedEmployee.setCity(employee.getCity());
-		updatedEmployee.setEmail(employee.getEmail());
-		updatedEmployee.setEndDate(employee.getEndDate());
-		updatedEmployee.setfirstName(employee.getfirstName());
-		updatedEmployee.setJobTitle(employee.getJobTitle());
-		updatedEmployee.setLastName(employee.getLastName());
-		updatedEmployee.setPersonalNumber(employee.getPersonalNumber());
-		updatedEmployee.setPhoneNumber(employee.getPhoneNumber());
-		updatedEmployee.setParentCompany(employee.getParentCompany());
-		updatedEmployee.setStartDate(employee.getStartDate());
-		updatedEmployee.setStreet(employee.getStreet());
-		updatedEmployee.setZip(employee.getZip());
+		updatedEmployee.setUserId(employeeDTO.getUserId());
+		updatedEmployee.setCity(employeeDTO.getCity());
+		updatedEmployee.setEmail(employeeDTO.getEmail());
+		updatedEmployee.setEndDate(employeeDTO.getEndDate());
+		updatedEmployee.setfirstName(employeeDTO.getFirstName());
+		updatedEmployee.setJobTitle(employeeDTO.getJobTitle());
+		updatedEmployee.setLastName(employeeDTO.getLastName());
+		updatedEmployee.setPersonalNumber(employeeDTO.getPersonalNumber());
+		updatedEmployee.setPhoneNumber(employeeDTO.getPhoneNumber());
+		updatedEmployee.setParentCompany(employeeDTO.getParentCompany());
+		updatedEmployee.setStartDate(employeeDTO.getStartDate());
+		updatedEmployee.setStreet(employeeDTO.getStreet());
+		updatedEmployee.setZip(employeeDTO.getZip());
 		return employeeRepository.save(updatedEmployee);
 		} catch (EmptyResultDataAccessException e) {
 			throw new ObjectNotFoundException("Employee not found");

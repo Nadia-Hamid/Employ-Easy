@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 import se.yrgo.employee.entities.Employee;
+import se.yrgo.employee.entities.enums.EmployeeStatus;
+import se.yrgo.employee.entities.enums.SystemStatus;
 
 public class EmployeeDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -22,22 +24,42 @@ public class EmployeeDTO implements Serializable {
 	// Optional fields
 	private String parentCompany;
 	private LocalDate endDate;
+	private EmployeeStatus employeeStatus;
+	private SystemStatus systemStatus;
 	// private String imageURL;
 
-	public EmployeeDTO(Employee object) {
-		userId = object.getUserId();
-		firstName = object.getfirstName();
-		lastName = object.getLastName();
-		personalNumber = object.getPersonalNumber();
-		email = object.getEmail();
-		phoneNumber = object.getPhoneNumber();
-		street = object.getStreet();
-		zip = object.getZip();
-		city = object.getCity();
-		jobTitle = object.getJobTitle();
-		parentCompany = object.getParentCompany();
-		startDate = object.getStartDate();
-		endDate = object.getEndDate();
+	public EmployeeStatus getEmployeeStatus() {
+		return employeeStatus;
+	}
+
+	public void setEmployeeStatus(EmployeeStatus employeeStatus) {
+		this.employeeStatus = employeeStatus;
+	}
+
+	public SystemStatus getSystemStatus() {
+		return systemStatus;
+	}
+
+	public void setSystemStatus(SystemStatus systemStatus) {
+		this.systemStatus = systemStatus;
+	}
+
+	public EmployeeDTO(Employee employee) {
+		userId = employee.getUserId();
+		firstName = employee.getfirstName();
+		lastName = employee.getLastName();
+		personalNumber = employee.getPersonalNumber();
+		email = employee.getEmail();
+		phoneNumber = employee.getPhoneNumber();
+		street = employee.getStreet();
+		zip = employee.getZip();
+		city = employee.getCity();
+		jobTitle = employee.getJobTitle();
+		parentCompany = employee.getParentCompany();
+		startDate = employee.getStartDate();
+		endDate = employee.getEndDate();
+		employeeStatus = employee.getEmployeeStatus();
+		systemStatus = employee.getSystemStatus();
 		// imageURL = object.getImageURL();
 	}
 

@@ -62,8 +62,8 @@ public class EmployeeController {
 	}
 	
 	@RequestMapping(value = "", method = RequestMethod.PUT)
-    public ResponseEntity<EmployeeDTO> updateEmployee(@RequestBody Employee employee) {
-        Employee updateEmployee = employeeService.updateEmployee(employee);
+    public ResponseEntity<EmployeeDTO> updateEmployee(@RequestBody EmployeeDTO employeeDTO) {
+        Employee updateEmployee = employeeService.updateEmployee(employeeDTO);
         return new ResponseEntity<EmployeeDTO>(new EmployeeDTO(updateEmployee), HttpStatus.OK);
     }
 	
