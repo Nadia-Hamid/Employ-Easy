@@ -56,7 +56,7 @@ public class EmployeeController {
 	@RequestMapping(value = "/{userId}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteEmployee(@PathVariable String userId) {
 		employeeService.deleteEmployee(userId);
-		return ResponseEntity.noContent().build();
+		return ResponseEntity.ok().build();
 	}
 	
 	@RequestMapping(value = "", method = RequestMethod.PUT)
