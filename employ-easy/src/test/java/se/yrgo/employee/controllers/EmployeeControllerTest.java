@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,10 +22,10 @@ import se.yrgo.employee.services.EmployeeService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -42,12 +41,21 @@ class EmployeeControllerTest {
 
 	@Autowired
 	private ObjectMapper objectMapper;
+	private static final String URL = "/v1/employees";
 
 	@Test
 	void getAllEmployees() throws Exception {
 		when(mockedEmployeeService.findAll()).thenReturn(new ArrayList<>());
-		String url = "/v1/employees";
-		MvcResult result = mockMvc.perform(get(url).with(user("admin").roles("ADMIN"))).andExpect(status().isNotFound()).andReturn();
+		MvcResult result = mockMvc.perform(get(URL).with(user("admin").roles("ADMIN"))).andExpect(status().isNotFound()).andReturn();
+		String actualResponseJson = result.getResponse().getContentAsString();
+		assertEquals("", actualResponseJson);
+	}
+
+	@Test
+	void deleteEmployee() throws Exception {
+		final String user = "marher1234";
+		MvcResult result = mockMvc.perform(delete(URL + "/" + user).with(user("admin").roles("ADMIN")))
+				.andExpect(status().isNotFound()).andReturn();
 		String actualResponseJson = result.getResponse().getContentAsString();
 		assertEquals("", actualResponseJson);
 	}
@@ -61,10 +69,7 @@ class EmployeeControllerTest {
 		EmployeeDTO changeRequest = new EmployeeDTO(savedEmployee);
 		final String email = "new@email.com";
 		changeRequest.setEmail(email);
-		String url = "/v1/employees";
-		//savedEmployee.setEmail(email);
-		//when(mockedEmployeeService.updateEmployee(any(Employee.class))).thenReturn(savedEmployee);
-		RequestBuilder requestBuilder = MockMvcRequestBuilders.put(url).accept(MediaType.APPLICATION_JSON)
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.put(URL).accept(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(changeRequest)).contentType(MediaType.APPLICATION_JSON)
 				.with(user("admin").roles("ADMIN"));
 		MvcResult result = mockMvc.perform(requestBuilder).andExpect(status().isNotFound()).andReturn();

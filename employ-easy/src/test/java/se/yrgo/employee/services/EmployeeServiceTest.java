@@ -1,27 +1,22 @@
 package se.yrgo.employee.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
+import se.yrgo.employee.dto.EmployeeDTO;
 import se.yrgo.employee.entities.Employee;
 import se.yrgo.employee.entities.enums.EmployeeStatus;
 import se.yrgo.employee.entities.enums.SystemStatus;
 import se.yrgo.employee.repositories.EmployeeRepository;
 
-import javax.persistence.Entity;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class EmployeeServiceTest {
@@ -52,7 +47,6 @@ class EmployeeServiceTest {
 		Employee emp = new Employee("Ana", "Beatriz", "890519-XXXX", "anna@gmail.com", "12345678", "Södra Vägen",
 				"44556", "Göteborg", "developer", "volvo", LocalDate.of(2000, 1, 1), null, EmployeeStatus.VACATION,
 				SystemStatus.SYSTEM_ADMIN);
-		
 		employeeServiceTest.addEmployee(emp);
 		verify(mockedEmployeeRepository, times(1)).save(emp);
 	}
@@ -62,6 +56,17 @@ class EmployeeServiceTest {
 		Employee emp = new Employee("Ana", "Beatriz", "890519-XXXX", "anna@gmail.com", "12345678", "Södra Vägen",
 				"44556", "Göteborg", "developer", "volvo", LocalDate.of(2000, 1, 1), null, EmployeeStatus.VACATION,
 				SystemStatus.SYSTEM_ADMIN);
+		when(mockedEmployeeRepository.findEmployeeByUserId(emp.getUserId())).thenReturn(emp);
+		employeeServiceTest.updateEmployee(new EmployeeDTO(emp));
+		verify(mockedEmployeeRepository, times(1)).save(emp);
+	}
 
+	@Test
+	void deleteEmployee() {
+		Employee emp = new Employee("Marius", "Marthinussen", "890519-XXXX", "Marius@gmail.com", "12345678",
+				"Södra Vägen", "44556", "Göteborg", "developer", "volvo", LocalDate.of(2000, 1, 1), null, EmployeeStatus.ACTIVE, SystemStatus.USER);
+		when(mockedEmployeeRepository.findEmployeeByUserId(emp.getUserId())).thenReturn(emp);
+		employeeServiceTest.deleteEmployee(emp.getUserId());
+		verify(mockedEmployeeRepository, times(1)).delete(emp);
 	}
 }
