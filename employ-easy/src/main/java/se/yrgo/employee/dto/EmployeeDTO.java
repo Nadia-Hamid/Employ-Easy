@@ -44,26 +44,51 @@ public class EmployeeDTO implements Serializable {
 		this.systemStatus = systemStatus;
 	}
 
-	public EmployeeDTO(Employee employee) {
-		userId = employee.getUserId();
-		firstName = employee.getfirstName();
-		lastName = employee.getLastName();
-		personalNumber = employee.getPersonalNumber();
-		email = employee.getEmail();
-		phoneNumber = employee.getPhoneNumber();
-		street = employee.getStreet();
-		zip = employee.getZip();
-		city = employee.getCity();
-		jobTitle = employee.getJobTitle();
-		parentCompany = employee.getParentCompany();
-		startDate = employee.getStartDate();
-		endDate = employee.getEndDate();
-		employeeStatus = employee.getEmployeeStatus();
-		systemStatus = employee.getSystemStatus();
-		// imageURL = object.getImageURL();
+	// , String imageURL
+	public EmployeeDTO(String firstName, String lastName, String personalNumber, String email, String phoneNumber,
+			String street, String zip, String city, String jobTitle, String parentCompany, LocalDate startDate,
+			LocalDate endDate, EmployeeStatus employeeStatus, SystemStatus systemStatus) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.personalNumber = personalNumber;
+		this.email = email;
+		this.phoneNumber = phoneNumber;
+		this.street = street;
+		this.zip = zip;
+		this.city = city;
+		this.jobTitle = jobTitle;
+		this.parentCompany = parentCompany;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		// this.imageURL = imageURL;
+		setEmployeeStatus(employeeStatus);
+		setSystemStatus(systemStatus);
 	}
 
-	public EmployeeDTO(){}
+	public EmployeeDTO(Employee employee) {
+		this.firstName = employee.getFirstName();
+		this.lastName = employee.getLastName();
+		this.personalNumber = employee.getPersonalNumber();
+		this.email = employee.getEmail();
+		this.phoneNumber = employee.getPhoneNumber();
+		this.street = employee.getStreet();
+		this.zip = employee.getZip();
+		this.city = employee.getCity();
+		this.jobTitle = employee.getJobTitle();
+		this.parentCompany = employee.getParentCompany();
+		this.startDate = employee.getStartDate();
+		this.endDate = employee.getEndDate();
+		// this.imageURL = imageURL;
+		setEmployeeStatus(employee.getEmployeeStatus());
+		setSystemStatus(employee.getSystemStatus());
+	}
+
+	public String generateName() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(firstName, 0, 3);
+		sb.append(lastName, 0, 3);
+		return sb.toString().toLowerCase();
+	}
 
 	public String getUserId() {
 		return userId;

@@ -30,8 +30,7 @@ public class EmployeeController {
 
 	@GetMapping
 	public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
-		List<Employee> list = employeeService.findAll();
-		List<EmployeeDTO> listDTO = list.stream().map(EmployeeDTO::new).collect(Collectors.toList());
+		List<EmployeeDTO> listDTO = employeeService.findAll();
 		return ResponseEntity.ok().body(listDTO);
 	}
 
@@ -50,8 +49,7 @@ public class EmployeeController {
 	
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public ResponseEntity<EmployeeDTO> registerEmployee(@RequestBody EmployeeDTO registerDTO) {
-		Employee entity = employeeService.generateUserId(registerDTO);
-		employeeService.addEmployee(entity);
+		Employee entity = employeeService.addEmployee(registerDTO);
 		return ResponseEntity.ok().body(new EmployeeDTO(entity));
 	}
 

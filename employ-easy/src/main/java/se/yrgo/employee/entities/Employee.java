@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import se.yrgo.employee.dto.EmployeeDTO;
 import se.yrgo.employee.entities.enums.EmployeeStatus;
 import se.yrgo.employee.entities.enums.SystemStatus;
 
@@ -40,57 +41,28 @@ public class Employee {
 	public Employee() {
 	}
 
-	// , String imageURL
-	public Employee(String userId, String firstName, String lastName, String personalNumber, String email,
-			String phoneNumber, String street, String zip, String city, String jobTitle, String parentCompany,
-			LocalDate startDate, LocalDate endDate) {
+	public Employee(String firstName, String lastName) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
+
+	public Employee(EmployeeDTO employeeDTO, String userId) {
 		this.userId = userId;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.personalNumber = personalNumber;
-		this.email = email;
-		this.phoneNumber = phoneNumber;
-		this.street = street;
-		this.zip = zip;
-		this.city = city;
-		this.jobTitle = jobTitle;
-		this.parentCompany = parentCompany;
-		this.startDate = startDate;
-		this.endDate = endDate;
+		this.firstName = employeeDTO.getFirstName();
+		this.lastName = employeeDTO.getLastName();
+		this.personalNumber = employeeDTO.getPersonalNumber();
+		this.email = employeeDTO.getEmail();
+		this.phoneNumber = employeeDTO.getPhoneNumber();
+		this.street = employeeDTO.getStreet();
+		this.zip = employeeDTO.getZip();
+		this.city = employeeDTO.getCity();
+		this.jobTitle = employeeDTO.getJobTitle();
+		this.parentCompany = employeeDTO.getParentCompany();
+		this.startDate = employeeDTO.getStartDate();
+		this.endDate = employeeDTO.getEndDate();
 		// this.imageURL = imageURL;
-	}
-
-	// , String imageURL
-	public Employee(String firstName, String lastName, String personalNumber, String email, String phoneNumber,
-			String street, String zip, String city, String jobTitle, String parentCompany, LocalDate startDate,
-			LocalDate endDate, EmployeeStatus employeeStatus, SystemStatus systemStatus) {
-
-		this.userId = generateUserId(firstName, lastName);
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.personalNumber = personalNumber;
-		this.email = email;
-		this.phoneNumber = phoneNumber;
-		this.street = street;
-		this.zip = zip;
-		this.city = city;
-		this.jobTitle = jobTitle;
-		this.parentCompany = parentCompany;
-		this.startDate = startDate;
-		this.endDate = endDate;
-		// this.imageURL = imageURL;
-		setEmployeeStatus(employeeStatus);
-		setSystemStatus(systemStatus);
-	}
-
-	public String generateUserId(String firstName, String lastName) {
-
-		StringBuilder sb = new StringBuilder();
-		sb.append(firstName.substring(0, 3));
-		sb.append(lastName.substring(0, 3));
-		sb.append(ThreadLocalRandom.current().nextInt(0, 9999 + 1));
-		String userId = sb.toString();
-		return userId.toLowerCase();
+		setEmployeeStatus(employeeDTO.getEmployeeStatus());
+		setSystemStatus(employeeDTO.getSystemStatus());
 	}
 
 	public Long getId() {
@@ -109,11 +81,11 @@ public class Employee {
 		this.userId = userId;
 	}
 
-	public String getfirstName() {
+	public String getFirstName() {
 		return firstName;
 	}
 
-	public void setfirstName(String firstName) {
+	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
 
@@ -238,6 +210,42 @@ public class Employee {
 				+ ", street=" + street + ", zip=" + zip + ", city=" + city + ", jobTitle=" + jobTitle
 				+ ", parentCompany=" + parentCompany + ", startDate=" + startDate + ", endDate=" + endDate
 				+ ", employeeStatus=" + employeeStatus + ", systemStatus=" + systemStatus + "]";
+	}
+
+	//only for tests
+	// , String imageURL
+	public Employee(String firstName, String lastName, String personalNumber, String email, String phoneNumber,
+					String street, String zip, String city, String jobTitle, String parentCompany, LocalDate startDate,
+					LocalDate endDate, EmployeeStatus employeeStatus, SystemStatus systemStatus) {
+
+		this.userId = generateUserId(firstName, lastName);
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.personalNumber = personalNumber;
+		this.email = email;
+		this.phoneNumber = phoneNumber;
+		this.street = street;
+		this.zip = zip;
+		this.city = city;
+		this.jobTitle = jobTitle;
+		this.parentCompany = parentCompany;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		// this.imageURL = imageURL;
+		setEmployeeStatus(employeeStatus);
+		setSystemStatus(systemStatus);
+	}
+
+
+	//only for tests
+	private String generateUserId(String firstName, String lastName) {
+
+		StringBuilder sb = new StringBuilder();
+		sb.append(firstName.substring(0, 3));
+		sb.append(lastName.substring(0, 3));
+		sb.append(ThreadLocalRandom.current().nextInt(0, 9999 + 1));
+		String userId = sb.toString();
+		return userId.toLowerCase();
 	}
 
 //	@Override

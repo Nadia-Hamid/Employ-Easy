@@ -2,6 +2,9 @@ package se.yrgo.employee.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -15,19 +18,30 @@ import se.yrgo.employee.services.exceptions.ObjectNotFoundException;
 @Transactional
 public class EmployeeService {
 
-	private EmployeeRepository employeeRepository;
+	private final EmployeeRepository employeeRepository;
 
 	@Autowired
 	public EmployeeService(EmployeeRepository employeeRepository) {
 		this.employeeRepository = employeeRepository;
 	}
 
-	public List<Employee> findAll() {
-		return employeeRepository.findAll();
+	public List<EmployeeDTO> findAll() {
+		return employeeRepository.findAll().stream().map(EmployeeDTO::new).collect(Collectors.toList());
 	}
 
-	public void addEmployee(Employee employee) {
-		employeeRepository.save(employee);
+	public Employee addEmployee(EmployeeDTO employeeDTO) {
+		String prefix = employeeDTO.generateName();
+		while(true) {
+			StringBuilder sb = new StringBuilder(prefix);
+			sb.append(ThreadLocalRandom.current().nextInt(0, 9999 + 1));
+			String userId = sb.toString();
+			Employee existing = employeeRepository.findEmployeeByUserId(userId);
+			if(existing == null) {
+				Employee employee = new Employee(employeeDTO, userId);
+				employeeRepository.save(employee);
+				return employee;
+			}
+		}
 	}
 
 	public EmployeeDTO getByUserId(String userId) {
@@ -53,7 +67,7 @@ public class EmployeeService {
 		updatedEmployee.setCity(employeeDTO.getCity());
 		updatedEmployee.setEmail(employeeDTO.getEmail());
 		updatedEmployee.setEndDate(employeeDTO.getEndDate());
-		updatedEmployee.setfirstName(employeeDTO.getFirstName());
+		updatedEmployee.setFirstName(employeeDTO.getFirstName());
 		updatedEmployee.setJobTitle(employeeDTO.getJobTitle());
 		updatedEmployee.setLastName(employeeDTO.getLastName());
 		updatedEmployee.setPersonalNumber(employeeDTO.getPersonalNumber());
@@ -80,19 +94,5 @@ public class EmployeeService {
 	public Employee findByEmail(String email) {
 		Employee entity = employeeRepository.findByMail(email);
 		return entity;
-	}
-
-	public Employee fromDTO(EmployeeDTO dto) {
-		return new Employee(dto.getUserId(), dto.getFirstName(), dto.getLastName(), dto.getPersonalNumber(),
-				dto.getEmail(), dto.getPhoneNumber(), dto.getStreet(), dto.getZip(), dto.getCity(), dto.getJobTitle(),
-				dto.getParentCompany(), dto.getStartDate(), dto.getEndDate());
-		// , dto.getImageURL()
-	}
-
-	public Employee generateUserId(EmployeeDTO dto) {
-		return new Employee(dto.getFirstName(), dto.getLastName(), dto.getPersonalNumber(), dto.getEmail(),
-				dto.getPhoneNumber(), dto.getStreet(), dto.getZip(), dto.getCity(), dto.getJobTitle(),
-				dto.getParentCompany(), dto.getStartDate(), dto.getEndDate(), null, null);
-		// , dto.getImageURL()
 	}
 }
