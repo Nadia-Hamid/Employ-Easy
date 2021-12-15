@@ -240,19 +240,9 @@ public class Employee {
 	//only for tests
 	private String generateUserId(String firstName, String lastName) {
 
-		StringBuilder sb = new StringBuilder();
-		sb.append(firstName.substring(0, 3));
-		sb.append(lastName.substring(0, 3));
-		sb.append(ThreadLocalRandom.current().nextInt(0, 9999 + 1));
-		String userId = sb.toString();
+		String userId = firstName.substring(0, 3) +
+				lastName.substring(0, 3) +
+				ThreadLocalRandom.current().nextInt(0, 9999 + 1);
 		return userId.toLowerCase();
 	}
-
-//	@Override
-//	public String toString() {
-//		return "Employee [id=" + id + ", userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName
-//				+ ", personalNumber=" + personalNumber + ", email=" + email + ", phoneNumber=" + phoneNumber
-//				+ ", street=" + street + ", zip=" + zip + ", city=" + city + ", jobTitle=" + jobTitle
-//				+ ", parentCompany=" + parentCompany + ", startDate=" + startDate + ", endDate=" + endDate + "]";
-//	}
 }
