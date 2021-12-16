@@ -62,7 +62,7 @@ public class EmployeeController {
 	@RequestMapping(value = "", method = RequestMethod.PUT)
     public ResponseEntity<EmployeeDTO> updateEmployee(@RequestBody EmployeeDTO employeeDTO) {
         Employee updateEmployee = employeeService.updateEmployee(employeeDTO);
-        return new ResponseEntity<EmployeeDTO>(new EmployeeDTO(updateEmployee), HttpStatus.OK);
+        return ResponseEntity.ok().body(new EmployeeDTO(updateEmployee));
     }
 	
 	@RequestMapping(value = "/email/{email}", method = RequestMethod.GET)
