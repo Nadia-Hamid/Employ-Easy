@@ -11,12 +11,12 @@ import se.yrgo.employee.entities.Employee;
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
 	@Query(value = "SELECT employee.* emp FROM EMPLOYEE WHERE employee.job_title = ?1", nativeQuery = true)
-	public List<Employee> findByJobTitle(@Param(value = "jobTitle") String jobTitle);
+	List<Employee> findByJobTitle(@Param(value = "jobTitle") String jobTitle);
 
 	@Query(value = "SELECT * FROM EMPLOYEE e WHERE e.email = ?1", nativeQuery = true)
-	public Employee findByMail(@Param(value = "email") String userId);
+	Employee findByMail(@Param(value = "email") String userId);
 	
 	@Query(value = "SELECT * FROM EMPLOYEE e WHERE e.user_id = ?1", nativeQuery = true)
-	public Employee findEmployeeByUserId(String userId);
+	Employee findEmployeeByUserId(String userId);
 	
 }
