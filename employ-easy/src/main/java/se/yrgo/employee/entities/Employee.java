@@ -236,13 +236,17 @@ public class Employee {
 		setSystemStatus(systemStatus);
 	}
 
+	public static String generateSuffix() {
+		return String.format("%04d", ThreadLocalRandom.current().nextInt(0, 9999 + 1));
+	}
+
 
 	//only for tests
 	private String generateUserId(String firstName, String lastName) {
 
 		String userId = firstName.substring(0, 3) +
 				lastName.substring(0, 3) +
-				ThreadLocalRandom.current().nextInt(0, 9999 + 1);
+				generateSuffix();
 		return userId.toLowerCase();
 	}
 }

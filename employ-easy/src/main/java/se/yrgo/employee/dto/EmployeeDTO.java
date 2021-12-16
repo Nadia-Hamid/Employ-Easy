@@ -85,10 +85,9 @@ public class EmployeeDTO implements Serializable {
 	}
 
 	public String generateName() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(firstName, 0, 3);
-		sb.append(lastName, 0, 3);
-		return sb.toString().toLowerCase();
+		String sb = firstName.substring(0, 3) +
+				lastName.substring(0, 3);
+		return sb.toLowerCase();
 	}
 
 	public String getUserId() {
