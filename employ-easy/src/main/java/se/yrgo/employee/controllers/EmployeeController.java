@@ -1,5 +1,11 @@
 package se.yrgo.employee.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +26,22 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
+    /**
+     * @return List of all employees.
+     */
+    @Operation(summary = "Get all employees.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Successfully retrieved employees", content = @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = EmployeeDTO.class)))),
+            @ApiResponse(responseCode = "401",
+                    description = "Authorization required to fetch challenges", content = @Content),
+            @ApiResponse(responseCode = "403",
+                    description = "Accessing the resource you were trying to reach is forbidden", content = @Content),
+    })
     @GetMapping
-    public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
-        List<EmployeeDTO> listDTO = employeeService.findAll();
-        return ResponseEntity.ok().body(listDTO);
+    public List<EmployeeDTO> getAllEmployees() {
+        return employeeService.findAll();
     }
 
     @GetMapping(value = "/{userId}")
