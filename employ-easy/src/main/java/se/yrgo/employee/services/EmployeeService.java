@@ -26,7 +26,7 @@ public class EmployeeService {
         return employeeRepository.findAll().stream().map(EmployeeDTO::new).collect(Collectors.toList());
     }
 
-    public Employee addEmployee(EmployeeDTO employeeDTO) {
+    public EmployeeDTO addEmployee(EmployeeDTO employeeDTO) {
         String prefix = employeeDTO.generateName();
         while (true) {
             String userId = prefix + Employee.generateSuffix();
@@ -34,7 +34,7 @@ public class EmployeeService {
             if (existing == null) {
                 Employee employee = new Employee(employeeDTO, userId);
                 employeeRepository.save(employee);
-                return employee;
+                return new EmployeeDTO(employee);
             }
         }
     }
@@ -44,13 +44,14 @@ public class EmployeeService {
         return new EmployeeDTO(entity);
     }
 
-    public List<Employee> findByJobTitle(String jobTitle) {
-        return employeeRepository.findByJobTitle(jobTitle);
+    public List<EmployeeDTO> findByJobTitle(String jobTitle) {
+        return employeeRepository.findByJobTitle(jobTitle).stream().map(EmployeeDTO::new).collect(Collectors.toList());
     }
 
-    public Employee updateEmployee(EmployeeDTO employeeDTO) {
+    public EmployeeDTO updateEmployee(EmployeeDTO employeeDTO) {
         Employee updatedEmployee = new Employee(employeeDTO, employeeDTO.getUserId());
-        return employeeRepository.save(updatedEmployee);
+        Employee employee = employeeRepository.save(updatedEmployee);
+        return new EmployeeDTO(employee);
     }
 
     public void deleteEmployee(String userId) {
@@ -62,7 +63,7 @@ public class EmployeeService {
         }
     }
 
-    public Employee findByEmail(String email) {
-        return employeeRepository.findByMail(email);
+    public EmployeeDTO findByEmail(String email) {
+        return new EmployeeDTO(employeeRepository.findByMail(email));
     }
 }
