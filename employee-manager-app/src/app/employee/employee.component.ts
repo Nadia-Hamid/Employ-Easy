@@ -11,6 +11,9 @@ export class EmployeeComponent implements OnInit {
   public deleteEmployee: Employee
   public editEmployee: Employee
 
+  public userStatusList: string[] = ['ACTIVE', 'INACTIVE', 'VACATION', 'MATERNITY_LEAVE', 'OFF_DUTY', 'ARCHIVE']
+  public systemStatusList: string[] = ['SYSTEM_ADMIN', 'USER']
+
   constructor(private employeeService: EmployeeService, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit() {
@@ -30,6 +33,7 @@ export class EmployeeComponent implements OnInit {
 
   public onAddEmployee(addForm: NgForm): void {
     document.getElementById('add-employee-form')?.click()
+    
     this.employeeService.addEmployee(addForm.value).subscribe(
       (response: Employee) => {
         console.log(response)
