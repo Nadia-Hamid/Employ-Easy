@@ -16,7 +16,7 @@ public class EmployeeConfig {
     @Bean
     CommandLineRunner commandLineRunner(EmployeeRepository data) {
         return args -> {
-            Employee emp = new Employee(
+            Employee emp = new Employee(1234,
                 "Marius",
                 "Marthinussen",
                 "890519-XXXX",
@@ -33,6 +33,7 @@ public class EmployeeConfig {
                 SystemStatus.USER
             );
             Employee emp2 = new Employee(
+                    4321,
                 "Nadia",
                 "Hamid",
                 "900519-XXXX",

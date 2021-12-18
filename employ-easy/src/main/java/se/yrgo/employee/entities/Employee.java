@@ -285,4 +285,41 @@ public class Employee {
         String userId = firstName.substring(0, 3) + lastName.substring(0, 3) + generateSuffix();
         return userId.toLowerCase();
     }
+
+    //only for Employee Config file
+    public Employee(
+            int id,
+            String firstName,
+            String lastName,
+            String personalNumber,
+            String email,
+            String phoneNumber,
+            String street,
+            String zip,
+            String city,
+            String jobTitle,
+            String parentCompany,
+            LocalDate startDate,
+            LocalDate endDate,
+            EmployeeStatus employeeStatus,
+            SystemStatus systemStatus
+    ) {
+        String userId = firstName.substring(0, 3) + lastName.substring(0, 3) + id;
+        this.userId = userId.toLowerCase();
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.personalNumber = personalNumber;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.street = street;
+        this.zip = zip;
+        this.city = city;
+        this.jobTitle = jobTitle;
+        this.parentCompany = parentCompany;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        // this.imageURL = imageURL;
+        setEmployeeStatus(employeeStatus);
+        setSystemStatus(systemStatus);
+    }
 }
