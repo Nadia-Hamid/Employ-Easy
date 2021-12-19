@@ -1,3 +1,10 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" style="color: white">Employ Easy</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02"
+        aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</nav>
 <div class="container" id="main-container">
     <h5 class="main-hello">Hello {{ employee?.firstName }} !</h5>
     <div class="row justify-content-center align-items-center">
@@ -15,6 +22,8 @@
                     </div>
                 </div>
                 <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><i class="fa fa-envelope float-right"></i>System Status: {{ employee?.systemStatus }}</li>
+                    <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Employee Status: {{ employee?.employeeStatus }}</li>
                     <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Role: {{ employee?.jobTitle }}</li>
                     <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Phone: {{ employee?.phoneNumber }}</li>
                     <li class="list-group-item"><i class="fa fa-envelope float-right"></i>E-mail: {{ employee?.email }}</li>

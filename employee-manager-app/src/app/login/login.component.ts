@@ -12,7 +12,7 @@ export class LoginComponent implements OnInit {
   loading = false
   submitted = false
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private loginService: LoginService) {}
+constructor(private formBuilder: FormBuilder, private router: Router, private loginService: LoginService) {}
 
   ngOnInit() {
     this.form = this.formBuilder.group({
@@ -32,15 +32,22 @@ export class LoginComponent implements OnInit {
     }
     this.loginService.login(this.f.username.value, this.f.password.value).subscribe(
       (response) => {
-          this.responseData = response;
-         // console.log(this.responseData.authorities[0]) 
-         // localStorage.setItem('authority', JSON.stringify(this.responseData.authorities[0]))
-         // console.log( localStorage.getItem('authority'))
-         this.router.navigate(['v1/employees'])
+        this.responseData = response
+        localStorage.setItem('userName', this.responseData.username.toString())
+        let userRole = this.responseData.authorities[0].authority.toString()
+        this.redirectUser(userRole)
       },
       (error) => {
         this.loading = false
       }
     )
+  }
+  redirectUser(userRole: string) {
+    if ('ROLE_ADMIN' == userRole) {
+      this.router.navigate(['/v1/employees'])
+    }
+    if ('ROLE_EMPLOYEE' == userRole) {
+      this.router.navigate(['/v1/employees/user'])
+    }
   }
 }

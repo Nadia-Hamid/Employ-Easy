@@ -20,7 +20,7 @@ export class UserComponent implements OnInit {
   }
 
   getOneEmployee(): void {
-    this.employeeService.getOneEmployee('marmar9110').subscribe(
+    this.employeeService.getOneEmployee(localStorage.getItem('userName')).subscribe(
       (response: Employee) => {
         this.employee = response
       },
