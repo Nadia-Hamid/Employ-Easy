@@ -1,12 +1,14 @@
 ﻿import { Component, OnInit } from '@angular/core'
-import { Router, ActivatedRoute } from '@angular/router'
+import { Router, ActivatedRoute, Data } from '@angular/router'
 import { FormBuilder, FormGroup } from '@angular/forms'
 
 import { LoginService } from '../services/login.service'
+import { HttpHeaderResponse } from '@angular/common/http'
 
 @Component({ templateUrl: 'login.component.html' })
 export class LoginComponent implements OnInit {
   form: FormGroup
+  private responseData: any
   loading = false
   submitted = false
 
@@ -29,8 +31,12 @@ export class LoginComponent implements OnInit {
       return
     }
     this.loginService.login(this.f.username.value, this.f.password.value).subscribe(
-      (data) => {
-        this.router.navigate(['v1/employees'])
+      (response) => {
+          this.responseData = response;
+         // console.log(this.responseData.authorities[0]) 
+         // localStorage.setItem('authority', JSON.stringify(this.responseData.authorities[0]))
+         // console.log( localStorage.getItem('authority'))
+         this.router.navigate(['v1/employees'])
       },
       (error) => {
         this.loading = false

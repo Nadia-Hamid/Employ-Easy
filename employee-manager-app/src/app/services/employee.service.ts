@@ -27,4 +27,8 @@ export class EmployeeService {
        return this.http.delete<void>(`${this.apiServerUrl}/v1/employees/${userId}`, { withCredentials: true });
     }
     
+    public getOneEmployee(userId: String): Observable<Employee> {
+        return this.http.get<Employee>(`${this.apiServerUrl}/v1/employees/${userId}`, { withCredentials: true });
+    }
+
 }

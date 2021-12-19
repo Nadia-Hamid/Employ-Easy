@@ -1,0 +1,36 @@
+<div class="container" id="main-container">
+    <h5 class="main-hello">Hello {{ employee?.firstName }} !</h5>
+    <div class="row justify-content-center align-items-center">
+        <div class="col-md-5"> <!-- col-xl-5 -->
+            <div class="card m-b-30">
+                <div class="card-body row">
+                    <div>
+                        <a href=""><img src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png"
+                                alt="" class="img-fluid rounded-circle w-60" style="padding: 10px;" /></a>
+                    </div>
+                    <div class="col-6 card-title align-self-center mb-0">
+                        <h5>{{ employee?.firstName }}</h5>
+                        <h5>{{ employee?.lastName }}</h5>
+                       <!-- <p class="m-0">{{ employee?.endDate }}</p> -->
+                    </div>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Role: {{ employee?.jobTitle }}</li>
+                    <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Phone: {{ employee?.phoneNumber }}</li>
+                    <li class="list-group-item"><i class="fa fa-envelope float-right"></i>E-mail: {{ employee?.email }}</li>
+                    <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Parent Company: {{ employee?.parentCompany }}</li>
+                    <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Street: {{ employee?.street }}</li>
+                    <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Zip: {{ employee?.zip }}</li>
+                    <li class="list-group-item"><i class="fa fa-envelope float-right"></i>City: {{ employee?.city }}</li>
+                    <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Personal Number: {{ employee?.personalNumber }}</li>
+                    <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Start Date: {{ employee?.startDate }}</li>
+                    <li class="list-group-item"><i class="fa fa-envelope float-right"></i>End Date: {{ employee?.endDate }}</li>
+
+                    <li class="list-group-item">
+                      <!---  <i class="fa fa-phoneNumber float-right"></i>Phone : {{ employee?.phoneNumber }} -->
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
