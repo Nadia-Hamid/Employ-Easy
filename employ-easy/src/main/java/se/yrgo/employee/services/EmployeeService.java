@@ -49,9 +49,10 @@ public class EmployeeService {
     }
 
     public EmployeeDTO updateEmployee(EmployeeDTO employeeDTO) {
-        Employee updatedEmployee = new Employee(employeeDTO, employeeDTO.getUserId());
-        Employee employee = employeeRepository.save(updatedEmployee);
-        return new EmployeeDTO(employee);
+    	Employee employee = employeeRepository.findEmployeeByUserId(employeeDTO.getUserId());
+		Employee updatedEmployee = new Employee(employeeDTO, employee.getId());
+		employeeRepository.save(updatedEmployee);
+		return new EmployeeDTO(updatedEmployee);
     }
 
     public void deleteEmployee(String userId) {
