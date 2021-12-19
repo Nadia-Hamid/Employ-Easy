@@ -33,12 +33,9 @@ export class EmployeeComponent implements OnInit {
 
   public onAddEmployee(addForm: NgForm): void {
     document.getElementById('add-employee-form')?.click()
-    
     this.employeeService.addEmployee(addForm.value).subscribe(
       (response: Employee) => {
-        console.log(response)
         this.getEmployees()
-        addForm.reset()
       },
       (error: HttpErrorResponse) => {
         alert(error.message)
@@ -59,7 +56,7 @@ export class EmployeeComponent implements OnInit {
   }
 
   public onUpdateEmployee(employee: Employee): void {
-    document.getElementById('add-employee-form')?.click()
+    document.getElementById('add-form-value')?.click()
     this.employeeService.updateEmployee(employee).subscribe(
       (response: Employee) => {
         this.getEmployees()

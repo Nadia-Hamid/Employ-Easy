@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" style="color: white">Employee Manager</a>
+    <a class="navbar-brand" style="color: white">Employ Easy</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02"
         aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -63,7 +63,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="updateEmployeeModal">Add Employee</h5>
+                    <h5 class="modal-title" id="updateEmployeeModal">Update Employee</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -71,20 +71,19 @@
                 <div class="modal-body">
                     <form #editForm="ngForm">
                         <div class="form-group">
-                            <label for="userId">User Id</label>
                             <input ngModel="{{editEmployee?.userId}}" type="text" name="userId" class="form-control"
-                                id="user-id" placeholder="userId" disabled/>
+                                id="user-id" placeholder="userId" hidden/>
                         </div>
                         <div class="form-group">
                             <label for="userSystemStatus">Employee Status</label>
-                            <select ngModel="{{editEmployee?.employeeStatus}}" name="systemStatus" class="form-control">
+                            <select ngModel="{{editEmployee?.employeeStatus}}" name="employeeStatus" class="form-control">
                                 <option disabled>Select Status</option> 
                                 <option *ngFor="let status of userStatusList">{{ status }}</option>  
-                            </select>  
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="systemStatus">System Status</label>
-                            <select ngModel="{{editEmployee?.systemStatus}}" name="employeeStatus" class="form-control">
+                            <select ngModel="{{editEmployee?.systemStatus}}" name="systemStatus" class="form-control">
                                 <option disabled>Select Status</option>
                                 <option *ngFor="let status of systemStatusList">{{ status }}</option>  
                             </select>  
@@ -152,7 +151,7 @@
                         <div class="modal-footer">
                             <button type="button" id="add-employee-form" class="btn btn-secondary"
                                 data-dismiss="modal">Close</button>
-                            <button (click)='onUpdateEmployee(editForm.value)' type="submit"
+                            <button a (click)='onUpdateEmployee(editForm.value)' type="submit" data-dismiss="modal"
                                 class="btn btn-primary">Save
                                 changes</button>
                         </div>
@@ -252,7 +251,7 @@
                         <div class="modal-footer">
                             <button type="button" id="add-employee-form" class="btn btn-secondary"
                                 data-dismiss="modal">Close</button>
-                            <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Save
+                            <button [disabled]="addForm.invalid" type="submit"  class="btn btn-primary">Save
                                 changes</button>
                         </div>
                     </form>
