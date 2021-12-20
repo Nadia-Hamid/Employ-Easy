@@ -52,18 +52,18 @@ public class EmployeeService {
     }
 
     public EmployeeDTO updateEmployee(EmployeeDTO employeeDTO) {
+        getByUserId(employeeDTO.getUserId());
         Employee updatedEmployee = new Employee(employeeDTO, employeeDTO.getUserId());
         Employee employee = employeeRepository.save(updatedEmployee);
         return new EmployeeDTO(employee);
     }
 
     public void deleteEmployee(String userId) {
-        try {
-            Employee employee = employeeRepository.findEmployeeByUserId(userId);
-            employeeRepository.delete(employee);
-        } catch (EmptyResultDataAccessException e) {
-            throw new ObjectNotFoundException("Object not found");
+        Employee employee = employeeRepository.findEmployeeByUserId(userId);
+        if(employee == null){
+            throw new ObjectNotFoundException("User to be deleted was not found");
         }
+        employeeRepository.delete(employee);
     }
 
     public EmployeeDTO findByEmail(String email) {

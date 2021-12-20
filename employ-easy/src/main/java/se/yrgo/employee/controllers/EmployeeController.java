@@ -72,6 +72,7 @@ public class EmployeeController {
             @ApiResponse(responseCode = "403",
                     description = "Accessing the resource you were trying to reach is forbidden", content = @Content),
     })
+    //TODO
     @RequestMapping(value = "/jobtitle/{jobTitle}", method = RequestMethod.GET)
     public List<EmployeeDTO> findByJobTitle(@PathVariable String jobTitle) {
         return employeeService.findByJobTitle(jobTitle);
@@ -88,6 +89,7 @@ public class EmployeeController {
             @ApiResponse(responseCode = "401", description = "Authorization required to register the employee", content = @Content),
             @ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden", content = @Content)})
     @RequestMapping(value = "", method = RequestMethod.POST)
+    //TODO foundexception
     public EmployeeDTO registerEmployee(@RequestBody EmployeeDTO registerDTO) {
         return employeeService.addEmployee(registerDTO);
     }
@@ -140,6 +142,7 @@ public class EmployeeController {
                     description = "Accessing the resource you were trying to reach is forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "The resource you were trying to find was not found", content = @Content)
     })
+    //TODO
     @RequestMapping(value = "/email/{email}", method = RequestMethod.GET)
     public EmployeeDTO findEqualEmail(@PathVariable String email) {
         return employeeService.findByEmail(email);
