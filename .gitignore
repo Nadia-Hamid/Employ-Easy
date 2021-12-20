@@ -8,7 +8,6 @@ employ-easy/target/
 !employ-easy/.mvn/wrapper/maven-wrapper.jar
 !employ-easy/**/src/main/**/target/
 !employ-easy/**/src/test/**/target/
-employ-easy/src/main/java/resources/
 
 ### STS ###
 employ-easy/.apt_generated
@@ -65,7 +64,6 @@ employ-easy/HELP.md
 !employ-easy/.mvn/wrapper/maven-wrapper.jar
 !employ-easy/**/src/main/**/target/
 !employ-easy/**/src/test/**/target/
-employ-easy/src/main/java/resources/
 
 # Package Files #
 *.jar
