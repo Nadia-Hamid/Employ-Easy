@@ -27,6 +27,10 @@ public class EmployeeService {
         return employeeRepository.findAll().stream().map(EmployeeDTO::new).collect(Collectors.toList());
     }
 
+    private EmployeeDTO dto(Employee employee){
+        return new EmployeeDTO(employee);
+    }
+
     public EmployeeDTO addEmployee(EmployeeDTO employeeDTO) {
         final String newEmail = employeeDTO.getEmail();
         if(employeeRepository.findByEmail(newEmail).size() > 0){
@@ -39,17 +43,21 @@ public class EmployeeService {
             if (existing == null) {
                 Employee employee = new Employee(employeeDTO, userId);
                 employeeRepository.save(employee);
-                return new EmployeeDTO(employee);
+                return dto(employee);
             }
         }
     }
 
-    public EmployeeDTO getByUserId(String userId) {
+    private Employee getEmployeeByUserId(String userId) {
         Employee entity = employeeRepository.findEmployeeByUserId(userId.toLowerCase());
         if(entity == null){
             throw new ObjectNotFoundException("User was not found");
         }
-        return new EmployeeDTO(entity);
+        return entity;
+    }
+
+    public EmployeeDTO getByUserId(String userId) {
+        return dto(getEmployeeByUserId(userId));
     }
 
     public List<EmployeeDTO> findByJobTitle(String jobTitle) {
@@ -63,10 +71,10 @@ public class EmployeeService {
     }
 
     public EmployeeDTO updateEmployee(EmployeeDTO employeeDTO) {
-        getByUserId(employeeDTO.getUserId().toLowerCase());
-        Employee updatedEmployee = new Employee(employeeDTO, employeeDTO.getUserId());
+        Employee emp = getEmployeeByUserId(employeeDTO.getUserId());
+        Employee updatedEmployee = new Employee(employeeDTO, emp.getId());
         Employee employee = employeeRepository.save(updatedEmployee);
-        return new EmployeeDTO(employee);
+        return dto(employee);
     }
 
     public void deleteEmployee(String userId) {
@@ -78,13 +86,13 @@ public class EmployeeService {
     }
 
     public EmployeeDTO findByEmail(String email) {
-        var byEmail = employeeRepository.findByEmail(email.toLowerCase());
-        var size = byEmail.size();
+        var getEmployeeByEmail = employeeRepository.findByEmail(email.toLowerCase());
+        var size = getEmployeeByEmail.size();
         if(size < 1){
             throw new ObjectNotFoundException("No user with email " + email + " was found");
         } else if(size > 1){
             throw new ConflictException("Several instances with email " + email + " was found");
         }
-        return new EmployeeDTO(byEmail.get(0));
+        return dto(getEmployeeByEmail.get(0));
     }
 }
