@@ -97,9 +97,10 @@ public class EmployeeController {
             @ApiResponse(responseCode = "401",
                     description = "Authorization required to register the employee", content = @Content),
             @ApiResponse(responseCode = "403",
-                    description = "Accessing the resource you were trying to reach is forbidden", content = @Content)})
+                    description = "Accessing the resource you were trying to reach is forbidden", content = @Content),
+            @ApiResponse(responseCode = "409",
+                    description = "Multiple instances of unique resource was found", content = @Content)})
     @RequestMapping(value = "", method = RequestMethod.POST)
-    //TODO foundexception
     public EmployeeDTO registerEmployee(@RequestBody EmployeeDTO registerDTO) {
         return employeeService.addEmployee(registerDTO);
     }
@@ -158,11 +159,12 @@ public class EmployeeController {
             @ApiResponse(responseCode = "403",
                     description = "Accessing the resource you were trying to reach is forbidden", content = @Content),
             @ApiResponse(responseCode = "404",
-                    description = "The resource you were trying to find was not found", content = @Content)
+                    description = "The resource you were trying to find was not found", content = @Content),
+            @ApiResponse(responseCode = "409",
+                    description = "Multiple instances of unique resource was found", content = @Content)
     })
-    //TODO
     @RequestMapping(value = "/email/{email}", method = RequestMethod.GET)
-    public EmployeeDTO findEqualEmail(@PathVariable String email) {
+    public EmployeeDTO findUniqueEmail(@PathVariable String email) {
         return employeeService.findByEmail(email);
     }
 }

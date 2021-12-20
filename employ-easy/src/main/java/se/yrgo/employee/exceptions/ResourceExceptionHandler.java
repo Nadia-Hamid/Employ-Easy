@@ -11,9 +11,16 @@ import se.yrgo.employee.exceptions.ObjectNotFoundException;
 public class ResourceExceptionHandler {
 
     @ExceptionHandler(ObjectNotFoundException.class)
-    public ResponseEntity<StandardError> objectNotFound(ObjectNotFoundException e, HttpServletRequest request) {
+    public ResponseEntity<StandardError> objectNotFound(ObjectNotFoundException e) {
         HttpStatus status = HttpStatus.NOT_FOUND;
         StandardError err = new StandardError(status.value(), "Not Found", e.getMessage());
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<StandardError> conflict(ConflictException e) {
+        HttpStatus status = HttpStatus.CONFLICT;
+        StandardError err = new StandardError(status.value(), "Conflict", e.getMessage());
         return ResponseEntity.status(status).body(err);
     }
 }

@@ -49,13 +49,13 @@ public class Employee {
         this.firstName = employeeDTO.getFirstName();
         this.lastName = employeeDTO.getLastName();
         this.personalNumber = employeeDTO.getPersonalNumber();
-        this.email = employeeDTO.getEmail();
+        this.email = employeeDTO.getEmail().toLowerCase();
         this.phoneNumber = employeeDTO.getPhoneNumber();
         this.street = employeeDTO.getStreet();
         this.zip = employeeDTO.getZip();
         this.city = employeeDTO.getCity();
-        this.jobTitle = employeeDTO.getJobTitle();
-        this.parentCompany = employeeDTO.getParentCompany();
+        this.jobTitle = employeeDTO.getJobTitle().toLowerCase();
+        this.parentCompany = employeeDTO.getParentCompany().toLowerCase();
         this.startDate = employeeDTO.getStartDate();
         this.endDate = employeeDTO.getEndDate();
         // this.imageURL = imageURL;
@@ -67,9 +67,7 @@ public class Employee {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public void setId(Long id) { this.id = id; }
 
     public String getUserId() {
         return userId;
@@ -148,7 +146,7 @@ public class Employee {
     }
 
     public void setJobTitle(String jobTitle) {
-        this.jobTitle = jobTitle;
+        this.jobTitle = jobTitle.toLowerCase();
     }
 
     public String getParentCompany() {
@@ -156,7 +154,7 @@ public class Employee {
     }
 
     public void setParentCompany(String parentCompany) {
-        this.parentCompany = parentCompany;
+        this.parentCompany = parentCompany.toLowerCase();
     }
 
     public LocalDate getStartDate() {
@@ -262,13 +260,13 @@ public class Employee {
         this.firstName = firstName;
         this.lastName = lastName;
         this.personalNumber = personalNumber;
-        this.email = email;
+        this.email = email.toLowerCase();
         this.phoneNumber = phoneNumber;
         this.street = street;
         this.zip = zip;
         this.city = city;
-        this.jobTitle = jobTitle;
-        this.parentCompany = parentCompany;
+        this.jobTitle = jobTitle.toLowerCase();
+        this.parentCompany = parentCompany.toLowerCase();
         this.startDate = startDate;
         this.endDate = endDate;
         // this.imageURL = imageURL;
@@ -309,13 +307,13 @@ public class Employee {
         this.firstName = firstName;
         this.lastName = lastName;
         this.personalNumber = personalNumber;
-        this.email = email;
+        this.email = email.toLowerCase();
         this.phoneNumber = phoneNumber;
         this.street = street;
         this.zip = zip;
         this.city = city;
-        this.jobTitle = jobTitle;
-        this.parentCompany = parentCompany;
+        this.jobTitle = jobTitle.toLowerCase();
+        this.parentCompany = parentCompany.toLowerCase();
         this.startDate = startDate;
         this.endDate = endDate;
         // this.imageURL = imageURL;
