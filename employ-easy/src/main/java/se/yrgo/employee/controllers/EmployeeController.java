@@ -99,7 +99,7 @@ public class EmployeeController {
             @ApiResponse(responseCode = "403",
                     description = "Accessing the resource you were trying to reach is forbidden", content = @Content),
             @ApiResponse(responseCode = "409",
-                    description = "Multiple instances of unique resource was found", content = @Content)})
+                    description = "Resource with unique email has already been posted previously", content = @Content)})
     @RequestMapping(value = "", method = RequestMethod.POST)
     public EmployeeDTO registerEmployee(@RequestBody EmployeeDTO registerDTO) {
         return employeeService.addEmployee(registerDTO);
