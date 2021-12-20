@@ -48,11 +48,16 @@ public class EmployeeController {
      */
     @Operation(summary = "Get employee from userId.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved the employee",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = EmployeeDTO.class))),
-            @ApiResponse(responseCode = "401", description = "Authorization required to fetch the employee", content = @Content),
-            @ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden", content = @Content),
-            @ApiResponse(responseCode = "404", description = "The resource you were trying to reach is not found", content = @Content)})
+            @ApiResponse(responseCode = "200",
+                    description = "Successfully retrieved the employee",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = EmployeeDTO.class))),
+            @ApiResponse(responseCode = "401",
+                    description = "Authorization required to fetch the employee", content = @Content),
+            @ApiResponse(responseCode = "403",
+                    description = "Accessing the resource you were trying to reach is forbidden", content = @Content),
+            @ApiResponse(responseCode = "404",
+                    description = "The resource you were trying to reach is not found", content = @Content)})
     @GetMapping(value = "/{userId}")
     public EmployeeDTO getByUserId(@PathVariable String userId) {
         return employeeService.getByUserId(userId);
@@ -71,8 +76,9 @@ public class EmployeeController {
                     description = "Authorization required to fetch employees", content = @Content),
             @ApiResponse(responseCode = "403",
                     description = "Accessing the resource you were trying to reach is forbidden", content = @Content),
+            @ApiResponse(responseCode = "404",
+                    description = "The resource you were trying to find was not found", content = @Content)
     })
-    //TODO
     @RequestMapping(value = "/jobtitle/{jobTitle}", method = RequestMethod.GET)
     public List<EmployeeDTO> findByJobTitle(@PathVariable String jobTitle) {
         return employeeService.findByJobTitle(jobTitle);
@@ -84,10 +90,14 @@ public class EmployeeController {
      */
     @Operation(summary = "Register new employee.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully registered the employee",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = EmployeeDTO.class))),
-            @ApiResponse(responseCode = "401", description = "Authorization required to register the employee", content = @Content),
-            @ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden", content = @Content)})
+            @ApiResponse(responseCode = "200",
+                    description = "Successfully registered the employee",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = EmployeeDTO.class))),
+            @ApiResponse(responseCode = "401",
+                    description = "Authorization required to register the employee", content = @Content),
+            @ApiResponse(responseCode = "403",
+                    description = "Accessing the resource you were trying to reach is forbidden", content = @Content)})
     @RequestMapping(value = "", method = RequestMethod.POST)
     //TODO foundexception
     public EmployeeDTO registerEmployee(@RequestBody EmployeeDTO registerDTO) {
@@ -105,7 +115,8 @@ public class EmployeeController {
                     description = "Authorization required to fetch employees", content = @Content),
             @ApiResponse(responseCode = "403",
                     description = "Accessing the resource you were trying to reach is forbidden", content = @Content),
-            @ApiResponse(responseCode = "404", description = "The resource you were trying to delete is not found", content = @Content)
+            @ApiResponse(responseCode = "404",
+                    description = "The resource you were trying to delete is not found", content = @Content)
     })
     @RequestMapping(value = "/{userId}", method = RequestMethod.DELETE)
     public void deleteEmployee(@PathVariable String userId) {
@@ -118,11 +129,16 @@ public class EmployeeController {
      */
     @Operation(summary = "Update an employee.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully updated an employee",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = EmployeeDTO.class))),
-            @ApiResponse(responseCode = "401", description = "Authorization required to update the employee", content = @Content),
-            @ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden", content = @Content),
-            @ApiResponse(responseCode = "404", description = "The resource you were trying to update was not found", content = @Content)})
+            @ApiResponse(responseCode = "200",
+                    description = "Successfully updated an employee",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = EmployeeDTO.class))),
+            @ApiResponse(responseCode = "401",
+                    description = "Authorization required to update the employee", content = @Content),
+            @ApiResponse(responseCode = "403",
+                    description = "Accessing the resource you were trying to reach is forbidden", content = @Content),
+            @ApiResponse(responseCode = "404",
+                    description = "The resource you were trying to update was not found", content = @Content)})
     @RequestMapping(value = "", method = RequestMethod.PUT)
     public EmployeeDTO updateEmployee(@RequestBody EmployeeDTO employeeDTO) {
         return employeeService.updateEmployee(employeeDTO);
@@ -135,12 +151,14 @@ public class EmployeeController {
     @Operation(summary = "Get employee from email.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved the employee",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = EmployeeDTO.class))),
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = EmployeeDTO.class))),
             @ApiResponse(responseCode = "401",
                     description = "Authorization required to fetch employee", content = @Content),
             @ApiResponse(responseCode = "403",
                     description = "Accessing the resource you were trying to reach is forbidden", content = @Content),
-            @ApiResponse(responseCode = "404", description = "The resource you were trying to find was not found", content = @Content)
+            @ApiResponse(responseCode = "404",
+                    description = "The resource you were trying to find was not found", content = @Content)
     })
     //TODO
     @RequestMapping(value = "/email/{email}", method = RequestMethod.GET)

@@ -1,9 +1,9 @@
 package se.yrgo.employee.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.yrgo.employee.dto.EmployeeDTO;
@@ -48,7 +48,13 @@ public class EmployeeService {
     }
 
     public List<EmployeeDTO> findByJobTitle(String jobTitle) {
-        return employeeRepository.findByJobTitle(jobTitle).stream().map(EmployeeDTO::new).collect(Collectors.toList());
+        return employeeRepository
+                .findByJobTitle(jobTitle)
+                .stream()
+                .map(EmployeeDTO::new)
+                .collect(Collectors.collectingAndThen(Collectors.toList(), Optional::of))
+                .filter(l -> !l.isEmpty())
+                .orElseThrow(() -> new ObjectNotFoundException("No user with job title " +jobTitle + " was found"));
     }
 
     public EmployeeDTO updateEmployee(EmployeeDTO employeeDTO) {
