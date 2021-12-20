@@ -1,6 +1,9 @@
 # Prettier for java files
 node_modules/
 
+#Prop files
+employ-easy/src/main/resources/application.properties
+
 # Compiled class file
 *.class
 
