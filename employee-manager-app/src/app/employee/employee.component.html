@@ -175,20 +175,20 @@
                 <div class="modal-body">
                     <form #addForm="ngForm" (ngSubmit)="onAddEmployee(addForm)">
                         <div class="form-group">
-                            <div class="form-group">
-                                <label for="userSystemStatus">Employee Status</label>
-                                <select ngModel name="employeeStatus" class="form-control">
-                                    <option disabled>Select Status</option> 
-                                    <option *ngFor="let status of userStatusList">{{ status }}</option>  
-                                </select>  
-                            </div>
-                            <div class="form-group">
-                                <label for="systemStatus">System Status</label>
-                                <select ngModel name="systemStatus" class="form-control">
-                                    <option disabled>Select Status</option>
-                                    <option *ngFor="let status of systemStatusList">{{ status }}</option>  
-                                </select>
-                            </div>
+                            <label for="userSystemStatus">Employee Status</label>
+                            <select ngModel name="employeeStatus" class="form-control">
+                                <option disabled>Select Status</option> 
+                                <option *ngFor="let status of userStatusList">{{ status }}</option>  
+                            </select>  
+                        </div>
+                        <div class="form-group">
+                            <label for="systemStatus">System Status</label>
+                            <select ngModel name="systemStatus" class="form-control">
+                                <option disabled>Select Status</option>
+                                <option *ngFor="let status of systemStatusList">{{ status }}</option>  
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label for="first-name">First name</label>
                             <input ngModel type="text" name="firstName" class="form-control" id="first-name"
                                 placeholder="First name" required />
