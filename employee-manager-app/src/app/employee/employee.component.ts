@@ -56,7 +56,6 @@ export class EmployeeComponent implements OnInit {
   }
 
   public onUpdateEmployee(employee: Employee): void {
-    document.getElementById('add-form-value')?.click()
     this.employeeService.updateEmployee(employee).subscribe(
       (response: Employee) => {
         this.getEmployees()
