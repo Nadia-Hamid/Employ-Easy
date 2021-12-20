@@ -41,6 +41,9 @@ public class EmployeeService {
 
     public EmployeeDTO getByUserId(String userId) {
         Employee entity = employeeRepository.findEmployeeByUserId(userId);
+        if(entity == null){
+            throw new ObjectNotFoundException("User was not found");
+        }
         return new EmployeeDTO(entity);
     }
 
