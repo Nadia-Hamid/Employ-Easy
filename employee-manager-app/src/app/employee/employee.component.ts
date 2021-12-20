@@ -11,6 +11,9 @@ export class EmployeeComponent implements OnInit {
   public deleteEmployee: Employee
   public editEmployee: Employee
 
+  public userStatusList: string[] = ['ACTIVE', 'INACTIVE', 'VACATION', 'MATERNITY_LEAVE', 'OFF_DUTY', 'ARCHIVE']
+  public systemStatusList: string[] = ['SYSTEM_ADMIN', 'USER']
+
   constructor(private employeeService: EmployeeService, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit() {
@@ -32,9 +35,7 @@ export class EmployeeComponent implements OnInit {
     document.getElementById('add-employee-form')?.click()
     this.employeeService.addEmployee(addForm.value).subscribe(
       (response: Employee) => {
-        console.log(response)
         this.getEmployees()
-        addForm.reset()
       },
       (error: HttpErrorResponse) => {
         alert(error.message)
@@ -55,7 +56,7 @@ export class EmployeeComponent implements OnInit {
   }
 
   public onUpdateEmployee(employee: Employee): void {
-    document.getElementById('add-employee-form')?.click()
+    document.getElementById('add-form-value')?.click()
     this.employeeService.updateEmployee(employee).subscribe(
       (response: Employee) => {
         this.getEmployees()

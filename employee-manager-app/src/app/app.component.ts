@@ -8,11 +8,8 @@ import { Router } from '@angular/router'
 })
 export class AppComponent implements OnInit {
   title = 'employee-manager-app'
-  
+
   constructor() {}
 
-  ngOnInit() {
-  }
-
-  
+  ngOnInit() {}
 }

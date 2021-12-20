@@ -82,6 +82,26 @@ public class Employee {
         setEmployeeStatus(employeeDTO.getEmployeeStatus());
         setSystemStatus(employeeDTO.getSystemStatus());
     }
+    
+    public Employee(EmployeeDTO employeeDTO, Long id) {
+		this.id = id;
+		this.userId = employeeDTO.getUserId();
+		this.firstName = employeeDTO.getFirstName();
+		this.lastName = employeeDTO.getLastName();
+		this.personalNumber = employeeDTO.getPersonalNumber();
+		this.email = employeeDTO.getEmail();
+		this.phoneNumber = employeeDTO.getPhoneNumber();
+		this.street = employeeDTO.getStreet();
+		this.zip = employeeDTO.getZip();
+		this.city = employeeDTO.getCity();
+		this.jobTitle = employeeDTO.getJobTitle();
+		this.parentCompany = employeeDTO.getParentCompany();
+		this.startDate = employeeDTO.getStartDate();
+		this.endDate = employeeDTO.getEndDate();
+		// this.imageURL = imageURL;
+		setEmployeeStatus(employeeDTO.getEmployeeStatus());
+		setSystemStatus(employeeDTO.getSystemStatus());
+	}
 
     public Long getId() {
         return id;
