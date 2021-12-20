@@ -34,12 +34,12 @@ export class EmployeeComponent implements OnInit {
   public onAddEmployee(addForm: NgForm): void {
     document.getElementById('add-employee-form')?.click()
     this.employeeService.addEmployee(addForm.value).subscribe(
-      (response: Employee) => {
+      () => {
         this.getEmployees()
+        addForm.reset()
       },
       (error: HttpErrorResponse) => {
         alert(error.message)
-        addForm.reset()
       }
     )
   }
@@ -85,8 +85,6 @@ export class EmployeeComponent implements OnInit {
       button.setAttribute('data-target', '#updateEmployeeModal')
     }
 
-    //TODO add parameter employee: Employee before mode above
-    //TODO if mode for edit and delete
     container?.appendChild(button)
     button.click()
   }
