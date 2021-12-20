@@ -12,8 +12,8 @@ export interface Employee {
     parentCompany?: string;
     startDate: Date;
     endDate?: Date;
-    // employeeStatus?: number;
-	// systemStatus?: number;
+    employeeStatus?: string;
+	systemStatus?: string;
     //imageUrl: string;
 }
 

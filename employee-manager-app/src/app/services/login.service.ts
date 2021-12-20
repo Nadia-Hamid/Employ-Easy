@@ -16,7 +16,7 @@ export class LoginService {
     login(username: String, password: String) {
         const headers = new HttpHeaders({Authorization: 'Basic ' +btoa(username +":"+ password)
             })
-        return this.http.get(`${environment.apiBaseUrl}/v1/employees`,  { headers })
+        return this.http.get(`${environment.apiBaseUrl}/v1/auth`,  { headers })
     }
 
     
