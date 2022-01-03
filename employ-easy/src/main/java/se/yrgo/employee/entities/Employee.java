@@ -39,11 +39,6 @@ public class Employee {
 
     public Employee() {}
 
-    public Employee(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-
     public Employee(EmployeeDTO employeeDTO, String userId) {
         this.userId = userId;
         this.firstName = employeeDTO.getFirstName();
