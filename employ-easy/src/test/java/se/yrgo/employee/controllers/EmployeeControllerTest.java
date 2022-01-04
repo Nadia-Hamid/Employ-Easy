@@ -75,6 +75,32 @@ class EmployeeControllerTest {
 	}
 
 	@Test
+	void addEmployeeTest() throws Exception {
+		List<EmployeeDTO> employeeDTOList = new ArrayList<>();
+		Employee emp = new Employee("Nadia", "Hamid", "900519-XXXX", "Nadia@gmail.com", "87654321", "Norra Vagen",
+				"44556", "Goteborg", "developer", "saab", LocalDate.of(2005, 1, 1), null, EmployeeStatus.VACATION,
+				SystemStatus.SYSTEM_ADMIN);
+		EmployeeDTO dto = new EmployeeDTO(emp);
+		employeeDTOList.add(dto);
+		emp = new Employee("Marius", "Marthinussen", "881005-XXXX", "marius@gmail.com", "90654321", "Sadra Vagen",
+				"44556", "Goteborg", "developer", "saab", LocalDate.of(2005, 1, 1), null, EmployeeStatus.ACTIVE,
+				SystemStatus.USER);
+		dto = new EmployeeDTO(emp);
+		employeeDTOList.add(dto);
+		when(mockedEmployeeService.findAll()).thenReturn(employeeDTOList);
+		MvcResult result = mockMvc
+				.perform(get(URL)
+						.with(user("admin")
+								.roles("ADMIN")))
+				.andExpect(status()
+						.isOk())
+				.andReturn();
+		String expectedResultJson = objectMapper.writeValueAsString(employeeDTOList);
+		String actualResponseJson = result.getResponse().getContentAsString();
+		assertEquals(expectedResultJson, actualResponseJson);
+	}
+
+	@Test
 	@Disabled
 	void deleteEmployeeTest() throws Exception {
 		final String user = "marher1234";

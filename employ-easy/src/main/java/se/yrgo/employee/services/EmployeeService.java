@@ -33,8 +33,8 @@ public class EmployeeService {
 
     public EmployeeDTO addEmployee(EmployeeDTO employeeDTO) {
         final String newEmail = employeeDTO.getEmail();
-        if(employeeRepository.findByEmail(newEmail).size() > 0){
-            throw new ConflictException("Employee with unique email " + newEmail + " was already added.");
+        if(newEmail == null || employeeRepository.findByEmail(newEmail).size() > 0){
+            throw new ConflictException("Employee with unique email " + newEmail + " was already added or null.");
         }
         String prefix = employeeDTO.generateName();
         while (true) {
@@ -86,6 +86,9 @@ public class EmployeeService {
     }
 
     public EmployeeDTO findByEmail(String email) {
+        if(email == null) {
+            throw new ConflictException("Null email value not allowed!");
+        }
         var getEmployeeByEmail = employeeRepository.findByEmail(email.toLowerCase());
         var size = getEmployeeByEmail.size();
         if(size < 1){

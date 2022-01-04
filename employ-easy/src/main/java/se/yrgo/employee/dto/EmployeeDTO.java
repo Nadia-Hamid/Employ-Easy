@@ -2,6 +2,8 @@ package se.yrgo.employee.dto;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Objects;
+
 import se.yrgo.employee.entities.Employee;
 import se.yrgo.employee.entities.enums.EmployeeStatus;
 import se.yrgo.employee.entities.enums.SystemStatus;
@@ -101,6 +103,19 @@ public class EmployeeDTO implements Serializable {
     public String generateName() {
         String sb = firstName.substring(0, 3) + lastName.substring(0, 3);
         return sb.toLowerCase();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EmployeeDTO that = (EmployeeDTO) o;
+        return Objects.equals(userId, that.userId) && email.equals(that.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, email);
     }
 
     public String getUserId() {
