@@ -301,7 +301,7 @@ public class Employee {
 
     //only for Employee Config file
     public Employee(
-            int id,
+            long id,
             String firstName,
             String lastName,
             String personalNumber,
@@ -318,6 +318,7 @@ public class Employee {
             SystemStatus systemStatus
     ) {
         String userId = firstName.substring(0, 3) + lastName.substring(0, 3) + id;
+        this.id = id;
         this.userId = userId.toLowerCase();
         this.firstName = firstName;
         this.lastName = lastName;

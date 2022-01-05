@@ -1,6 +1,5 @@
 package se.yrgo.employee.repositories;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import se.yrgo.employee.entities.Employee;
@@ -11,18 +10,18 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Component
-public class EmployeeSetup implements CommandLineRunner {
+public class EmployeeStartup implements CommandLineRunner {
 
     private final EmployeeRepository employeeRepository;
 
-    public EmployeeSetup(EmployeeRepository employeeRepository) {
+    public EmployeeStartup(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         employeeRepository.saveAll(List.of(
-                new Employee(1234,
+                new Employee(1234L,
                 "Marius",
                 "Marthinussen",
                 "890519-XXXX",
@@ -38,7 +37,8 @@ public class EmployeeSetup implements CommandLineRunner {
                 EmployeeStatus.ACTIVE,
                 SystemStatus.USER
                 ), new Employee(
-                        4321, "Nadia",
+                        4321L,
+                        "Nadia",
                         "Hamid",
                         "900519-XXXX",
                         "Marius@gmail.com", //Nadia

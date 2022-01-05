@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class EmployeeTest {
 
     private EmployeeDTO dto;
+    private static final long ID = 5000;
 
     @BeforeEach
     void setup() {
@@ -49,8 +50,31 @@ class EmployeeTest {
 
     @Test
     void createEmployeeFromDTOAndId() {
-        final long id = 5000;
-        Employee created = new Employee(dto, id);
-        assertEquals(id, created.getId());
+        Employee created = new Employee(dto, ID);
+        assertEquals(ID, created.getId());
+    }
+
+    @Test
+    void createEmployeeWhenStartingApplication() {
+        final String email = dto.getEmail();
+        Employee startUp = new Employee(
+                ID,
+                dto.getFirstName(),
+                dto.getLastName(),
+                dto.getPersonalNumber(),
+                email,
+                dto.getPhoneNumber(),
+                dto.getStreet(),
+                dto.getZip(),
+                dto.getCity(),
+                dto.getJobTitle(),
+                dto.getParentCompany(),
+                dto.getStartDate(),
+                dto.getEndDate(),
+                dto.getEmployeeStatus(),
+                dto.getSystemStatus()
+        );
+        assertEquals(ID, startUp.getId());
+        assertEquals(email, startUp.getEmail());
     }
 }
