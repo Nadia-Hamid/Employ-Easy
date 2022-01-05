@@ -88,7 +88,7 @@ public class Employee {
                 employeeDTO.getEmployeeStatus(),
                 employeeDTO.getSystemStatus()
         );
-        this.userId = userId;
+        this.userId = userId.toLowerCase();
     }
 
     public Employee(EmployeeDTO employeeDTO, Long id) {
@@ -108,7 +108,7 @@ public class Employee {
                 employeeDTO.getEmployeeStatus(),
                 employeeDTO.getSystemStatus()
         );
-        this.userId = employeeDTO.getUserId();
+        this.userId = employeeDTO.getUserId().toLowerCase();
         this.id = id;
     }
 
@@ -150,6 +150,7 @@ public class Employee {
             this.userId = generateUserId(firstName, lastName);
         } else {
             this.userId = firstName.substring(0, 3) + lastName.substring(0, 3) + id;
+            this.userId.toLowerCase();
             this.id = id;
         }
     }
