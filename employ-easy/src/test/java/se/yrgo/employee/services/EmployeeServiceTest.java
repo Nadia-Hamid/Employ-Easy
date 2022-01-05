@@ -35,6 +35,7 @@ class EmployeeServiceTest {
         employeeServiceTest = new EmployeeService(mockedEmployeeRepository);
         List<Employee> employeeList = new ArrayList<>();
         Employee emp = new Employee(
+                -1L,
             "Marius",
             "Marthinussen",
             "890519-XXXX",
@@ -53,6 +54,7 @@ class EmployeeServiceTest {
         employeeList.add(emp);
         emp =
             new Employee(
+                    -1L,
                 "Nadia",
                 "Hamid",
                 "900519-XXXX",
@@ -111,6 +113,7 @@ class EmployeeServiceTest {
     @Test
     void deleteEmployee() {
         Employee emp = new Employee(
+                -1L,
             "Marius",
             "Marthinussen",
             "890519-XXXX",
