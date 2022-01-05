@@ -28,24 +28,7 @@ public class EmployeeDTO implements Serializable {
     private LocalDate endDate;
     private EmployeeStatus employeeStatus;
     private SystemStatus systemStatus;
-
     // private String imageURL;
-
-    public EmployeeStatus getEmployeeStatus() {
-        return employeeStatus;
-    }
-
-    public void setEmployeeStatus(EmployeeStatus employeeStatus) {
-        this.employeeStatus = employeeStatus;
-    }
-
-    public SystemStatus getSystemStatus() {
-        return systemStatus;
-    }
-
-    public void setSystemStatus(SystemStatus systemStatus) {
-        this.systemStatus = systemStatus;
-    }
 
     // , String imageURL
     public EmployeeDTO(
@@ -82,22 +65,23 @@ public class EmployeeDTO implements Serializable {
     }
 
     public EmployeeDTO(Employee employee) {
+        this(
+                employee.getFirstName(),
+                employee.getLastName(),
+                employee.getPersonalNumber(),
+                employee.getEmail(),
+                employee.getPhoneNumber(),
+                employee.getStreet(),
+                employee.getZip(),
+                employee.getCity(),
+                employee.getJobTitle(),
+                employee.getParentCompany(),
+                employee.getStartDate(),
+                employee.getEndDate(),
+                employee.getEmployeeStatus(),
+                employee.getSystemStatus()
+        );
         this.userId = employee.getUserId();
-        this.firstName = employee.getFirstName();
-        this.lastName = employee.getLastName();
-        this.personalNumber = employee.getPersonalNumber();
-        this.email = employee.getEmail();
-        this.phoneNumber = employee.getPhoneNumber();
-        this.street = employee.getStreet();
-        this.zip = employee.getZip();
-        this.city = employee.getCity();
-        this.jobTitle = employee.getJobTitle();
-        this.parentCompany = employee.getParentCompany();
-        this.startDate = employee.getStartDate();
-        this.endDate = employee.getEndDate();
-        // this.imageURL = imageURL;
-        setEmployeeStatus(employee.getEmployeeStatus());
-        setSystemStatus(employee.getSystemStatus());
     }
 
     public String generateName() {
@@ -221,6 +205,23 @@ public class EmployeeDTO implements Serializable {
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
+
+    public EmployeeStatus getEmployeeStatus() {
+        return employeeStatus;
+    }
+
+    public void setEmployeeStatus(EmployeeStatus employeeStatus) {
+        this.employeeStatus = employeeStatus;
+    }
+
+    public SystemStatus getSystemStatus() {
+        return systemStatus;
+    }
+
+    public void setSystemStatus(SystemStatus systemStatus) {
+        this.systemStatus = systemStatus;
+    }
+
     /*
      * public String getImageURL() { return imageURL; } public void
      * setImageURL(String imageURL) { this.imageURL = imageURL; }
