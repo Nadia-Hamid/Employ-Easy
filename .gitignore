@@ -1,3 +1,55 @@
+#Marius files
+.metadata/
+id_publickey
+
+#Employ easy gitignore
+employ-easy/HELP.md
+employ-easy/target/
+!employ-easy/.mvn/wrapper/maven-wrapper.jar
+!employ-easy/**/src/main/**/target/
+!employ-easy/**/src/test/**/target/
+
+### STS ###
+employ-easy/.apt_generated
+employ-easy/.classpath
+employ-easy/.factorypath
+employ-easy/.project
+employ-easy/.settings
+employ-easy/.springBeans
+employ-easy/.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+employ-easy/nbproject/private/
+employ-easy/nbbuild/
+employ-easy/dist/
+employ-easy/nbdist/
+employ-easy/.nb-gradle/
+employ-easy/build/
+!employ-easy/**/src/main/**/build/
+!employ-easy/**/src/test/**/build/
+
+### VS Code ###
+employ-easy/.vscode/
+employ-easy/HELP.md
+!employ-easy/.mvn/wrapper/maven-wrapper.jar
+!employ-easy/**/src/main/**/target/
+!employ-easy/**/src/test/**/target/
+
+### VS Code ###
+.vscode/
+
+# Prettier for java files
+node_modules/*
+
+#Prop files
+employ-easy/src/main/resources/application.properties
+
 # Compiled class file
 *.class
 
@@ -8,7 +60,10 @@
 *.ctxt
 
 # Mobile Tools for Java (J2ME)
-.mtj.tmp/
+employ-easy/HELP.md
+!employ-easy/.mvn/wrapper/maven-wrapper.jar
+!employ-easy/**/src/main/**/target/
+!employ-easy/**/src/test/**/target/
 
 # Package Files #
 *.jar
@@ -20,7 +75,7 @@
 *.rar
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+employ-easy/hs_err_pid*
 
 # compiled output
 employee-manager-app/dist
@@ -33,7 +88,7 @@ employee-manager-app/bazel-out
 employee-manager-app/node_modules
 
 # profiling files
-chrome-profiler-events*.json
+employee-manager-app/chrome-profiler-events*.json
 
 # IDEs and editors
 employee-manager-app/.idea
@@ -57,9 +112,9 @@ employee-manager-app/.sass-cache
 employee-manager-app/connect.lock
 employee-manager-app/coverage
 employee-manager-app/libpeerconnection.log
-npm-debug.log
-yarn-error.log
-testem.log
+employee-manager-app/npm-debug.log
+employee-manager-app/yarn-error.log
+employee-manager-app/testem.log
 employee-manager-app/typings
 
 # System Files

@@ -2,92 +2,97 @@ package se.yrgo.employee.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.yrgo.employee.dto.EmployeeDTO;
 import se.yrgo.employee.entities.Employee;
+import se.yrgo.employee.exceptions.ConflictException;
+import se.yrgo.employee.exceptions.ObjectNotFoundException;
 import se.yrgo.employee.repositories.EmployeeRepository;
-import se.yrgo.employee.services.exceptions.ObjectNotFoundException;
 
 @Service
 @Transactional
 public class EmployeeService {
 
-	private EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
 
-	@Autowired
-	public EmployeeService(EmployeeRepository employeeRepository) {
-		this.employeeRepository = employeeRepository;
-	}
+    @Autowired
+    public EmployeeService(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
 
-	public List<Employee> findAll() {
-		return employeeRepository.findAll();
-	}
+    public List<EmployeeDTO> findAll() {
+        return employeeRepository.findAll().stream().map(EmployeeDTO::new).collect(Collectors.toList());
+    }
 
-	public void addEmployee(Employee employee) {
-		employeeRepository.save(employee);
-	}
+    private EmployeeDTO dto(Employee employee){
+        return new EmployeeDTO(employee);
+    }
 
-	public Employee findById(Long id) {
-		Optional<Employee> object = employeeRepository.findById(id);
-		return object.orElseThrow(() -> new ObjectNotFoundException("Object not found."));
-	}
+    public EmployeeDTO addEmployee(EmployeeDTO employeeDTO) {
+        final String newEmail = employeeDTO.getEmail();
+        if(employeeRepository.findByEmail(newEmail).size() > 0){
+            throw new ConflictException("Employee with unique email " + newEmail + " was already added.");
+        }
+        String prefix = employeeDTO.generateName();
+        while (true) {
+            String userId = prefix + Employee.generateSuffix();
+            Employee existing = employeeRepository.findEmployeeByUserId(userId);
+            if (existing == null) {
+                Employee employee = new Employee(employeeDTO, userId);
+                employeeRepository.save(employee);
+                return dto(employee);
+            }
+        }
+    }
 
-	public List<Employee> findByJobTitle(String jobTitle) {
-		List<Employee> employees = employeeRepository.findByJobTitle(jobTitle);
-		return employees;
-	}
+    private Employee getEmployeeByUserId(String userId) {
+        Employee entity = employeeRepository.findEmployeeByUserId(userId.toLowerCase());
+        if(entity == null){
+            throw new ObjectNotFoundException("User was not found");
+        }
+        return entity;
+    }
 
-	public Employee updateEmployee(Employee employee) {
-		try {
-		Employee updatedEmployee = employeeRepository.findEmployeeByUserId(employee.getUserId());
-		updatedEmployee.setId(updatedEmployee.getId());
-		updatedEmployee.setUserId(employee.getUserId());
-		updatedEmployee.setCity(employee.getCity());
-		updatedEmployee.setEmail(employee.getEmail());
-		updatedEmployee.setEndDate(employee.getEndDate());
-		updatedEmployee.setfirstName(employee.getfirstName());
-		updatedEmployee.setJobTitle(employee.getJobTitle());
-		updatedEmployee.setLastName(employee.getLastName());
-		updatedEmployee.setPersonalNumber(employee.getPersonalNumber());
-		updatedEmployee.setPhoneNumber(employee.getPhoneNumber());
-		updatedEmployee.setParentCompany(employee.getParentCompany());
-		updatedEmployee.setStartDate(employee.getStartDate());
-		updatedEmployee.setStreet(employee.getStreet());
-		updatedEmployee.setZip(employee.getZip());
-		return employeeRepository.save(updatedEmployee);
-		} catch (EmptyResultDataAccessException e) {
-			throw new ObjectNotFoundException("Employee not found");
-		}
-	}
+    public EmployeeDTO getByUserId(String userId) {
+        return dto(getEmployeeByUserId(userId));
+    }
 
-	public void deleteEmployee(String userId) {
-		try {
-			Employee employee = employeeRepository.findEmployeeByUserId(userId);
-			employeeRepository.delete(employee);
-		} catch (EmptyResultDataAccessException e) {
-			throw new ObjectNotFoundException("Object not found");
-		}
-	}
+    public List<EmployeeDTO> findByJobTitle(String jobTitle) {
+        return employeeRepository
+                .findByJobTitle(jobTitle.toLowerCase())
+                .stream()
+                .map(EmployeeDTO::new)
+                .collect(Collectors.collectingAndThen(Collectors.toList(), Optional::of))
+                .filter(l -> !l.isEmpty())
+                .orElseThrow(() -> new ObjectNotFoundException("No user with job title " + jobTitle + " was found"));
+    }
 
-	public Employee findByEmail(String email) {
-		Employee entity = employeeRepository.findByMail(email);
-		return entity;
-	}
+    public EmployeeDTO updateEmployee(EmployeeDTO employeeDTO) {
+        Employee emp = getEmployeeByUserId(employeeDTO.getUserId());
+        Employee updatedEmployee = new Employee(employeeDTO, emp.getId());
+        Employee employee = employeeRepository.save(updatedEmployee);
+        return dto(employee);
+    }
 
-	public Employee fromDTO(EmployeeDTO dto) {
-		return new Employee(dto.getUserId(), dto.getFirstName(), dto.getLastName(), dto.getPersonalNumber(),
-				dto.getEmail(), dto.getPhoneNumber(), dto.getStreet(), dto.getZip(), dto.getCity(), dto.getJobTitle(),
-				dto.getParentCompany(), dto.getStartDate(), dto.getEndDate());
-		// , dto.getImageURL()
-	}
+    public void deleteEmployee(String userId) {
+        Employee employee = employeeRepository.findEmployeeByUserId(userId.toLowerCase());
+        if(employee == null){
+            throw new ObjectNotFoundException("User to be deleted was not found");
+        }
+        employeeRepository.delete(employee);
+    }
 
-	public Employee generateUserId(EmployeeDTO dto) {
-		return new Employee(dto.getFirstName(), dto.getLastName(), dto.getPersonalNumber(), dto.getEmail(),
-				dto.getPhoneNumber(), dto.getStreet(), dto.getZip(), dto.getCity(), dto.getJobTitle(),
-				dto.getParentCompany(), dto.getStartDate(), dto.getEndDate(), null, null);
-		// , dto.getImageURL()
-	}
+    public EmployeeDTO findByEmail(String email) {
+        var getEmployeeByEmail = employeeRepository.findByEmail(email.toLowerCase());
+        var size = getEmployeeByEmail.size();
+        if(size < 1){
+            throw new ObjectNotFoundException("No user with email " + email + " was found");
+        } else if(size > 1){
+            throw new ConflictException("Several instances with email " + email + " was found");
+        }
+        return dto(getEmployeeByEmail.get(0));
+    }
 }

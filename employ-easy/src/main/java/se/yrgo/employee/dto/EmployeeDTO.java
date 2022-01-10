@@ -2,155 +2,212 @@ package se.yrgo.employee.dto;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-
 import se.yrgo.employee.entities.Employee;
+import se.yrgo.employee.entities.enums.EmployeeStatus;
+import se.yrgo.employee.entities.enums.SystemStatus;
 
 public class EmployeeDTO implements Serializable {
-	private static final long serialVersionUID = 1L;
-	// Mandatory fields
-	private String userId;
-	private Long id;
-	private String employeeId;
-	private String firstName;
-	private String lastName;
-	private String personalNumber;
-	private String email;
-	private String phoneNumber;
-	private String street;
-	private String zip;
-	private String city;
-	private String jobTitle;
-	private LocalDate startDate;
-	// Optional fields
-	private String parentCompany;
-	private LocalDate endDate;
-	// private String imageURL;
 
-	public EmployeeDTO(Employee object) {
-		userId = object.getUserId();
-		firstName = object.getfirstName();
-		lastName = object.getLastName();
-		personalNumber = object.getPersonalNumber();
-		email = object.getEmail();
-		phoneNumber = object.getPhoneNumber();
-		street = object.getStreet();
-		zip = object.getZip();
-		city = object.getCity();
-		jobTitle = object.getJobTitle();
-		parentCompany = object.getParentCompany();
-		startDate = object.getStartDate();
-		endDate = object.getEndDate();
-		// imageURL = object.getImageURL();
-	}
+    private static final long serialVersionUID = 1L;
+    // Mandatory fields
+    private String userId;
+    private String firstName;
+    private String lastName;
+    private String personalNumber;
+    private String email;
+    private String phoneNumber;
+    private String street;
+    private String zip;
+    private String city;
+    private String jobTitle;
+    private LocalDate startDate;
+    // Optional fields
+    private String parentCompany;
+    private LocalDate endDate;
+    private EmployeeStatus employeeStatus;
+    private SystemStatus systemStatus;
 
-	public EmployeeDTO(){}
+    // private String imageURL;
 
-	public String getUserId() {
-		return userId;
-	}
+    public EmployeeStatus getEmployeeStatus() {
+        return employeeStatus;
+    }
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+    public void setEmployeeStatus(EmployeeStatus employeeStatus) {
+        this.employeeStatus = employeeStatus;
+    }
 
-	public String getFirstName() {
-		return firstName;
-	}
+    public SystemStatus getSystemStatus() {
+        return systemStatus;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public void setSystemStatus(SystemStatus systemStatus) {
+        this.systemStatus = systemStatus;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    // , String imageURL
+    public EmployeeDTO(
+        String firstName,
+        String lastName,
+        String personalNumber,
+        String email,
+        String phoneNumber,
+        String street,
+        String zip,
+        String city,
+        String jobTitle,
+        String parentCompany,
+        LocalDate startDate,
+        LocalDate endDate,
+        EmployeeStatus employeeStatus,
+        SystemStatus systemStatus
+    ) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.personalNumber = personalNumber;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.street = street;
+        this.zip = zip;
+        this.city = city;
+        this.jobTitle = jobTitle;
+        this.parentCompany = parentCompany;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        // this.imageURL = imageURL;
+        setEmployeeStatus(employeeStatus);
+        setSystemStatus(systemStatus);
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public EmployeeDTO(Employee employee) {
+        this.userId = employee.getUserId();
+        this.firstName = employee.getFirstName();
+        this.lastName = employee.getLastName();
+        this.personalNumber = employee.getPersonalNumber();
+        this.email = employee.getEmail();
+        this.phoneNumber = employee.getPhoneNumber();
+        this.street = employee.getStreet();
+        this.zip = employee.getZip();
+        this.city = employee.getCity();
+        this.jobTitle = employee.getJobTitle();
+        this.parentCompany = employee.getParentCompany();
+        this.startDate = employee.getStartDate();
+        this.endDate = employee.getEndDate();
+        // this.imageURL = imageURL;
+        setEmployeeStatus(employee.getEmployeeStatus());
+        setSystemStatus(employee.getSystemStatus());
+    }
 
-	public String getPersonalNumber() {
-		return personalNumber;
-	}
+    public String generateName() {
+        String sb = firstName.substring(0, 3) + lastName.substring(0, 3);
+        return sb.toLowerCase();
+    }
 
-	public void setPersonalNumber(String personalNumber) {
-		this.personalNumber = personalNumber;
-	}
+    public String getUserId() {
+        return userId;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
-	public String getStreet() {
-		return street;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public void setStreet(String street) {
-		this.street = street;
-	}
+    public String getPersonalNumber() {
+        return personalNumber;
+    }
 
-	public String getZip() {
-		return zip;
-	}
+    public void setPersonalNumber(String personalNumber) {
+        this.personalNumber = personalNumber;
+    }
 
-	public void setZip(String zip) {
-		this.zip = zip;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public String getCity() {
-		return city;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void setCity(String city) {
-		this.city = city;
-	}
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
-	public String getJobTitle() {
-		return jobTitle;
-	}
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
-	public void setJobTitle(String jobTitle) {
-		this.jobTitle = jobTitle;
-	}
+    public String getStreet() {
+        return street;
+    }
 
-	public String getParentCompany() {
-		return parentCompany;
-	}
+    public void setStreet(String street) {
+        this.street = street;
+    }
 
-	public void setParentCompany(String parentCompany) {
-		this.parentCompany = parentCompany;
-	}
+    public String getZip() {
+        return zip;
+    }
 
-	public LocalDate getStartDate() {
-		return startDate;
-	}
+    public void setZip(String zip) {
+        this.zip = zip;
+    }
 
-	public void setStartDate(LocalDate startDate) {
-		this.startDate = startDate;
-	}
+    public String getCity() {
+        return city;
+    }
 
-	public LocalDate getEndDate() {
-		return endDate;
-	}
+    public void setCity(String city) {
+        this.city = city;
+    }
 
-	public void setEndDate(LocalDate endDate) {
-		this.endDate = endDate;
-	}
+    public String getJobTitle() {
+        return jobTitle;
+    }
 
-	/*
-	 * public String getImageURL() { return imageURL; } public void
-	 * setImageURL(String imageURL) { this.imageURL = imageURL; }
-	 */
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+
+    public String getParentCompany() {
+        return parentCompany;
+    }
+
+    public void setParentCompany(String parentCompany) {
+        this.parentCompany = parentCompany;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+    /*
+     * public String getImageURL() { return imageURL; } public void
+     * setImageURL(String imageURL) { this.imageURL = imageURL; }
+     */
 }
