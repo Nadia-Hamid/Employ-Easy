@@ -23,4 +23,11 @@ public class ResourceExceptionHandler {
         StandardError err = new StandardError(status.value(), "Conflict", e.getMessage());
         return ResponseEntity.status(status).body(err);
     }
+
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<StandardError> nullPointer(NullPointerException e) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError err = new StandardError(status.value(), "Null Pointer", e.getMessage());
+        return ResponseEntity.status(status).body(err);
+    }
 }

@@ -94,6 +94,8 @@ public class EmployeeController {
                     description = "Successfully registered the employee",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = EmployeeDTO.class))),
+            @ApiResponse(responseCode = "400",
+                    description = "Resource with unique email cannot have value null", content = @Content),
             @ApiResponse(responseCode = "401",
                     description = "Authorization required to register the employee", content = @Content),
             @ApiResponse(responseCode = "403",

@@ -32,15 +32,9 @@ public class EmployeeService {
     }
 
     public EmployeeDTO addEmployee(EmployeeDTO employeeDTO) {
-        String newEmail;
-        try{
-            newEmail = employeeDTO.getEmail();
-        } catch(NullPointerException ex) {
-            //for throwing ConflictException below instead
-            newEmail = null;
-        }
-        if(newEmail == null || employeeRepository.findByEmail(newEmail).size() > 0){
-            throw new ConflictException("Employee with unique email " + newEmail + " was already added or null.");
+        String newEmail = employeeDTO.getEmail();
+        if(employeeRepository.findByEmail(newEmail).size() > 0){
+            throw new ConflictException("Employee with unique email " + newEmail + " was already added.");
         }
         String prefix = employeeDTO.generateName();
         String userId = null;
@@ -56,7 +50,7 @@ public class EmployeeService {
         return dto(employee);
     }
 
-    private Employee getEmployeeByUserId(String userId) {
+    Employee getEmployeeByUserId(String userId) {
         Employee entity = employeeRepository.findEmployeeByUserId(userId.toLowerCase());
         if(entity == null){
             throw new ObjectNotFoundException("User was not found");
@@ -76,16 +70,13 @@ public class EmployeeService {
     }
 
     public void deleteEmployee(String userId) {
-        Employee employee = employeeRepository.findEmployeeByUserId(userId.toLowerCase());
-        if(employee == null){
-            throw new ObjectNotFoundException("User to be deleted was not found");
-        }
+        Employee employee = getEmployeeByUserId(userId);
         employeeRepository.delete(employee);
     }
 
     public EmployeeDTO findByEmail(String email) {
         if(email == null) {
-            throw new ConflictException("Null email value not allowed!");
+            throw new NullPointerException("Null email value not allowed!");
         }
         String lowerCaseEmail = email.toLowerCase();
         var getEmployeeByEmail = employeeRepository.findByEmail(lowerCaseEmail);

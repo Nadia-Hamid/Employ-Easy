@@ -50,7 +50,7 @@ public class EmployeeDTO implements Serializable {
         this.firstName = firstName;
         this.lastName = lastName;
         this.personalNumber = personalNumber;
-        this.email = email;
+        setEmail(email);
         this.phoneNumber = phoneNumber;
         this.street = street;
         this.zip = zip;
@@ -139,6 +139,9 @@ public class EmployeeDTO implements Serializable {
     }
 
     public void setEmail(String email) {
+        if(email == null){
+            throw new NullPointerException("Null email value not allowed!");
+        }
         this.email = email;
     }
 
