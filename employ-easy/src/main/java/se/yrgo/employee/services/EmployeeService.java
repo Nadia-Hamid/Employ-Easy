@@ -32,20 +32,28 @@ public class EmployeeService {
     }
 
     public EmployeeDTO addEmployee(EmployeeDTO employeeDTO) {
-        final String newEmail = employeeDTO.getEmail();
+        String newEmail;
+        try{
+            newEmail = employeeDTO.getEmail();
+        } catch(NullPointerException ex) {
+            //for throwing ConflictException below instead
+            newEmail = null;
+        }
         if(newEmail == null || employeeRepository.findByEmail(newEmail).size() > 0){
             throw new ConflictException("Employee with unique email " + newEmail + " was already added or null.");
         }
         String prefix = employeeDTO.generateName();
-        while (true) {
-            String userId = prefix + Employee.generateSuffix();
-            Employee existing = employeeRepository.findEmployeeByUserId(userId);
-            if (existing == null) {
-                Employee employee = new Employee(employeeDTO, userId);
-                employeeRepository.save(employee);
-                return dto(employee);
-            }
-        }
+        String userId = null;
+        Employee existing = null;
+        do {
+            StringBuilder sb = new StringBuilder(prefix);
+            sb.append(Employee.generateSuffix());
+            userId = sb.toString();
+            existing = employeeRepository.findEmployeeByUserId(userId);
+        } while(existing != null);
+        Employee employee = new Employee(employeeDTO, userId);
+        employeeRepository.save(employee);
+        return dto(employee);
     }
 
     private Employee getEmployeeByUserId(String userId) {
@@ -58,16 +66,6 @@ public class EmployeeService {
 
     public EmployeeDTO getByUserId(String userId) {
         return dto(getEmployeeByUserId(userId));
-    }
-
-    public List<EmployeeDTO> findByJobTitle(String jobTitle) {
-        return employeeRepository
-                .findByJobTitle(jobTitle.toLowerCase())
-                .stream()
-                .map(EmployeeDTO::new)
-                .collect(Collectors.collectingAndThen(Collectors.toList(), Optional::of))
-                .filter(l -> !l.isEmpty())
-                .orElseThrow(() -> new ObjectNotFoundException("No user with job title " + jobTitle + " was found"));
     }
 
     public EmployeeDTO updateEmployee(EmployeeDTO employeeDTO) {
@@ -89,13 +87,24 @@ public class EmployeeService {
         if(email == null) {
             throw new ConflictException("Null email value not allowed!");
         }
-        var getEmployeeByEmail = employeeRepository.findByEmail(email.toLowerCase());
+        String lowerCaseEmail = email.toLowerCase();
+        var getEmployeeByEmail = employeeRepository.findByEmail(lowerCaseEmail);
         var size = getEmployeeByEmail.size();
         if(size < 1){
-            throw new ObjectNotFoundException("No user with email " + email + " was found");
+            throw new ObjectNotFoundException("No user with email " + lowerCaseEmail + " was found");
         } else if(size > 1){
-            throw new ConflictException("Several instances with email " + email + " was found");
+            throw new ConflictException("Several instances with email " + lowerCaseEmail + " was found");
         }
         return dto(getEmployeeByEmail.get(0));
+    }
+
+    public List<EmployeeDTO> findByJobTitle(String jobTitle) {
+        return employeeRepository
+                .findByJobTitle(jobTitle.toLowerCase())
+                .stream()
+                .map(EmployeeDTO::new)
+                .collect(Collectors.collectingAndThen(Collectors.toList(), Optional::of))
+                .filter(l -> !l.isEmpty())
+                .orElseThrow(() -> new ObjectNotFoundException("No user with job title " + jobTitle + " was found"));
     }
 }

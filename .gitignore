@@ -1,3 +1,6 @@
+#Temp ignore local profile image folder
+image/
+
 #Marius files
 .metadata/
 id_publickey

@@ -57,13 +57,13 @@ public class Employee {
         this.firstName = firstName;
         this.lastName = lastName;
         this.personalNumber = personalNumber;
-        this.email = email.toLowerCase();
+        this.email = email == null ? null: email.toLowerCase();
         this.phoneNumber = phoneNumber;
         this.street = street;
         this.zip = zip;
         this.city = city;
-        this.jobTitle = jobTitle.toLowerCase();
-        this.parentCompany = parentCompany.toLowerCase();
+        this.jobTitle = jobTitle == null ? null: jobTitle.toLowerCase();
+        this.parentCompany = parentCompany == null ? null: parentCompany.toLowerCase();
         this.startDate = startDate;
         this.endDate = endDate;
         setEmployeeStatus(employeeStatus);
@@ -149,8 +149,7 @@ public class Employee {
         if(id < 0) {
             this.userId = generateUserId(firstName, lastName);
         } else {
-            this.userId = firstName.substring(0, 3) + lastName.substring(0, 3) + id;
-            this.userId.toLowerCase();
+            this.userId = firstName.substring(0, 3).toLowerCase() + lastName.substring(0, 3).toLowerCase() + id;
             this.id = id;
         }
     }
