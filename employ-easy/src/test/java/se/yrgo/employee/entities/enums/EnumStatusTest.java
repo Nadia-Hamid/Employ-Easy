@@ -1,10 +1,9 @@
-package se.yrgo.employee.repositories;
-
-import static org.junit.jupiter.api.Assertions.*;
+package se.yrgo.employee.entities.enums;
 
 import org.junit.jupiter.api.Test;
-import se.yrgo.employee.entities.enums.EmployeeStatus;
-import se.yrgo.employee.entities.enums.SystemStatus;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class EnumStatusTest {
 

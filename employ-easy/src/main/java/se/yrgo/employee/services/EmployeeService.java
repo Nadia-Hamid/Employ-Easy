@@ -37,12 +37,10 @@ public class EmployeeService {
             throw new ConflictException("Employee with unique email " + newEmail + " was already added.");
         }
         String prefix = employeeDTO.generateName();
-        String userId = null;
-        Employee existing = null;
+        String userId;
+        Employee existing;
         do {
-            StringBuilder sb = new StringBuilder(prefix);
-            sb.append(Employee.generateSuffix());
-            userId = sb.toString();
+            userId = prefix + Employee.generateSuffix();
             existing = employeeRepository.findEmployeeByUserId(userId);
         } while(existing != null);
         Employee employee = new Employee(employeeDTO, userId);

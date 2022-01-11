@@ -82,6 +82,12 @@ class EmployeeServiceTest {
         }
 
         @Test
+        void addEmployeeUsingConflictingEmail() {
+            when(mockedEmployeeRepository.findByEmail("marius@gmail.com")).thenReturn(List.of(emp));
+            assertThrows(ConflictException.class, () -> employeeServiceTest.addEmployee(new EmployeeDTO(emp)));
+        }
+
+        @Test
         void addEmployeeUsingCorrectEmail() {
             EmployeeDTO result = employeeServiceTest.addEmployee(new EmployeeDTO(emp));
             verify(mockedEmployeeRepository, times(1)).save(any(Employee.class));

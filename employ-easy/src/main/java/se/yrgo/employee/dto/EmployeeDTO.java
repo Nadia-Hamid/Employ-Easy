@@ -142,7 +142,7 @@ public class EmployeeDTO implements Serializable {
         if(email == null){
             throw new NullPointerException("Null email value not allowed!");
         }
-        this.email = email;
+        this.email = email.toLowerCase();
     }
 
     public String getPhoneNumber() {
