@@ -118,7 +118,11 @@ class EmployeeControllerTest {
 	@Test
 	void registerEmployeeTest() throws Exception {
 
-		EmployeeDTO dto = new EmployeeDTO(emp);
+		Employee newEmp = new Employee("Suzanna", "Jones", "900519-XXXX", "sus@gmail.com", "87654321", "Norra Vagen",
+				"44556", "Goteborg", "developer", "saab", LocalDate.of(2005, 1, 1), null, EmployeeStatus.VACATION,
+				SystemStatus.SYSTEM_ADMIN);
+		
+		EmployeeDTO dto = new EmployeeDTO(newEmp);
 
 		when(service.addEmployee(Mockito.any(EmployeeDTO.class))).thenReturn(dto);
 
@@ -126,14 +130,17 @@ class EmployeeControllerTest {
 				.perform(MockMvcRequestBuilders
 						.post(URL)
 						.with(user("admin").roles("ADMIN"))
-						.content(objectMapper.writeValueAsString(emp))
+						.content(objectMapper.writeValueAsString(newEmp))
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status()
-						.is(HttpStatus.OK.value())).andReturn();
+						.is(HttpStatus.OK.value()))
+				.andReturn();
 
 		String actualResponseJson = mvcResult.getResponse().getContentAsString();
 		String expectedresultJson = objectMapper.writeValueAsString(dto);
 		assertEquals(expectedresultJson, actualResponseJson);
+		System.out.println(actualResponseJson);
+		System.out.println(expectedresultJson);
 	}
 
 	@Test
@@ -216,5 +223,25 @@ class EmployeeControllerTest {
 		String expectedresultJson = objectMapper.writeValueAsString(dtoList);
 		assertEquals(expectedresultJson, actualResponseJson);
 	}
-	
+
+	@Test
+	void findByUserIdTest() throws Exception {
+		
+		EmployeeDTO dto = new EmployeeDTO(emp);
+				
+		when(service.getByUserId(Mockito.any(String.class))).thenReturn(dto);
+		
+		MvcResult mvcResult = this.mockMvc
+				.perform(MockMvcRequestBuilders
+						.get(URL + "/" + emp.getUserId())
+						.with(user("admin").roles("ADMIN"))
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status()
+						.is(HttpStatus.OK.value())).andReturn();
+		
+		
+		String actualResponseJson = mvcResult.getResponse().getContentAsString();
+		String expectedresultJson = objectMapper.writeValueAsString(dto);
+		assertEquals(expectedresultJson, actualResponseJson);
+	}
 }

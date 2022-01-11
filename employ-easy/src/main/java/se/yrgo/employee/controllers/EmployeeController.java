@@ -49,7 +49,7 @@ public class EmployeeController {
 			@ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden", content = @Content),
 			@ApiResponse(responseCode = "404", description = "The resource you were trying to reach is not found", content = @Content) })
 	@GetMapping(value = "/{userId}")
-	public EmployeeDTO getByUserId(@PathVariable String userId) {
+	public EmployeeDTO findByUserId(@PathVariable String userId) {
 		return employeeService.getByUserId(userId);
 	}
 
