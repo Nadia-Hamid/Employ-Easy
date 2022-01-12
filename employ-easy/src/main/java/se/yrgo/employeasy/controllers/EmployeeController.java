@@ -37,7 +37,7 @@ public class EmployeeController {
 			@ApiResponse(responseCode = "403",
 					description = "Accessing the resource you were trying to reach is forbidden",
 					content = @Content), })
-	@GetMapping
+	@RequestMapping(value = "", method = RequestMethod.GET)
 	public List<EmployeeDTO> getAllEmployees() {
 		return employeeService.findAll();
 	}
@@ -58,7 +58,7 @@ public class EmployeeController {
 					description = "Accessing the resource you were trying to reach is forbidden", content = @Content),
 			@ApiResponse(responseCode = "404", description = "The resource you were trying to reach is not found",
 					content = @Content) })
-	@GetMapping(value = "/{userId}")
+	@RequestMapping(value = "/{userId}", method = RequestMethod.GET)
 	public EmployeeDTO findByUserId(@PathVariable String userId) {
 		return employeeService.getByUserId(userId);
 	}

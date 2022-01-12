@@ -1,26 +1,26 @@
 package se.yrgo.employeasy.controllers;
 
-import java.util.Collections;
-import java.util.Map;
-import javax.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
+import java.util.Collections;
+import java.util.Map;
+
 @RestController("loginController")
 public class LoginController {
 
-    @GetMapping("/v1/greeting")
+    @RequestMapping(value = "/v1/greeting", method = RequestMethod.GET)
     public String greeting(@AuthenticationPrincipal(expression = "username") String username) {
         return "Hello, " + username + "!";
     }
 
-    @RequestMapping("/v1/token")
+    @RequestMapping(value = "/v1/token", method = RequestMethod.GET)
     public Map<String, String> token(HttpSession session) {
         return Collections.singletonMap("token", session.getId());
     }
