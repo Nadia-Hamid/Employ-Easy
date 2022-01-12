@@ -27,14 +27,37 @@ public class LoginController {
         this.loginService = loginService;
     }
 
+    /**
+     * @return Get user from its user details.
+     */
+    @Operation(summary = "Get user details.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the user",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UserDTO.class))),
+            @ApiResponse(responseCode = "401", description = "Authorization required to fetch the user",
+                    content = @Content),
+            @ApiResponse(responseCode = "403",
+                    description = "Accessing the resource you were trying to reach is forbidden", content = @Content) })
     @RequestMapping(value = "/v1/greeting", method = RequestMethod.GET)
-    public String greeting(@AuthenticationPrincipal(expression = "username") String username) {
-        return "Hello, " + username + "!";
+    public String welcome(@AuthenticationPrincipal(expression = "username") String username) {
+        return loginService.greet(username);
     }
 
+    /**
+     * @return Get user from its user details.
+     */
+    @Operation(summary = "Get user details.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the token",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "401", description = "Authorization required to fetch the token",
+                    content = @Content),
+            @ApiResponse(responseCode = "403",
+                    description = "Accessing the resource you were trying to reach is forbidden", content = @Content) })
     @RequestMapping(value = "/v1/token", method = RequestMethod.GET)
-    public Map<String, String> token(HttpSession session) {
-        return Collections.singletonMap("token", session.getId());
+    public Map<String, String> getCurrentToken(HttpSession session) {
+        return loginService.getToken(session);
     }
 
     /**
@@ -50,7 +73,7 @@ public class LoginController {
             @ApiResponse(responseCode = "403",
                     description = "Accessing the resource you were trying to reach is forbidden", content = @Content) })
     @RequestMapping(value = "/v1/auth", method = RequestMethod.GET)
-    public UserDTO getUserDetails() {
+    public UserDTO getCurrentLogin() {
         return loginService.getUser();
     }
 }
