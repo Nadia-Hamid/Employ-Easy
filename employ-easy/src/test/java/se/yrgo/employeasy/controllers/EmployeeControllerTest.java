@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -54,7 +55,7 @@ class EmployeeControllerTest {
 
 	private static final String URL = "/v1/employees/";
 
-	private final List<EmployeeDTO> dtos = new ArrayList<>();
+	private EmployeeDTO nadia;
 	
 	@BeforeEach
 	void setUp() {
@@ -67,20 +68,22 @@ class EmployeeControllerTest {
 				.setMessageConverters(mappingJackson2HttpMessageConverter)
 				.build();
 
-		EmployeeDTO dto = new EmployeeDTO("Nadia", "Hamid", "900519-XXXX", "Nadia@gmail.com", "87654321", "Norra Vagen",
+		nadia = new EmployeeDTO("Nadia", "Hamid", "900519-XXXX", "Nadia@gmail.com", "87654321", "Norra Vagen",
 				"44556", "Goteborg", "developer", "saab", LocalDate.of(2005, 1, 1), null, EmployeeStatus.VACATION,
 				SystemStatus.SYSTEM_ADMIN);
-		dto.setUserId("nadham4321");
-		dtos.add(dto);
-		dto = new EmployeeDTO( "Marius", "Marthinussen", "881005-XXXX", "marius@gmail.com", "90654321", "Sodra Vagen",
-				"44556", "Goteborg", "developer", "saab", LocalDate.of(2005, 1, 1), null, EmployeeStatus.ACTIVE,
-				SystemStatus.USER);
-		dto.setUserId("marmar1234");
-		dtos.add(dto);
+		nadia.setUserId("nadham4321");
 	}
 
 	@Test
 	void getAllEmployeesTest() throws Exception {
+		final List<EmployeeDTO> dtos = new ArrayList<>();
+		dtos.add(nadia);
+		EmployeeDTO marius = new EmployeeDTO( "Marius", "Marthinussen", "881005-XXXX", "marius@gmail.com", "90654321", "Sodra Vagen",
+				"44556", "Goteborg", "developer", "saab", LocalDate.of(2005, 1, 1), null, EmployeeStatus.ACTIVE,
+				SystemStatus.USER);
+		marius.setUserId("marmar1234");
+		dtos.add(marius);
+
 		when(service.findAll()).thenReturn(dtos);
 		MvcResult mvcResult = mockMvc
 			.perform(get(URL).with(user("admin").roles("ADMIN")))
@@ -94,24 +97,22 @@ class EmployeeControllerTest {
 
 	@Test
 	void registerEmployeeTest() throws Exception {
-		var dto = dtos.get(0);
-		when(service.addEmployee(Mockito.any(EmployeeDTO.class))).thenReturn(dto);
+		when(service.addEmployee(Mockito.any(EmployeeDTO.class))).thenReturn(nadia);
 		MvcResult mvcResult = this.mockMvc
 				.perform(MockMvcRequestBuilders.post(URL).with(user("admin").roles("ADMIN"))
-						.content(objectMapper.writeValueAsString(dto)).contentType(MediaType.APPLICATION_JSON))
+						.content(objectMapper.writeValueAsString(nadia)).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
 				.andReturn();
 
 		String actualResponseJson = mvcResult.getResponse().getContentAsString();
-		String expectedResultJson = objectMapper.writeValueAsString(dto);
+		String expectedResultJson = objectMapper.writeValueAsString(nadia);
 		assertEquals(expectedResultJson, actualResponseJson);
 	}
 
 	@Test
 	void deleteEmployeeTest() throws Exception {
-		var dto = dtos.get(0);
 		MvcResult mvcResult = mockMvc
-				.perform(delete(URL + "/" + dto.getUserId()).with(user("admin").roles("ADMIN")))
+				.perform(delete(URL + "/" + nadia.getUserId()).with(user("admin").roles("ADMIN")))
 				.andExpect(status().isOk())
 				.andReturn();
 
@@ -120,25 +121,25 @@ class EmployeeControllerTest {
 
 	@Test
 	void editEmployeeTest() throws Exception {
-		var dto = dtos.get(0);
 		final String email = "new@email.com";
-		dto.setEmail(email);
-		when(service.updateEmployee(Mockito.any(EmployeeDTO.class))).thenReturn(dto);
+		assertNotEquals(email, nadia.getEmail());
+
+		nadia.setEmail(email);
+		when(service.updateEmployee(Mockito.any(EmployeeDTO.class))).thenReturn(nadia);
 		MvcResult mvcResult = this.mockMvc
 				.perform(MockMvcRequestBuilders.put(URL).with(user("admin").roles("ADMIN"))
-						.content(objectMapper.writeValueAsString(dto)).contentType(MediaType.APPLICATION_JSON))
+						.content(objectMapper.writeValueAsString(nadia)).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
 				.andReturn();
 
 		String actualResponseJson = mvcResult.getResponse().getContentAsString();
-		String expectedResponseJson = objectMapper.writeValueAsString(dto);
+		String expectedResponseJson = objectMapper.writeValueAsString(nadia);
 		assertEquals(expectedResponseJson, actualResponseJson);
 	}
 
 	@Test
 	void findEqualEmailTest() throws Exception {
-		var dto = dtos.get(0);
-		when(service.findByEmail(Mockito.any(String.class))).thenReturn(dto);
+		when(service.findByEmail(Mockito.any(String.class))).thenReturn(nadia);
 		MvcResult mvcResult = this.mockMvc
 				.perform(MockMvcRequestBuilders.get(URL + "/email/nadia@gmail.com")
 						.with(user("admin").roles("ADMIN")).contentType(MediaType.APPLICATION_JSON))
@@ -146,12 +147,20 @@ class EmployeeControllerTest {
 				.andReturn();
 		
 		String actualResponseJson = mvcResult.getResponse().getContentAsString();
-		String expectedResponseJson = objectMapper.writeValueAsString(dto);
+		String expectedResponseJson = objectMapper.writeValueAsString(nadia);
 		assertEquals(expectedResponseJson, actualResponseJson);
 	}
 
 	@Test
 	void findByJobTitleTest() throws Exception {
+		final List<EmployeeDTO> dtos = new ArrayList<>();
+		dtos.add(nadia);
+		EmployeeDTO marius = new EmployeeDTO( "Marius", "Marthinussen", "881005-XXXX", "marius@gmail.com", "90654321", "Sodra Vagen",
+				"44556", "Goteborg", "developer", "saab", LocalDate.of(2005, 1, 1), null, EmployeeStatus.ACTIVE,
+				SystemStatus.USER);
+		marius.setUserId("marmar1234");
+		dtos.add(marius);
+
 		when(service.findByJobTitle(Mockito.any(String.class))).thenReturn(dtos);
 		MvcResult mvcResult = this.mockMvc
 				.perform(MockMvcRequestBuilders.get(URL + "/jobtitle/developer")
@@ -166,16 +175,15 @@ class EmployeeControllerTest {
 
 	@Test
 	void findByUserIdTest() throws Exception {
-		var dto = dtos.get(0);
-		when(service.getByUserId(Mockito.any(String.class))).thenReturn(dto);
+		when(service.getByUserId(Mockito.any(String.class))).thenReturn(nadia);
 		MvcResult mvcResult = this.mockMvc
-				.perform(MockMvcRequestBuilders.get(URL + "/" + dto.getUserId())
+				.perform(MockMvcRequestBuilders.get(URL + "/" + nadia.getUserId())
 						.with(user("admin").roles("ADMIN")).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
 				.andReturn();
 
 		String actualResponseJson = mvcResult.getResponse().getContentAsString();
-		String expectedResultJson = objectMapper.writeValueAsString(dto);
+		String expectedResultJson = objectMapper.writeValueAsString(nadia);
 		assertEquals(expectedResultJson, actualResponseJson);
 	}
 }
