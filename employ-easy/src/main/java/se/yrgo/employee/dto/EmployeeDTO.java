@@ -2,6 +2,8 @@ package se.yrgo.employee.dto;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Objects;
+
 import se.yrgo.employee.entities.Employee;
 import se.yrgo.employee.entities.enums.EmployeeStatus;
 import se.yrgo.employee.entities.enums.SystemStatus;
@@ -26,24 +28,7 @@ public class EmployeeDTO implements Serializable {
     private LocalDate endDate;
     private EmployeeStatus employeeStatus;
     private SystemStatus systemStatus;
-
     // private String imageURL;
-
-    public EmployeeStatus getEmployeeStatus() {
-        return employeeStatus;
-    }
-
-    public void setEmployeeStatus(EmployeeStatus employeeStatus) {
-        this.employeeStatus = employeeStatus;
-    }
-
-    public SystemStatus getSystemStatus() {
-        return systemStatus;
-    }
-
-    public void setSystemStatus(SystemStatus systemStatus) {
-        this.systemStatus = systemStatus;
-    }
 
     // , String imageURL
     public EmployeeDTO(
@@ -80,27 +65,41 @@ public class EmployeeDTO implements Serializable {
     }
 
     public EmployeeDTO(Employee employee) {
+        this(
+                employee.getFirstName(),
+                employee.getLastName(),
+                employee.getPersonalNumber(),
+                employee.getEmail(),
+                employee.getPhoneNumber(),
+                employee.getStreet(),
+                employee.getZip(),
+                employee.getCity(),
+                employee.getJobTitle(),
+                employee.getParentCompany(),
+                employee.getStartDate(),
+                employee.getEndDate(),
+                employee.getEmployeeStatus(),
+                employee.getSystemStatus()
+        );
         this.userId = employee.getUserId();
-        this.firstName = employee.getFirstName();
-        this.lastName = employee.getLastName();
-        this.personalNumber = employee.getPersonalNumber();
-        this.email = employee.getEmail();
-        this.phoneNumber = employee.getPhoneNumber();
-        this.street = employee.getStreet();
-        this.zip = employee.getZip();
-        this.city = employee.getCity();
-        this.jobTitle = employee.getJobTitle();
-        this.parentCompany = employee.getParentCompany();
-        this.startDate = employee.getStartDate();
-        this.endDate = employee.getEndDate();
-        // this.imageURL = imageURL;
-        setEmployeeStatus(employee.getEmployeeStatus());
-        setSystemStatus(employee.getSystemStatus());
     }
 
     public String generateName() {
         String sb = firstName.substring(0, 3) + lastName.substring(0, 3);
         return sb.toLowerCase();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EmployeeDTO that = (EmployeeDTO) o;
+        return Objects.equals(userId, that.userId) && email.equals(that.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, email);
     }
 
     public String getUserId() {
@@ -206,6 +205,23 @@ public class EmployeeDTO implements Serializable {
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
+
+    public EmployeeStatus getEmployeeStatus() {
+        return employeeStatus;
+    }
+
+    public void setEmployeeStatus(EmployeeStatus employeeStatus) {
+        this.employeeStatus = employeeStatus;
+    }
+
+    public SystemStatus getSystemStatus() {
+        return systemStatus;
+    }
+
+    public void setSystemStatus(SystemStatus systemStatus) {
+        this.systemStatus = systemStatus;
+    }
+
     /*
      * public String getImageURL() { return imageURL; } public void
      * setImageURL(String imageURL) { this.imageURL = imageURL; }

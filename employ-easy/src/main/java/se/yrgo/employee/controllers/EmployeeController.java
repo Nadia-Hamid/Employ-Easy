@@ -13,7 +13,7 @@ import se.yrgo.employee.services.EmployeeService;
 
 import java.util.List;
 
-@RestController
+@RestController("employeeController")
 @RequestMapping(value = "/v1/employees")
 public class EmployeeController {
 

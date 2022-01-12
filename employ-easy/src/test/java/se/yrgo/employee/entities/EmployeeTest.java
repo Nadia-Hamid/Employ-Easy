@@ -1,4 +1,4 @@
-package se.yrgo.employee.repositories;
+package se.yrgo.employee.entities;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +14,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class EmployeeTest {
 
     private EmployeeDTO dto;
+    private static final long ID = 5000;
+    private static final String USER_ID = "anabea5678";
 
     @BeforeEach
     void setup() {
@@ -37,9 +39,8 @@ class EmployeeTest {
 
     @Test
     void createEmployeeFromDTOAndUserId() {
-        final String userId = "anabea5678";
-        Employee created = new Employee(dto, userId);
-        assertEquals(userId, created.getUserId());
+        Employee created = new Employee(dto, USER_ID);
+        assertEquals(USER_ID, created.getUserId());
         assertEquals("Employee [id=null, userId=anabea5678, firstName=Ana, lastName=Beatriz, " +
                         "personalNumber=890519-XXXX, email=anna@gmail.com, phoneNumber=12345678, street=Södra Vägen, " +
                         "zip=44556, city=Göteborg, jobTitle=developer, parentCompany=volvo, startDate=2000-01-01, " +
@@ -49,8 +50,32 @@ class EmployeeTest {
 
     @Test
     void createEmployeeFromDTOAndId() {
-        final long id = 5000;
-        Employee created = new Employee(dto, id);
-        assertEquals(id, created.getId());
+        dto.setUserId(USER_ID); //avoid null pointer exc
+        Employee created = new Employee(dto, ID);
+        assertEquals(ID, created.getId());
+    }
+
+    @Test
+    void createEmployeeWhenStartingApplication() {
+        final String email = dto.getEmail();
+        Employee startUp = new Employee(
+                ID,
+                dto.getFirstName(),
+                dto.getLastName(),
+                dto.getPersonalNumber(),
+                email,
+                dto.getPhoneNumber(),
+                dto.getStreet(),
+                dto.getZip(),
+                dto.getCity(),
+                dto.getJobTitle(),
+                dto.getParentCompany(),
+                dto.getStartDate(),
+                dto.getEndDate(),
+                dto.getEmployeeStatus(),
+                dto.getSystemStatus()
+        );
+        assertEquals(ID, startUp.getId());
+        assertEquals(email, startUp.getEmail());
     }
 }

@@ -1,6 +1,7 @@
 package se.yrgo.employee.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
@@ -12,6 +13,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 import se.yrgo.employee.dto.EmployeeDTO;
 import se.yrgo.employee.entities.Employee;
 import se.yrgo.employee.entities.enums.EmployeeStatus;
@@ -32,6 +35,7 @@ class EmployeeServiceTest {
         employeeServiceTest = new EmployeeService(mockedEmployeeRepository);
         List<Employee> employeeList = new ArrayList<>();
         Employee emp = new Employee(
+                -1L,
             "Marius",
             "Marthinussen",
             "890519-XXXX",
@@ -50,6 +54,7 @@ class EmployeeServiceTest {
         employeeList.add(emp);
         emp =
             new Employee(
+                    -1L,
                 "Nadia",
                 "Hamid",
                 "900519-XXXX",
@@ -72,7 +77,7 @@ class EmployeeServiceTest {
 
     @Test
     void addEmployee() {
-        /*EmployeeDTO dto = new EmployeeDTO(
+        EmployeeDTO dto = new EmployeeDTO(
             "Ana",
             "Beatriz",
             "890519-XXXX",
@@ -88,9 +93,10 @@ class EmployeeServiceTest {
             EmployeeStatus.VACATION,
             SystemStatus.SYSTEM_ADMIN
         );
-        Employee employee = employeeServiceTest.addEmployee(dto);
-        verify(mockedEmployeeRepository, times(1)).save(employee);*/
-        //TODO
+        EmployeeDTO result = employeeServiceTest.addEmployee(dto);
+        verify(mockedEmployeeRepository, times(1)).save(any(Employee.class));
+        assertEquals(dto.getEmail(), result.getEmail());
+        assertNotEquals(dto.getUserId(), result.getUserId());
     }
 
     @Test
@@ -107,6 +113,7 @@ class EmployeeServiceTest {
     @Test
     void deleteEmployee() {
         Employee emp = new Employee(
+                -1L,
             "Marius",
             "Marthinussen",
             "890519-XXXX",
