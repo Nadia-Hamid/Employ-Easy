@@ -27,7 +27,7 @@ class LoginSecurityTest {
     private MockMvc mockMvc;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)
                 .apply(springSecurity())
@@ -49,9 +49,19 @@ class LoginSecurityTest {
     }
 
     @Test
-    public void greetingReturnsHelloAndUsername() throws Exception {
+    void greetingReturnsHelloAndUsername() throws Exception {
         this.mockMvc.perform(get("/v1/greeting").with(user("marten").roles("EMPLOYEE")))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Hello, marten!"));
     }
+
+    @Test
+    void getLocalSessionToken() throws Exception {
+        this.mockMvc.perform(get("/v1/token").with(user("admin").roles("ADMIN")))
+                .andExpect(status().isOk())
+                .andExpect(content().string("{\"token\":\"1\"}"));
+    }
+
+
+
 }
