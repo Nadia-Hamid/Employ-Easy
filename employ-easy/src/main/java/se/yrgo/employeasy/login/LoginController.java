@@ -1,4 +1,4 @@
-package se.yrgo.employeasy.controllers;
+package se.yrgo.employeasy.login;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,10 +14,10 @@ import se.yrgo.employeasy.dto.UserDTO;
 import se.yrgo.employeasy.services.LoginService;
 
 import javax.servlet.http.HttpSession;
-import java.util.Collections;
 import java.util.Map;
 
 @RestController("loginController")
+@RequestMapping(value = "/v1/")
 public class LoginController {
 
     private final LoginService loginService;
@@ -39,7 +39,7 @@ public class LoginController {
                     content = @Content),
             @ApiResponse(responseCode = "403",
                     description = "Accessing the resource you were trying to reach is forbidden", content = @Content) })
-    @RequestMapping(value = "/v1/greeting", method = RequestMethod.GET)
+    @RequestMapping(value = "greeting", method = RequestMethod.GET)
     public String welcome(@AuthenticationPrincipal(expression = "username") String username) {
         return loginService.greet(username);
     }
@@ -55,7 +55,7 @@ public class LoginController {
                     content = @Content),
             @ApiResponse(responseCode = "403",
                     description = "Accessing the resource you were trying to reach is forbidden", content = @Content) })
-    @RequestMapping(value = "/v1/token", method = RequestMethod.GET)
+    @RequestMapping(value = "token", method = RequestMethod.GET)
     public Map<String, String> getCurrentToken(HttpSession session) {
         return loginService.getToken(session);
     }
@@ -72,7 +72,7 @@ public class LoginController {
                     content = @Content),
             @ApiResponse(responseCode = "403",
                     description = "Accessing the resource you were trying to reach is forbidden", content = @Content) })
-    @RequestMapping(value = "/v1/auth", method = RequestMethod.GET)
+    @RequestMapping(value = "auth", method = RequestMethod.GET)
     public UserDTO getCurrentLogin() {
         return loginService.getUser();
     }
