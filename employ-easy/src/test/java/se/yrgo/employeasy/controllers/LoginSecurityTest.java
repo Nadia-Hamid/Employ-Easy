@@ -73,9 +73,7 @@ class LoginSecurityTest {
         this.mockMvc.perform(get("/v1/auth").with(user("admin").roles("ADMIN")))
                 .andExpect(status().isOk())
                 .andExpect(content().string(
-                        "{\"password\":\"password\",\"username\":\"admin\"," +
-                                "\"authorities\":[{\"authority\":\"ROLE_ADMIN\"}],\"accountNonExpired\":true," +
-                                "\"accountNonLocked\":true,\"credentialsNonExpired\":true,\"enabled\":true}"
+                        "{\"username\":\"admin\",\"authorities\":[{\"authority\":\"ROLE_ADMIN\"}]}"
                 ));
     }
 

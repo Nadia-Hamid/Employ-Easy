@@ -12,7 +12,7 @@ import se.yrgo.employeasy.exceptions.ConflictException;
 import se.yrgo.employeasy.exceptions.ObjectNotFoundException;
 import se.yrgo.employeasy.repositories.EmployeeRepository;
 
-@Service
+@Service("employeeService")
 @Transactional
 public class EmployeeService {
 

@@ -1,12 +1,17 @@
 package se.yrgo.employeasy.controllers;
 
-import org.springframework.http.ResponseEntity;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import se.yrgo.employeasy.dto.UserDTO;
+import se.yrgo.employeasy.services.LoginService;
 
 import javax.servlet.http.HttpSession;
 import java.util.Collections;
@@ -14,6 +19,13 @@ import java.util.Map;
 
 @RestController("loginController")
 public class LoginController {
+
+    private final LoginService loginService;
+
+    @Autowired
+    public LoginController(LoginService loginService) {
+        this.loginService = loginService;
+    }
 
     @RequestMapping(value = "/v1/greeting", method = RequestMethod.GET)
     public String greeting(@AuthenticationPrincipal(expression = "username") String username) {
@@ -25,9 +37,20 @@ public class LoginController {
         return Collections.singletonMap("token", session.getId());
     }
 
+    /**
+     * @return Get user from its user details.
+     */
+    @Operation(summary = "Get user details.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the user",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UserDTO.class))),
+            @ApiResponse(responseCode = "401", description = "Authorization required to fetch the user",
+                    content = @Content),
+            @ApiResponse(responseCode = "403",
+                    description = "Accessing the resource you were trying to reach is forbidden", content = @Content) })
     @RequestMapping(value = "/v1/auth", method = RequestMethod.GET)
-    public ResponseEntity<UserDetails> authUser() {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return ResponseEntity.ok().body(userDetails);
+    public UserDTO getUserDetails() {
+        return loginService.getUser();
     }
 }
