@@ -33,7 +33,7 @@
                     <li class="list-group-item"><i class="fa fa-envelope float-right"></i>City: {{ employee?.city }}</li>
                     <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Personal Number: {{ employee?.personalNumber }}</li>
                     <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Start Date: {{ employee?.startDate }}</li>
-                    <li class="list-group-item"><i class="fa fa-envelope float-right"></i>End Date: {{ employee?.endDate }}</li>
+                    <li *ngIf="employee?.endDate" class="list-group-item"><i class="fa fa-envelope float-right"></i>End Date: {{ employee?.endDate }}</li>
 
                     <li class="list-group-item">
                       <!---  <i class="fa fa-phoneNumber float-right"></i>Phone : {{ employee?.phoneNumber }} -->
