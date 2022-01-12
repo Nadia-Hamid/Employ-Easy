@@ -32,7 +32,7 @@ public class EmployeeService {
     }
 
     public EmployeeDTO addEmployee(EmployeeDTO employeeDTO) {
-        String newEmail = employeeDTO.getEmail();
+        final String newEmail = employeeDTO.getEmail();
         if(employeeRepository.findByEmail(newEmail).size() > 0){
             throw new ConflictException("Employee with unique email " + newEmail + " was already added.");
         }
