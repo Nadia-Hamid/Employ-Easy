@@ -88,7 +88,7 @@ public class Employee {
                 employeeDTO.getEmployeeStatus(),
                 employeeDTO.getSystemStatus()
         );
-        this.userId = userId.toLowerCase();
+        setUserId(userId);
     }
 
     public Employee(EmployeeDTO employeeDTO, Long id) {
@@ -108,7 +108,7 @@ public class Employee {
                 employeeDTO.getEmployeeStatus(),
                 employeeDTO.getSystemStatus()
         );
-        this.userId = employeeDTO.getUserId().toLowerCase();
+        setUserId(employeeDTO.getUserId());
         this.id = id;
     }
 
@@ -147,9 +147,9 @@ public class Employee {
                 systemStatus
         );
         if(id < 0) {
-            this.userId = generateUserId(firstName, lastName);
+            setUserId(generateUserId(firstName, lastName));
         } else {
-            this.userId = firstName.substring(0, 3).toLowerCase() + lastName.substring(0, 3).toLowerCase() + id;
+            setUserId(firstName.substring(0, 3) + lastName.substring(0, 3) + id);
             this.id = id;
         }
     }
@@ -200,7 +200,7 @@ public class Employee {
     //only for tests
     private String generateUserId(String firstName, String lastName) {
         String userId = firstName.substring(0, 3) + lastName.substring(0, 3) + generateSuffix();
-        return userId.toLowerCase();
+        return userId;
     }
 
     public Long getId() {
@@ -214,7 +214,10 @@ public class Employee {
     }
 
     public void setUserId(String userId) {
-        this.userId = userId;
+        if(userId == null || userId.length() != 10) {
+            throw new UnsupportedOperationException("Server error: UserId must be String with length 10!");
+        }
+        this.userId = userId.toLowerCase();;
     }
 
     public String getFirstName() {

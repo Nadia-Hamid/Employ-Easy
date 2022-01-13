@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Objects;
 
 public class UserDTO implements Serializable {
 
@@ -23,5 +24,18 @@ public class UserDTO implements Serializable {
 
     public Collection<GrantedAuthority> getAuthorities() {
         return Collections.unmodifiableCollection(authorities);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserDTO userDTO = (UserDTO) o;
+        return username.equals(userDTO.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username);
     }
 }

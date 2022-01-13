@@ -2,11 +2,14 @@ package se.yrgo.employeasy.entities;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import se.yrgo.employeasy.dto.EmployeeDTO;
 import se.yrgo.employeasy.entities.enums.EmployeeStatus;
 import se.yrgo.employeasy.entities.enums.SystemStatus;
 
 import java.time.LocalDate;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -76,5 +79,16 @@ class EmployeeTest {
         );
         assertEquals(ID, startUp.getId());
         assertEquals(email, startUp.getEmail());
+    }
+
+    static Stream<String> badStrings() {
+        return Stream.of(USER_ID.substring(1), USER_ID + "?", null);
+    }
+
+    @ParameterizedTest
+    @MethodSource("badStrings")
+    void userIdMustHaveLength10(final String testValue) {
+        assertTrue(testValue == null || testValue.length() != USER_ID.length());
+        assertThrows(UnsupportedOperationException.class, () -> new Employee(dto, testValue));
     }
 }
