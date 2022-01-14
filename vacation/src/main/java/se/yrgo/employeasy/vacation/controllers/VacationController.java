@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,16 +28,16 @@ public class VacationController {
     }
 
     /**
-     * @return List of all available vacations for developers.
+     * @return List of all available vacations for the job title.
      */
-    @Operation(summary = "Get all available vacations.")
+    @Operation(summary = "Get all available vacations for position.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved available vacations",
                     content = @Content(mediaType = "application/json",
                             array = @ArraySchema(schema = @Schema(implementation = OpenDateDTO.class)))),})
-    @RequestMapping(value = "/developers", method = RequestMethod.GET)
-    public List<OpenDateDTO> getDeveloperOpenVacations() {
-        return vacationService.getAllFromJobTitle("developer");
+    @RequestMapping(value = "/{jobTitle}", method = RequestMethod.GET)
+    public List<OpenDateDTO> getOpenVacations(@PathVariable String jobTitle) {
+        return vacationService.getAllFromJobTitle(jobTitle);
     }
 
 }
