@@ -1,3 +1,6 @@
+#Vacation ignore
+vacation/target/
+
 #Temp ignore local profile image folder
 image/
 
