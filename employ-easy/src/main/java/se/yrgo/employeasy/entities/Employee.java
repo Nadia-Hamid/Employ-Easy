@@ -17,7 +17,7 @@ public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private long id;
 
     private String userId;
     private String firstName;
@@ -69,7 +69,7 @@ public class Employee {
         setUserId(userId);
     }
 
-    public Employee(EmployeeDTO dto, Long id) {
+    public Employee(EmployeeDTO dto, long id) {
         this(
                 dto.getFirstName(), dto.getLastName(), dto.getPersonalNumber(), dto.getEmail(), dto.getPhoneNumber(),
                 dto.getStreet(), dto.getZip(), dto.getCity(), dto.getJobTitle(), dto.getParentCompany(),
@@ -120,9 +120,9 @@ public class Employee {
         return String.format("%04d", ThreadLocalRandom.current().nextInt(0, 9999 + 1));
     }
 
-    public Long getId() { return id; }
+    public long getId() { return id; }
 
-    public void setId(Long id) { this.id = id; }
+    public void setId(long id) { this.id = id; }
 
     public String getUserId() { return userId; }
 
