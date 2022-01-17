@@ -17,7 +17,7 @@ public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private long id;
 
     private String userId;
     private String firstName;
@@ -34,117 +34,62 @@ public class Employee {
     private LocalDate endDate;
     private int employeeStatus;
     private int systemStatus;
-    // private String imageURL;
 
     public Employee() {}
 
     private Employee(
-            String firstName,
-            String lastName,
-            String personalNumber,
-            String email,
-            String phoneNumber,
-            String street,
-            String zip,
-            String city,
-            String jobTitle,
-            String parentCompany,
-            LocalDate startDate,
-            LocalDate endDate,
-            EmployeeStatus employeeStatus,
-            SystemStatus systemStatus
+            String firstName, String lastName, String personalNumber, String email, String phoneNumber, 
+            String street, String zip, String city, String jobTitle, String parentCompany, 
+            LocalDate startDate, LocalDate endDate, EmployeeStatus employeeStatus, SystemStatus systemStatus
     ) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.personalNumber = personalNumber;
-        this.email = email == null ? null: email.toLowerCase();
+        setEmail(email);
         this.phoneNumber = phoneNumber;
         this.street = street;
         this.zip = zip;
         this.city = city;
-        this.jobTitle = jobTitle == null ? null: jobTitle.toLowerCase();
-        this.parentCompany = parentCompany == null ? null: parentCompany.toLowerCase();
+        this.jobTitle = jobTitle.toLowerCase();
+        this.parentCompany = parentCompany.toLowerCase();
+        setJobTitle(jobTitle);
+        setParentCompany(parentCompany);
         this.startDate = startDate;
         this.endDate = endDate;
         setEmployeeStatus(employeeStatus);
         setSystemStatus(systemStatus);
-        // this.imageURL = imageURL;
     }
 
-    public Employee(EmployeeDTO employeeDTO, String userId) {
+    public Employee(EmployeeDTO dto, String userId) {
         this(
-                employeeDTO.getFirstName(),
-                employeeDTO.getLastName(),
-                employeeDTO.getPersonalNumber(),
-                employeeDTO.getEmail(),
-                employeeDTO.getPhoneNumber(),
-                employeeDTO.getStreet(),
-                employeeDTO.getZip(),
-                employeeDTO.getCity(),
-                employeeDTO.getJobTitle(),
-                employeeDTO.getParentCompany(),
-                employeeDTO.getStartDate(),
-                employeeDTO.getEndDate(),
-                employeeDTO.getEmployeeStatus(),
-                employeeDTO.getSystemStatus()
+                dto.getFirstName(), dto.getLastName(), dto.getPersonalNumber(), dto.getEmail(), dto.getPhoneNumber(),
+                dto.getStreet(), dto.getZip(), dto.getCity(), dto.getJobTitle(), dto.getParentCompany(),
+                dto.getStartDate(), dto.getEndDate(), dto.getEmployeeStatus(), dto.getSystemStatus()
         );
         setUserId(userId);
     }
 
-    public Employee(EmployeeDTO employeeDTO, Long id) {
+    public Employee(EmployeeDTO dto, long id) {
         this(
-                employeeDTO.getFirstName(),
-                employeeDTO.getLastName(),
-                employeeDTO.getPersonalNumber(),
-                employeeDTO.getEmail(),
-                employeeDTO.getPhoneNumber(),
-                employeeDTO.getStreet(),
-                employeeDTO.getZip(),
-                employeeDTO.getCity(),
-                employeeDTO.getJobTitle(),
-                employeeDTO.getParentCompany(),
-                employeeDTO.getStartDate(),
-                employeeDTO.getEndDate(),
-                employeeDTO.getEmployeeStatus(),
-                employeeDTO.getSystemStatus()
+                dto.getFirstName(), dto.getLastName(), dto.getPersonalNumber(), dto.getEmail(), dto.getPhoneNumber(),
+                dto.getStreet(), dto.getZip(), dto.getCity(), dto.getJobTitle(), dto.getParentCompany(),
+                dto.getStartDate(), dto.getEndDate(), dto.getEmployeeStatus(), dto.getSystemStatus()
         );
-        setUserId(employeeDTO.getUserId());
+        setUserId(dto.getUserId());
         this.id = id;
     }
 
     //only for unit tests and Employee Startup file
     public Employee(
-            long id,
-            String firstName,
-            String lastName,
-            String personalNumber,
-            String email,
-            String phoneNumber,
-            String street,
-            String zip,
-            String city,
-            String jobTitle,
-            String parentCompany,
-            LocalDate startDate,
-            LocalDate endDate,
-            EmployeeStatus employeeStatus,
-            SystemStatus systemStatus
+            long id, 
+            String firstName, String lastName, String personalNumber, String email, String phoneNumber,
+            String street, String zip, String city, String jobTitle, String parentCompany,
+            LocalDate startDate, LocalDate endDate, EmployeeStatus employeeStatus, SystemStatus systemStatus
     ) {
         this(
-                firstName,
-                lastName,
-                personalNumber,
-                email,
-                phoneNumber,
-                street,
-                zip,
-                city,
-                jobTitle,
-                parentCompany,
-                startDate,
-                endDate,
-                employeeStatus,
-                systemStatus
+                firstName, lastName, personalNumber, email, phoneNumber,
+                street, zip, city, jobTitle, parentCompany,
+                startDate, endDate, employeeStatus, systemStatus
         );
         if(id < 0) {
             setUserId(generateUserId(firstName, lastName));
@@ -157,44 +102,12 @@ public class Employee {
     @Override
     public String toString() {
         return (
-            "Employee [id=" +
-            id +
-            ", userId=" +
-            userId +
-            ", firstName=" +
-            firstName +
-            ", lastName=" +
-            lastName +
-            ", personalNumber=" +
-            personalNumber +
-            ", email=" +
-            email +
-            ", phoneNumber=" +
-            phoneNumber +
-            ", street=" +
-            street +
-            ", zip=" +
-            zip +
-            ", city=" +
-            city +
-            ", jobTitle=" +
-            jobTitle +
-            ", parentCompany=" +
-            parentCompany +
-            ", startDate=" +
-            startDate +
-            ", endDate=" +
-            endDate +
-            ", employeeStatus=" +
-            employeeStatus +
-            ", systemStatus=" +
-            systemStatus +
-            "]"
+            "Employee [id=" + id + ", userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + 
+            ", personalNumber=" + personalNumber + ", email=" + email + ", phoneNumber=" + phoneNumber + 
+            ", street=" + street + ", zip=" + zip + ", city=" + city + ", jobTitle=" + jobTitle + 
+            ", parentCompany=" + parentCompany + ", startDate=" + startDate + ", endDate=" + endDate + 
+            ", employeeStatus=" + employeeStatus + ", systemStatus=" + systemStatus + "]"
         );
-    }
-
-    public static String generateSuffix() {
-        return String.format("%04d", ThreadLocalRandom.current().nextInt(0, 9999 + 1));
     }
 
     //only for tests
@@ -203,116 +116,76 @@ public class Employee {
         return userId;
     }
 
-    public Long getId() {
-        return id;
+    public static String generateSuffix() {
+        return String.format("%04d", ThreadLocalRandom.current().nextInt(0, 9999 + 1));
     }
 
-    public void setId(Long id) { this.id = id; }
+    public long getId() { return id; }
 
-    public String getUserId() {
-        return userId;
-    }
+    public void setId(long id) { this.id = id; }
+
+    public String getUserId() { return userId; }
 
     public void setUserId(String userId) {
         if(userId == null || userId.length() != 10) {
             throw new UnsupportedOperationException("Server error: UserId must be String with length 10!");
         }
-        this.userId = userId.toLowerCase();;
+        this.userId = userId.toLowerCase();
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
+    public String getFirstName() { return firstName; }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
 
-    public String getLastName() {
-        return lastName;
-    }
+    public String getLastName() { return lastName; }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+    public void setLastName(String lastName) { this.lastName = lastName; }
 
-    public String getPersonalNumber() {
-        return personalNumber;
-    }
+    public String getPersonalNumber() { return personalNumber; }
 
-    public void setPersonalNumber(String personalNumber) {
-        this.personalNumber = personalNumber;
-    }
+    public void setPersonalNumber(String personalNumber) { this.personalNumber = personalNumber; }
 
-    public String getEmail() {
-        return email;
-    }
+    public String getEmail() { return email; }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email == null ? null: email.toLowerCase();
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
+    public String getPhoneNumber() { return phoneNumber; }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
+    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
 
-    public String getStreet() {
-        return street;
-    }
+    public String getStreet() { return street; }
 
     public void setStreet(String street) { this.street = street; }
 
-    public String getZip() {
-        return zip;
-    }
+    public String getZip() { return zip; }
 
-    public void setZip(String zip) {
-        this.zip = zip;
-    }
+    public void setZip(String zip) { this.zip = zip; }
 
-    public String getCity() {
-        return city;
-    }
+    public String getCity() { return city; }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
+    public void setCity(String city) { this.city = city; }
 
-    public String getJobTitle() {
-        return jobTitle;
-    }
+    public String getJobTitle() { return jobTitle; }
 
     public void setJobTitle(String jobTitle) {
-        this.jobTitle = jobTitle.toLowerCase();
+        this.jobTitle = jobTitle == null ? null: jobTitle.toLowerCase();
     }
 
-    public String getParentCompany() {
-        return parentCompany;
-    }
+    public String getParentCompany() { return parentCompany; }
 
     public void setParentCompany(String parentCompany) {
-        this.parentCompany = parentCompany.toLowerCase();
+        this.parentCompany = parentCompany == null ? null: parentCompany.toLowerCase();
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
-    }
+    public LocalDate getStartDate() { return startDate; }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
+    public void setStartDate(LocalDate startDate) { this.startDate = startDate; }
 
-    public LocalDate getEndDate() {
-        return endDate;
-    }
+    public LocalDate getEndDate() { return endDate; }
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
+    public void setEndDate(LocalDate endDate) { this.endDate = endDate; }
 
     public EmployeeStatus getEmployeeStatus() {
         return EmployeeStatus.valueOf(employeeStatus);
@@ -333,10 +206,4 @@ public class Employee {
             this.systemStatus = systemStatus.getCode();
         }
     }
-
-    /*
-     * public String getImageURL() { return imageURL; }
-     *
-     * public void setImageURL(String imageURL) { this.imageURL = imageURL; }
-     */
 }
