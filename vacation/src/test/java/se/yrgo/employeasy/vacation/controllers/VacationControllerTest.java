@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import se.yrgo.employeasy.vacation.dto.OpenDateDTO;
-import se.yrgo.employeasy.vacation.entities.OpenDate;
 import se.yrgo.employeasy.vacation.exceptions.JobTitleNotFoundException;
 import se.yrgo.employeasy.vacation.services.VacationService;
 
@@ -20,6 +19,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -61,6 +61,12 @@ public class VacationControllerTest {
 		when(service.getAllFromJobTitle(jobTitle))
 				.thenThrow(new JobTitleNotFoundException("No open dates with job title " + jobTitle + " was found."));
 		mockMvc.perform(get("/v1/vacations/" + jobTitle)).andExpect(status().isNotFound()).andReturn();
+	}
+
+	@Test
+	void deleteAsDeveloper() throws Exception {
+		mockMvc.perform(delete("/v1/vacations/marmar1234/2022-06-20"))
+				.andExpect(status().is(HttpStatus.OK.value())).andReturn();
 	}
 
 }
