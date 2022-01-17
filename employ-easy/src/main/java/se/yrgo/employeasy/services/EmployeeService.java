@@ -82,7 +82,17 @@ public class EmployeeService {
         if(size < 1){
             throw new ObjectNotFoundException("No user with email " + lowerCaseEmail + " was found");
         } else if(size > 1){
-            throw new ConflictException("Several instances with email " + lowerCaseEmail + " was found");
+        	StringBuilder sb = new StringBuilder("Several instances with email ");
+        	sb.append(lowerCaseEmail);
+        	sb.append(" was found. User ids: ");
+        	for (Employee employee : getEmployeeByEmail) {
+				sb.append(employee.getUserId());
+				sb.append(", ");
+			}
+        	throw new ConflictException(sb.toString());
+//            throw new ConflictException("Several instances with email " + lowerCaseEmail 
+//           + " was found" + ". User ids: " + getEmployeeByEmail.get(0).getUserId() 
+//           + ", " + getEmployeeByEmail.get(1).getUserId());
         }
         return dto(getEmployeeByEmail.get(0));
     }
