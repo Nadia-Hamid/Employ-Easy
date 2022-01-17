@@ -17,6 +17,7 @@ import java.util.List;
 @RequestMapping(value = "/v1/employees")
 public class EmployeeController {
 
+	@Autowired
 	private final EmployeeService employeeService;
 
 	@Autowired

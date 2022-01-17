@@ -34,7 +34,9 @@ public class VacationController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved available vacations",
                     content = @Content(mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = OpenDateDTO.class)))),})
+                            array = @ArraySchema(schema = @Schema(implementation = OpenDateDTO.class)))),
+            @ApiResponse(responseCode = "404", description = "The resource you were trying to find was not found",
+                    content = @Content)})
     @RequestMapping(value = "/{jobTitle}", method = RequestMethod.GET)
     public List<OpenDateDTO> getOpenVacations(@PathVariable String jobTitle) {
         return vacationService.getAllFromJobTitle(jobTitle);

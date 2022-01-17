@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import se.yrgo.employeasy.vacation.entities.OpenDate;
+import se.yrgo.employeasy.vacation.exceptions.JobTitleNotFoundException;
 import se.yrgo.employeasy.vacation.repositories.VacationRepository;
 
 import java.util.ArrayList;
@@ -25,10 +26,20 @@ class VacationServiceTest {
     private VacationService vacationServiceTest;
 
     @Test
-    void getAllFromJobTitle() {
+    void getAllFromExistentJobTitle() {
         final List<OpenDate> openDates = new ArrayList<>();
         openDates.add(new OpenDate("developer"));
+        when(mockedVacationRepository.findByJobTitle("developer")).thenReturn(openDates);
+        assertEquals(1, vacationServiceTest.getAllFromJobTitle("DEVELOPER").size());
+    }
+
+    @Test
+    void getAllFromNonExistentJobTitleThrowsNotFound() {
+        final List<OpenDate> openDates = new ArrayList<>();
         when(mockedVacationRepository.findByJobTitle(any(String.class))).thenReturn(openDates);
-        assertEquals(1, vacationServiceTest.getAllFromJobTitle("programmer").size());
+        final String jobTitle = "nonexistent";
+        var exception = assertThrows(JobTitleNotFoundException.class,
+                () -> vacationServiceTest.getAllFromJobTitle(jobTitle));
+        assertEquals("No open dates with job title " + jobTitle + " was found." , exception.getMessage());
     }
 }

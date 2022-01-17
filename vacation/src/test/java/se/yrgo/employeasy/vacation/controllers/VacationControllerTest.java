@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import se.yrgo.employeasy.vacation.dto.OpenDateDTO;
 import se.yrgo.employeasy.vacation.entities.OpenDate;
+import se.yrgo.employeasy.vacation.exceptions.JobTitleNotFoundException;
 import se.yrgo.employeasy.vacation.services.VacationService;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class VacationControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
-    void getAllDeveloperVacations() throws Exception {
+    void getAllAsDeveloper() throws Exception {
         final List<OpenDateDTO> dtos = new ArrayList<>();
         dtos.add(new OpenDateDTO(new OpenDate("developer")));
         when(service.getAllFromJobTitle("developer")).thenReturn(dtos);
@@ -48,5 +49,17 @@ public class VacationControllerTest {
         String actualResponseJson = mvcResult.getResponse().getContentAsString();
         String expectedResultJson = objectMapper.writeValueAsString(dtos);
         assertEquals(expectedResultJson, actualResponseJson);
+    }
+
+    @Test
+    void getAllAsNonExistent() throws Exception {
+        final String jobTitle = "nonexistent";
+        when(service.getAllFromJobTitle(jobTitle)).thenThrow(
+            new JobTitleNotFoundException("No open dates with job title " + jobTitle + " was found.")
+        );
+        mockMvc
+                .perform(get("/v1/vacations/" + jobTitle))
+                .andExpect(status().isNotFound())
+                .andReturn();
     }
 }
