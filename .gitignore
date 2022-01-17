@@ -4,9 +4,6 @@ vacation/target/
 #Temp ignore local profile image folder
 image/
 
-#Temp
-vacation/
-
 #Marius files
 .metadata/
 id_publickey
