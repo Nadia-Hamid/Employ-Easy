@@ -3,7 +3,6 @@ package se.yrgo.employee.controllers;
 import java.util.Collections;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;

@@ -8,9 +8,9 @@ public enum EmployeeStatus {
     OFF_DUTY(5),
     ARCHIVE(6);
 
-    private int code;
+    private final int code;
 
-    private EmployeeStatus(int code) {
+    EmployeeStatus(int code) {
         this.code = code;
     }
 

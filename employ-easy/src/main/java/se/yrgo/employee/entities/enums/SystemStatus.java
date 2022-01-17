@@ -4,9 +4,9 @@ public enum SystemStatus {
     SYSTEM_ADMIN(1),
     USER(2);
 
-    private int code;
+    private final int code;
 
-    private SystemStatus(int code) {
+    SystemStatus(int code) {
         this.code = code;
     }
 
