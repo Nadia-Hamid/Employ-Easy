@@ -177,8 +177,11 @@ class EmployeeServiceTest {
         @Test
         void findByEmailMultiple() {
             when(mockedEmployeeRepository.findByEmail(any(String.class))).thenReturn(employees);
-            Throwable conflictException = assertThrows(ConflictException.class, () -> employeeServiceTest.findByEmail(employees.get(0).getEmail()));
-            assertEquals("Several instances with email " + employees.get(1).getEmail().toLowerCase() + " was found", conflictException.getMessage());
+            Throwable conflictException = assertThrows(ConflictException.class, 
+            		() -> employeeServiceTest.findByEmail(employees.get(0).getEmail()));
+            assertEquals("Several instances with email " + employees.get(1).getEmail().toLowerCase() 
+            		+ " was found. User ids: " + employees.get(0).getUserId() + ", " + employees.get(1).getUserId(),
+            		conflictException.getMessage());
         }
 
         @Test
