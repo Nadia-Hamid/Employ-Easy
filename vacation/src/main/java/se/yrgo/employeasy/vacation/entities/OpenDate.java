@@ -10,13 +10,16 @@ public class OpenDate {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private LocalDate date = LocalDate.now();
+    private LocalDate date;
     private String jobTitle;
+    
+    private static final int MULTIPLES = 1; 
 
     public OpenDate() {}
 
-    public OpenDate(String jobTitle) {
+    public OpenDate(String jobTitle, LocalDate localDate) {
         this.jobTitle = jobTitle;
+        this.date = localDate;
     }
 
     public LocalDate getDate() {

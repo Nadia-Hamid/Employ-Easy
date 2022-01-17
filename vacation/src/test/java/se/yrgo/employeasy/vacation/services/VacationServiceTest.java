@@ -9,6 +9,7 @@ import se.yrgo.employeasy.vacation.entities.OpenDate;
 import se.yrgo.employeasy.vacation.exceptions.JobTitleNotFoundException;
 import se.yrgo.employeasy.vacation.repositories.VacationRepository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,16 +28,24 @@ class VacationServiceTest {
 
     @Test
     void getAllFromExistentJobTitle() {
+    	
         final List<OpenDate> openDates = new ArrayList<>();
-        openDates.add(new OpenDate("developer"));
+        
+        openDates.add(new OpenDate("developer", LocalDate.of(2022,6,20)));
+        openDates.add(new OpenDate("developer", LocalDate.of(2022,6,21)));
+        openDates.add(new OpenDate("developer", LocalDate.of(2022,6,22)));
+        
         when(mockedVacationRepository.findByJobTitle("developer")).thenReturn(openDates);
-        assertEquals(1, vacationServiceTest.getAllFromJobTitle("DEVELOPER").size());
+        assertEquals(3, vacationServiceTest.getAllFromJobTitle("DEVELOPER").size());
     }
 
     @Test
     void getAllFromNonExistentJobTitleThrowsNotFound() {
+    	
         final List<OpenDate> openDates = new ArrayList<>();
+        
         when(mockedVacationRepository.findByJobTitle(any(String.class))).thenReturn(openDates);
+        
         final String jobTitle = "nonexistent";
         var exception = assertThrows(JobTitleNotFoundException.class,
                 () -> vacationServiceTest.getAllFromJobTitle(jobTitle));

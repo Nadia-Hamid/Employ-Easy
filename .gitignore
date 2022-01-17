@@ -1,6 +1,10 @@
 #Vacation ignore
 vacation/target/
 
+vacation/.classpath
+vacation/.project
+vacation/.settings/
+
 #Temp ignore local profile image folder
 image/
 
