@@ -43,7 +43,7 @@ class EmployeeTest {
     void createEmployeeFromDTOAndUserId() {
         Employee created = new Employee(dto, USER_ID);
         assertEquals(USER_ID, created.getUserId());
-        assertEquals("Employee [id=null, userId=anabea5678, firstName=Ana, lastName=Beatriz, " +
+        assertEquals("Employee [id=0, userId=anabea5678, firstName=Ana, lastName=Beatriz, " +
                         "personalNumber=890519-XXXX, email=anna@gmail.com, phoneNumber=12345678, street=Södra Vägen, " +
                         "zip=44556, city=Göteborg, jobTitle=developer, parentCompany=volvo, startDate=2000-01-01, " +
                         "endDate=null, employeeStatus=3, systemStatus=1]"
