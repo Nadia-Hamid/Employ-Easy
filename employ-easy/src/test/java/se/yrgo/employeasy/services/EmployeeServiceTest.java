@@ -175,12 +175,40 @@ class EmployeeServiceTest {
         }
 
         @Test
-        void findByEmailMultiple() {
+        void findByEmailDouble() {
             when(mockedEmployeeRepository.findByEmail(any(String.class))).thenReturn(employees);
             Throwable conflictException = assertThrows(ConflictException.class, 
             		() -> employeeServiceTest.findByEmail(employees.get(0).getEmail()));
             assertEquals("Several instances with email " + employees.get(1).getEmail().toLowerCase() 
-            		+ " was found. User ids: " + employees.get(0).getUserId() + ", " + employees.get(1).getUserId(),
+            		+ " was found. User ids: " + employees.get(0).getUserId() + ", " + employees.get(1).getUserId() + ", ",
+            		conflictException.getMessage());
+        }
+        
+        @Test
+        void findByEmailMultiple() {
+            employees.add(new Employee(
+                    -1L,
+                    "Marten",
+                    "Marthinussen",
+                    "890519-XXXX",
+                    "Marius@gmail.com",
+                    "12345678",
+                    "Södra Vägen",
+                    "44556",
+                    "Göteborg",
+                    "developer",
+                    "volvo",
+                    LocalDate.of(2000, 1, 1),
+                    null,
+                    EmployeeStatus.ACTIVE,
+                    SystemStatus.USER
+            ));
+        	when(mockedEmployeeRepository.findByEmail(any(String.class))).thenReturn(employees);
+            Throwable conflictException = assertThrows(ConflictException.class, 
+            		() -> employeeServiceTest.findByEmail(employees.get(0).getEmail()));
+            assertEquals("Several instances with email " + employees.get(1).getEmail().toLowerCase() 
+            		+ " was found. User ids: " + employees.get(0).getUserId() + ", " + employees.get(1).getUserId() + ", " 
+            		+ employees.get(2).getUserId() + ", ",
             		conflictException.getMessage());
         }
 
