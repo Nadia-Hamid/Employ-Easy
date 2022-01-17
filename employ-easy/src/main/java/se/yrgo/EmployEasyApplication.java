@@ -7,12 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
-@OpenAPIDefinition(
-    info = @Info(title = "Employ Easy API", version = "1.2", description = "Employee Management Application")
-)
+@OpenAPIDefinition(info = @Info(title = "Employ Easy API", version = "1.2", description = "Employee Management Application"))
 public class EmployEasyApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(EmployEasyApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(EmployEasyApplication.class, args);
+	}
 }

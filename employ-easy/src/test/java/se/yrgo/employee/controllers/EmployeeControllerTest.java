@@ -48,7 +48,7 @@ import se.yrgo.employee.services.EmployeeService;
 class EmployeeControllerTest {
 
 	@MockBean
-	private EmployeeRepository repo;
+	private EmployeeRepository repository;
 
 	@MockBean
 	private EmployeeService service;
@@ -72,11 +72,11 @@ class EmployeeControllerTest {
 	@BeforeEach
 	void setUp() {
 		
-		MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
-		mappingJackson2HttpMessageConverter.setObjectMapper(objectMapper);
+		MappingJackson2HttpMessageConverter formatConverter = new MappingJackson2HttpMessageConverter();
+		formatConverter.setObjectMapper(objectMapper);
 		
 		this.mockMvc = MockMvcBuilders.standaloneSetup(controller)
-				.setMessageConverters(mappingJackson2HttpMessageConverter)
+				.setMessageConverters(formatConverter)
 				.build();
 		
 		emp = new Employee("Nadia", "Hamid", "900519-XXXX", "nadia@gmail.com", "87654321", "Norra Vagen",
@@ -163,7 +163,7 @@ class EmployeeControllerTest {
 		dto.setEmail(email);
 		emp.setEmail(email);
 
-		when(repo.findEmployeeByUserId(Mockito.any(String.class))).thenReturn(emp);
+		when(repository.findEmployeeByUserId(Mockito.any(String.class))).thenReturn(emp);
 		when(service.updateEmployee(Mockito.any(EmployeeDTO.class))).thenReturn(dto);
 
 		MvcResult mvcResult = this.mockMvc

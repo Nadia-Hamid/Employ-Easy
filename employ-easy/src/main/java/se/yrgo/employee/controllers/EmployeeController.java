@@ -13,16 +13,16 @@ import se.yrgo.employee.services.EmployeeService;
 
 import java.util.List;
 
+/**
+ *@class Service Class
+ */
+
 @RestController
 @RequestMapping(value = "/v1/employees")
 public class EmployeeController {
 
-	private final EmployeeService employeeService;
-
 	@Autowired
-	public EmployeeController(EmployeeService employeeService) {
-		this.employeeService = employeeService;
-	}
+	private EmployeeService employeeService;
 
 	/**
 	 * @return List of all employees.
@@ -39,8 +39,7 @@ public class EmployeeController {
 
 	/**
 	 * @return Get employee from its user id.
-	 * @param userId The first three letters in first and last name with random four
-	 *               numbers.
+	 * @param userId The first three letters in first and last name with random four numbers.
 	 */
 	@Operation(summary = "Get employee from userId.")
 	@ApiResponses(value = {
@@ -55,7 +54,7 @@ public class EmployeeController {
 
 	/**
 	 * @return Get all employees using the same job title.
-	 * @param jobTitle The job title searched for.
+	 * @param jobTitle The job title searched for
 	 */
 	@Operation(summary = "Get employees from jobTitle.")
 	@ApiResponses(value = {
@@ -70,7 +69,7 @@ public class EmployeeController {
 
 	/**
 	 * @return Employee added in database with its user id.
-	 * @param registerDTO Input data without any userId.
+	 * @param registerDTO Input data without any userId
 	 */
 	@Operation(summary = "Register new employee.")
 	@ApiResponses(value = {
@@ -84,6 +83,7 @@ public class EmployeeController {
 	}
 
 	/**
+	 * Delete method to delete employee.
 	 * @param userId The userId of the employee to be deleted.
 	 */
 	@Operation(summary = "Delete an employee.")
@@ -98,8 +98,9 @@ public class EmployeeController {
 	}
 
 	/**
-	 * @return Employee with updated data.
-	 * @param employeeDTO The new data that should be updated.
+	 * Update an existing employee.
+	 * @return Employee with updated data
+	 * @param employeeDTO The new data that should be updated
 	 */
 	@Operation(summary = "Update an employee.")
 	@ApiResponses(value = {
@@ -113,8 +114,9 @@ public class EmployeeController {
 	}
 
 	/**
-	 * @return Get the employee using provided email.
-	 * @param email The email searched for.
+	 * Find employee by it's email, muast be unique.
+	 * @return Get the employee using provided email
+	 * @param email The email searched for
 	 */
 	@Operation(summary = "Get employee from email.")
 	@ApiResponses(value = {

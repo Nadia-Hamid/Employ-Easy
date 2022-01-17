@@ -1,18 +1,20 @@
 package se.yrgo.employee.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.jupiter.api.Disabled;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import se.yrgo.employee.dto.EmployeeDTO;
+
 import se.yrgo.employee.entities.Employee;
 import se.yrgo.employee.entities.enums.EmployeeStatus;
 import se.yrgo.employee.entities.enums.SystemStatus;
@@ -29,7 +31,7 @@ class EmployeeServiceTest {
 
     @Test
     void findAll() {
-        employeeServiceTest = new EmployeeService(mockedEmployeeRepository);
+//        employeeServiceTest = new EmployeeService(mockedEmployeeRepository);
         List<Employee> employeeList = new ArrayList<>();
         Employee emp = new Employee(
             "Marius",

@@ -14,19 +14,19 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+/**
+ * Security Configuration and CorsFilter for Login
+ */
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public SecurityConfig(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
+	@Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth
+        
+    	auth
             .inMemoryAuthentication()
             .withUser("admin")
             .password(passwordEncoder.encode("password123"))
@@ -43,12 +43,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("nadham4321")
                 .password(passwordEncoder.encode("nadham4321"))
                 .roles("ADMIN");
-
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        
+    	http
             .cors()
             .and()
             .csrf()

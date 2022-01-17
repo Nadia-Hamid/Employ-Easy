@@ -37,7 +37,7 @@ public class EmployeeConfig {
                 "Nadia",
                 "Hamid",
                 "900519-XXXX",
-                "Marius@gmail.com", //Nadia
+                "nadia@gmail.com", //Nadia
                 "87654321",
                 "Norra Vägen",
                 "44556",
