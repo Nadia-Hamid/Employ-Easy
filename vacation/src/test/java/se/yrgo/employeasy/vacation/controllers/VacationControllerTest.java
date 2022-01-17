@@ -41,9 +41,9 @@ public class VacationControllerTest {
 
 		final List<OpenDateDTO> dtos = new ArrayList<>();
 
-		dtos.add(new OpenDateDTO(new OpenDate("developer", LocalDate.of(2022, 6, 20))));
-		dtos.add(new OpenDateDTO(new OpenDate("developer", LocalDate.of(2022, 6, 21))));
-		dtos.add(new OpenDateDTO(new OpenDate("developer", LocalDate.of(2022, 6, 22))));
+		dtos.add(new OpenDateDTO(LocalDate.of(2022, 6, 20)));
+		dtos.add(new OpenDateDTO(LocalDate.of(2022, 6, 21)));
+		dtos.add(new OpenDateDTO(LocalDate.of(2022, 6, 22)));
 
 		when(service.getAllFromJobTitle("developer")).thenReturn(dtos);
 
@@ -62,4 +62,5 @@ public class VacationControllerTest {
 				.thenThrow(new JobTitleNotFoundException("No open dates with job title " + jobTitle + " was found."));
 		mockMvc.perform(get("/v1/vacations/" + jobTitle)).andExpect(status().isNotFound()).andReturn();
 	}
+
 }
