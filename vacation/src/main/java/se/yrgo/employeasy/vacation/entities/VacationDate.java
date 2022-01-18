@@ -4,29 +4,29 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "USERDATE")
-public class UserDate {
+@Table(name = "VACATIONDATE")
+public class VacationDate {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private String userId;
     private String jobTitle;
     private LocalDate date;
+    private String userId;
 
-    public UserDate(String userId, String jobTitle, LocalDate date) {
-        this.userId = userId;
+    public VacationDate(String jobTitle, LocalDate date) {
         this.jobTitle = jobTitle;
         this.date = date;
     }
 
-    public UserDate() {}
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public VacationDate() {}
 
     public long getId() {
         return id;
-    }
-
-    public String getUserId() {
-        return userId;
     }
 
     public String getJobTitle() {
@@ -35,5 +35,9 @@ public class UserDate {
 
     public LocalDate getDate() {
         return date;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 }

@@ -14,13 +14,13 @@ import se.yrgo.employeasy.vacation.exceptions.JobTitleNotFoundException;
 import se.yrgo.employeasy.vacation.services.VacationService;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ComponentScan(basePackages = "se.yrgo.employeasy.vacation.controllers")
@@ -37,9 +37,9 @@ public class VacationControllerTest {
 	private ObjectMapper objectMapper;
 
 	@Test
-	void getAllAsDeveloper() throws Exception {
+	void getAvailableDatesAsDeveloperSuccessfully() throws Exception {
 
-		final List<OpenDateDTO> dtos = new ArrayList<>();
+		final Set<OpenDateDTO> dtos = new HashSet<>();
 
 		dtos.add(new OpenDateDTO(LocalDate.of(2022, 6, 20)));
 		dtos.add(new OpenDateDTO(LocalDate.of(2022, 6, 21)));
@@ -56,7 +56,7 @@ public class VacationControllerTest {
 	}
 
 	@Test
-	void getAllAsNonExistent() throws Exception {
+	void getAvailableDatesAsDeveloperWasNonExistent() throws Exception {
 		final String jobTitle = "nonexistent";
 		when(service.getAllFromJobTitle(jobTitle))
 				.thenThrow(new JobTitleNotFoundException("No open dates with job title " + jobTitle + " was found."));
@@ -64,9 +64,18 @@ public class VacationControllerTest {
 	}
 
 	@Test
-	void deleteAsDeveloper() throws Exception {
-		mockMvc.perform(delete("/v1/vacations/marmar1234/2022-06-20"))
+	void reserveVacationDateAsUser() throws Exception {
+		final LocalDate requestedDate = LocalDate.of(2022, 6, 20);
+		final String userId = "marmar1234";
+		final OpenDateDTO dto = new OpenDateDTO(requestedDate);
+		System.out.println(requestedDate);
+		/*when(service.requestReservation(requestedDate, userId)).thenReturn(dto);
+		MvcResult mvcResult = mockMvc.perform(put("/v1/vacations/2022-06-20/marmar1234"))
 				.andExpect(status().is(HttpStatus.OK.value())).andReturn();
+
+		String actualResponseJson = mvcResult.getResponse().getContentAsString();
+		String expectedResultJson = objectMapper.writeValueAsString(dtos);
+		assertEquals(expectedResultJson, actualResponseJson);*/
 	}
 
 }

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import se.yrgo.employeasy.vacation.entities.UserDate;
+import se.yrgo.employeasy.vacation.entities.VacationDate;
 import se.yrgo.employeasy.vacation.exceptions.JobTitleNotFoundException;
 import se.yrgo.employeasy.vacation.repositories.UserDateRepository;
 
@@ -30,20 +30,20 @@ class VacationServiceTest {
     @Test
     void getAllFromExistentJobTitle() {
     	
-        final List<UserDate> userDates = new ArrayList<>();
+        final List<VacationDate> vacationDates = new ArrayList<>();
         
-        userDates.add(new UserDate("marmar1234", "developer", LocalDate.of(2022,6,20)));
-        userDates.add(new UserDate("marmar1234", "developer", LocalDate.of(2022,6,21)));
-        userDates.add(new UserDate("marmar1234", "developer", LocalDate.of(2022,6,22)));
+        vacationDates.add(new VacationDate("developer", LocalDate.of(2022,6,20)));
+        vacationDates.add(new VacationDate("developer", LocalDate.of(2022,6,21)));
+        vacationDates.add(new VacationDate("developer", LocalDate.of(2022,6,22)));
         
-        when(mockedDateRepository.findByJobTitle("developer")).thenReturn(userDates);
+        when(mockedDateRepository.findByJobTitle("developer")).thenReturn(vacationDates);
         assertEquals(3, vacationServiceTest.getAllFromJobTitle("DEVELOPER").size());
     }
 
     @Test
     void getAllFromNonExistentJobTitleThrowsNotFound() {
     	
-        final List<UserDate> openDates = new ArrayList<>();
+        final List<VacationDate> openDates = new ArrayList<>();
         
         when(mockedDateRepository.findByJobTitle(any(String.class))).thenReturn(openDates);
         
@@ -57,8 +57,8 @@ class VacationServiceTest {
     void deleteDateFromJobTitle() {
         final String userId = "marmar1234";
         final LocalDate date = LocalDate.of(2022,6,20);
-        when(mockedDateRepository.findUserDate(userId, date)).thenReturn(new UserDate(userId, "developer", date));
+        when(mockedDateRepository.findUserDate(userId, date)).thenReturn(new VacationDate("developer", date));
         vacationServiceTest.deleteDateFromUser(userId, date);
-        verify(mockedDateRepository, times(1)).delete(any(UserDate.class));
+        verify(mockedDateRepository, times(1)).delete(any(VacationDate.class));
     }
 }

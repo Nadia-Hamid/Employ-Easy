@@ -15,7 +15,7 @@ import se.yrgo.employeasy.vacation.dto.OpenDateDTO;
 import se.yrgo.employeasy.vacation.services.VacationService;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/v1/vacations")
@@ -39,7 +39,7 @@ public class VacationController {
             @ApiResponse(responseCode = "404", description = "The resource you were trying to find was not found",
                     content = @Content)})
     @RequestMapping(value = "/{jobTitle}", method = RequestMethod.GET)
-    public List<OpenDateDTO> getOpenVacations(@PathVariable String jobTitle) {
+    public Set<OpenDateDTO> getOpenVacations(@PathVariable String jobTitle) {
         return vacationService.getAllFromJobTitle(jobTitle);
     }
 
