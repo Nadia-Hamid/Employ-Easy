@@ -1,7 +1,5 @@
 package se.yrgo.employeasy.vacation.dto;
 
-import se.yrgo.employeasy.vacation.entities.VacationDate;
-
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -21,14 +19,6 @@ public class ReservedDateDTO implements Serializable {
     }
 
     public String getUserId() { return userId; }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
     @Override
     public boolean equals(Object o) {

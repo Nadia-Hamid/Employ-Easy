@@ -36,4 +36,7 @@ Use following command in terminal:  `mvn org.springframework.boot:spring-boot-ma
     6. Type `psql -U postgres`
     7. Type `CREATE DATABASE vacations;` Here it´s important to not forget `;`. You will see a message `CREATE DATABASE`
     8. Type `\c vacations` you will see a message You are now connected to database `vacations` as user `postgres`.
-      
+
+###Troubleshoot
+1. If you need to delete database in docker then type 
+`docker-compose exec aa0950c30778 psql -U postgres -d postgres -c “DROP DATABASE vacations;”`

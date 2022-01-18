@@ -10,15 +10,15 @@ import java.util.List;
 @Component
 public class UserStartup implements CommandLineRunner {
 
-    private final UserDateRepository userDateRepository;
+    private final DateRepository dateRepository;
 
-    public UserStartup(UserDateRepository userDateRepository) {
-        this.userDateRepository = userDateRepository;
+    public UserStartup(DateRepository dateRepository) {
+        this.dateRepository = dateRepository;
     }
 
     @Override
     public void run(String... args) {
-        userDateRepository.saveAll(List.of(
+        dateRepository.saveAll(List.of(
             new VacationDate("developer", LocalDate.of(2022, 6, 20)),
                 new VacationDate("developer", LocalDate.of(2022, 6, 21)),
                 new VacationDate("developer", LocalDate.of(2022, 6, 22))

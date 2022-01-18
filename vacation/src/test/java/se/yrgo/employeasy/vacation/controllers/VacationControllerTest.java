@@ -16,7 +16,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import se.yrgo.employeasy.vacation.dto.OpenDateDTO;
 import se.yrgo.employeasy.vacation.dto.ReservedDateDTO;
-import se.yrgo.employeasy.vacation.exceptions.JobTitleNotFoundException;
+import se.yrgo.employeasy.vacation.exceptions.ObjectNotFoundException;
+import se.yrgo.employeasy.vacation.exceptions.TimeException;
 import se.yrgo.employeasy.vacation.services.VacationService;
 
 import java.time.LocalDate;
@@ -43,23 +44,25 @@ public class VacationControllerTest {
 	private ObjectMapper objectMapper;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(VacationControllerTest.class);
-
+	private static final String LOG_DATE = "The date as a String: ";
 	private static final String URL = "/v1/vacations/";
+	private static final String JOB_TITLE = "developer";
+	private static final String USER_ID = "marmar1234";
+	private static final int FUTURE = LocalDate.now().getYear() + 1;
+	private static final LocalDate MID_SUMMER = LocalDate.of(FUTURE, 6, 20);
 
 	@Test
 	void getAvailableDatesAsDeveloperSuccessfully() throws Exception {
 
 		final Set<OpenDateDTO> dtos = new HashSet<>();
 
-		dtos.add(new OpenDateDTO(LocalDate.of(2022, 6, 20)));
-		dtos.add(new OpenDateDTO(LocalDate.of(2022, 6, 21)));
-		dtos.add(new OpenDateDTO(LocalDate.of(2022, 6, 22)));
+		dtos.add(new OpenDateDTO(MID_SUMMER));
+		dtos.add(new OpenDateDTO(MID_SUMMER.plusDays(1)));
+		dtos.add(new OpenDateDTO(MID_SUMMER.plusDays(2)));
 
-		final String jobTitle = "developer";
+		when(service.getAllFromJobTitle(JOB_TITLE)).thenReturn(dtos);
 
-		when(service.getAllFromJobTitle(jobTitle)).thenReturn(dtos);
-
-		MvcResult mvcResult = mockMvc.perform(get(URL + jobTitle))
+		MvcResult mvcResult = mockMvc.perform(get(URL + JOB_TITLE))
 				.andExpect(status().is(HttpStatus.OK.value())).andReturn();
 
 		String actualResponseJson = mvcResult.getResponse().getContentAsString();
@@ -68,25 +71,25 @@ public class VacationControllerTest {
 	}
 
 	@Test
-	void getAvailableDatesAsDeveloperWasNonExistent() throws Exception {
-		final String jobTitle = "nonexistent";
-		when(service.getAllFromJobTitle(jobTitle))
-				.thenThrow(new JobTitleNotFoundException("No open dates with job title " + jobTitle + " was found."));
-		mockMvc.perform(get(URL + jobTitle)).andExpect(status().isNotFound()).andReturn();
+	void getAvailableDatesAsNonExistentShouldThrowNotFound() throws Exception {
+		final String nonExistent = "nonexistent";
+		when(service.getAllFromJobTitle(nonExistent))
+				.thenThrow(new ObjectNotFoundException("No open dates with job title " + nonExistent + " was found."));
+		MvcResult mvcResult = this.mockMvc
+				.perform(get(URL + nonExistent)).andExpect(status().isNotFound()).andReturn();
+		assertEquals("{\"error\":\"Not Found\"}", mvcResult.getResponse().getContentAsString());
 	}
 
 	@Test
-	void reserveVacationDateAsUser() throws Exception {
-		LocalDate requestedDate = LocalDate.of(2022, 6, 20);
-		String userId = "marmar1234";
-		ReservedDateDTO dto = new ReservedDateDTO(requestedDate, userId);
-		String jobTitle = "developer";
+	void reserveVacationFutureDateAsUser() throws Exception {
+		LocalDate requestedDate = MID_SUMMER;
+		ReservedDateDTO dto = new ReservedDateDTO(requestedDate, USER_ID);
 
-		LOGGER.info("The date as a String: " + requestedDate);
-		when(service.requestReservationUsingJobTitle(requestedDate, userId, jobTitle)).thenReturn(dto);
+		LOGGER.info(LOG_DATE + requestedDate);
+		when(service.requestReservationUsingJobTitle(requestedDate, USER_ID, JOB_TITLE)).thenReturn(dto);
 
 		MvcResult mvcResult = this.mockMvc
-				.perform(MockMvcRequestBuilders.put(URL + jobTitle)
+				.perform(MockMvcRequestBuilders.put(URL + JOB_TITLE)
 						.content(objectMapper.writeValueAsString(dto))
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
@@ -95,6 +98,35 @@ public class VacationControllerTest {
 		String actualResponseJson = mvcResult.getResponse().getContentAsString();
 		String expectedResultJson = objectMapper.writeValueAsString(dto);
 		assertEquals(expectedResultJson, actualResponseJson);
+	}
+
+	@Test
+	void reserveVacationPastDueDateAsUserShouldThrowTimeException() throws Exception {
+		LocalDate oldDate = LocalDate.of(2021, 12, 24);
+		ReservedDateDTO dto = new ReservedDateDTO(oldDate, USER_ID);
+
+		LOGGER.info(LOG_DATE + oldDate);
+		when(service.requestReservationUsingJobTitle(oldDate, USER_ID, JOB_TITLE))
+				.thenThrow(new TimeException("Vacation date " + oldDate + " needs to be in the future."));
+		MvcResult mvcResult = this.mockMvc
+				.perform(put(URL + JOB_TITLE).content(objectMapper.writeValueAsString(dto))
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest()).andReturn();
+
+		assertEquals("{\"error\":\"Old vacation date\"}", mvcResult.getResponse().getContentAsString());
+	}
+
+	@Test
+	void reserveVacationNonExistentFutureDateShouldThrowNotFound() throws Exception {
+		LocalDate futureWorkDay = LocalDate.of(FUTURE, 3, 28);
+		ReservedDateDTO dto = new ReservedDateDTO(futureWorkDay, USER_ID);
+
+		LOGGER.info(LOG_DATE + futureWorkDay);
+		when(service.requestReservationUsingJobTitle(futureWorkDay, USER_ID, JOB_TITLE))
+				.thenThrow(new ObjectNotFoundException("No open dates with date " + futureWorkDay + " was found."));
+		MvcResult mvcResult = this.mockMvc
+				.perform(put(URL + JOB_TITLE).content(objectMapper.writeValueAsString(dto))
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound()).andReturn();
+		assertEquals("{\"error\":\"Not Found\"}", mvcResult.getResponse().getContentAsString());
 	}
 
 }
