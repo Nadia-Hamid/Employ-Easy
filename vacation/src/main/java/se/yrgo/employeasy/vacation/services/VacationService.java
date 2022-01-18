@@ -3,6 +3,7 @@ package se.yrgo.employeasy.vacation.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.yrgo.employeasy.vacation.dto.OpenDateDTO;
+import se.yrgo.employeasy.vacation.dto.ReservedDateDTO;
 import se.yrgo.employeasy.vacation.entities.VacationDate;
 import se.yrgo.employeasy.vacation.exceptions.JobTitleNotFoundException;
 import se.yrgo.employeasy.vacation.repositories.UserDateRepository;
@@ -37,8 +38,7 @@ public class VacationService {
         userDateRepository.delete(entity);
     }
 
-    public Object requestReservation(LocalDate requestedDate, String userId) {
-        //TODO
-        return null;
+    public ReservedDateDTO requestReservationUsingJobTitle(LocalDate date, String userId, String jobTitle) {
+        return new ReservedDateDTO(date, userId);
     }
 }

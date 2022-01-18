@@ -54,7 +54,7 @@ class VacationServiceTest {
     }
 
     @Test
-    void deleteDateFromJobTitle() {
+    void requestVacationDateAsUser() {
         final String userId = "marmar1234";
         final LocalDate date = LocalDate.of(2022,6,20);
         when(mockedDateRepository.findUserDate(userId, date)).thenReturn(new VacationDate("developer", date));
