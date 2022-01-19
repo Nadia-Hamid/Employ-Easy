@@ -32,23 +32,23 @@ public class EmployeeService {
     }
 
     public EmployeeDTO addEmployee(EmployeeDTO employeeDTO) {
-        final String newEmail = employeeDTO.getEmail();
+        String newEmail = employeeDTO.getEmail();
         if(employeeRepository.findByEmail(newEmail).size() > 0){
             throw new ConflictException("Employee with unique email " + newEmail + " was already added.");
         }
         String prefix = employeeDTO.generateName();
-        while (true) {
-            String userId = prefix + Employee.generateSuffix();
-            Employee existing = employeeRepository.findEmployeeByUserId(userId);
-            if (existing == null) {
-                Employee employee = new Employee(employeeDTO, userId);
-                employeeRepository.save(employee);
-                return dto(employee);
-            }
-        }
+        String userId;
+        Employee existing;
+        do {
+            userId = prefix + Employee.generateSuffix();
+            existing = employeeRepository.findEmployeeByUserId(userId);
+        } while(existing != null);
+        Employee employee = new Employee(employeeDTO, userId);
+        employeeRepository.save(employee);
+        return dto(employee);
     }
 
-    private Employee getEmployeeByUserId(String userId) {
+    Employee getEmployeeByUserId(String userId) {
         Employee entity = employeeRepository.findEmployeeByUserId(userId.toLowerCase());
         if(entity == null){
             throw new ObjectNotFoundException("User was not found");
@@ -60,16 +60,6 @@ public class EmployeeService {
         return dto(getEmployeeByUserId(userId));
     }
 
-    public List<EmployeeDTO> findByJobTitle(String jobTitle) {
-        return employeeRepository
-                .findByJobTitle(jobTitle.toLowerCase())
-                .stream()
-                .map(EmployeeDTO::new)
-                .collect(Collectors.collectingAndThen(Collectors.toList(), Optional::of))
-                .filter(l -> !l.isEmpty())
-                .orElseThrow(() -> new ObjectNotFoundException("No user with job title " + jobTitle + " was found"));
-    }
-
     public EmployeeDTO updateEmployee(EmployeeDTO employeeDTO) {
         Employee emp = getEmployeeByUserId(employeeDTO.getUserId());
         Employee updatedEmployee = new Employee(employeeDTO, emp.getId());
@@ -78,21 +68,32 @@ public class EmployeeService {
     }
 
     public void deleteEmployee(String userId) {
-        Employee employee = employeeRepository.findEmployeeByUserId(userId.toLowerCase());
-        if(employee == null){
-            throw new ObjectNotFoundException("User to be deleted was not found");
-        }
+        Employee employee = getEmployeeByUserId(userId);
         employeeRepository.delete(employee);
     }
 
     public EmployeeDTO findByEmail(String email) {
-        var getEmployeeByEmail = employeeRepository.findByEmail(email.toLowerCase());
+        if(email == null) {
+            throw new NullPointerException("Null email value not allowed!");
+        }
+        String lowerCaseEmail = email.toLowerCase();
+        var getEmployeeByEmail = employeeRepository.findByEmail(lowerCaseEmail);
         var size = getEmployeeByEmail.size();
         if(size < 1){
-            throw new ObjectNotFoundException("No user with email " + email + " was found");
+            throw new ObjectNotFoundException("No user with email " + lowerCaseEmail + " was found");
         } else if(size > 1){
-            throw new ConflictException("Several instances with email " + email + " was found");
+            throw new ConflictException("Several instances with email " + lowerCaseEmail + " was found");
         }
         return dto(getEmployeeByEmail.get(0));
+    }
+
+    public List<EmployeeDTO> findByJobTitle(String jobTitle) {
+        return employeeRepository
+                .findByJobTitle(jobTitle.toLowerCase())
+                .stream()
+                .map(EmployeeDTO::new)
+                .collect(Collectors.collectingAndThen(Collectors.toList(), Optional::of))
+                .filter(l -> !l.isEmpty())
+                .orElseThrow(() -> new ObjectNotFoundException("No user with job title " + jobTitle + " was found"));
     }
 }

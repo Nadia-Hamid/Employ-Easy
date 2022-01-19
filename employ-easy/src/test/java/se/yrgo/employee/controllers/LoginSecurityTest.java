@@ -1,4 +1,4 @@
-package se.yrgo.employee.security;
+package se.yrgo.employee.controllers;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class SecurityTest {
+class LoginSecurityTest {
 
     @Autowired
     private WebApplicationContext context;
@@ -46,5 +46,12 @@ class SecurityTest {
                         .with(user("admin").roles("ADMIN")))
                 .andExpect(status().isOk())
                 .andExpect(content().encoding(StandardCharsets.ISO_8859_1));
+    }
+
+    @Test
+    public void greetingReturnsHelloAndUsername() throws Exception {
+        this.mockMvc.perform(get("/v1/greeting").with(user("marten").roles("EMPLOYEE")))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Hello, marten!"));
     }
 }
