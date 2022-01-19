@@ -1,8 +1,13 @@
+#Vacation ignore
+vacation/target/
+
+vacation/.classpath
+vacation/.project
+vacation/.settings/
+vacation/src/main/resources/application.properties
+
 #Temp ignore local profile image folder
 image/
-
-#Temp
-vacation/
 
 #Marius files
 .metadata/

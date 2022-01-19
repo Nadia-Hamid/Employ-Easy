@@ -90,9 +90,6 @@ public class EmployeeService {
 				sb.append(", ");
 			}
         	throw new ConflictException(sb.toString());
-//            throw new ConflictException("Several instances with email " + lowerCaseEmail 
-//           + " was found" + ". User ids: " + getEmployeeByEmail.get(0).getUserId() 
-//           + ", " + getEmployeeByEmail.get(1).getUserId());
         }
         return dto(getEmployeeByEmail.get(0));
     }
