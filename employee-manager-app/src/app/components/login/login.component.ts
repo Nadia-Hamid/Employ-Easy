@@ -2,7 +2,7 @@
 import { Router, ActivatedRoute, Data } from '@angular/router'
 import { FormBuilder, FormGroup } from '@angular/forms'
 
-import { LoginService } from '../services/login.service'
+import { LoginService } from '../../services/login.service'
 import { HttpHeaderResponse } from '@angular/common/http'
 
 @Component({ templateUrl: 'login.component.html' })

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core'
-import { Router, ActivatedRoute } from '@angular/router'
-import { CommonModule } from '@angular/common'
-import { EmployeeService } from '../services/employee.service'
+import { Router } from '@angular/router'
+import { EmployeeService } from '../../services/employee.service'
 import { Employee } from '../employee/employee'
 import { HttpErrorResponse } from '@angular/common/http'
 

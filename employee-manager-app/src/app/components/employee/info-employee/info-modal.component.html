@@ -1,0 +1,33 @@
+<div class="modal fade" id="infoEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="infoEmployeeModal"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="infoEmployeeModal">Employee Information</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><i class="fa fa-envelope float-right"></i>{{ infoEmployee?.userId }}</li>
+                        <li class="list-group-item"><i class="fa fa-envelope float-right"></i>{{ infoEmployee?.firstName }} {{ infoEmployee?.lastName }}</li>
+                        <li class="list-group-item"><i class="fa fa-envelope float-right"></i>{{ infoEmployee?.employeeStatus }}</li>
+                        <li class="list-group-item"><i class="fa fa-envelope float-right"></i>{{ infoEmployee?.systemStatus }}</li>
+                        <li class="list-group-item"><i class="fa fa-envelope float-right"></i>{{ infoEmployee?.personalNumber }}</li>
+                        <li class="list-group-item"><i class="fa fa-envelope float-right"></i>{{ infoEmployee?.email }}</li>
+                        <li class="list-group-item"><i class="fa fa-envelope float-right"></i>{{ infoEmployee?.phoneNumber }}</li>
+                        <li class="list-group-item"><i class="fa fa-envelope float-right"></i>{{ infoEmployee?.street }}</li>
+                        <li class="list-group-item"><i class="fa fa-envelope float-right"></i>{{ infoEmployee?.zip }}</li>
+                        <li class="list-group-item"><i class="fa fa-envelope float-right"></i>{{ infoEmployee?.jobTitle }}</li>
+                        <li class="list-group-item"><i class="fa fa-envelope float-right"></i>{{ infoEmployee?.parentCompany }}</li>
+                        <li class="list-group-item"><i class="fa fa-envelope float-right"></i>{{ infoEmployee?.startDate }}</li>
+                        <li class="list-group-item"><i class="fa fa-envelope float-right"></i>{{ infoEmployee?.endDate }}</li>
+                    </ul>
+                    <div class="modal-footer">
+                        <button type="button" id="" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
