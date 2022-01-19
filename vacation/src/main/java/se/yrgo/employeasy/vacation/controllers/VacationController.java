@@ -1,6 +1,6 @@
 package se.yrgo.employeasy.vacation.controllers;
 
-import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,10 +16,11 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import se.yrgo.employeasy.vacation.dto.OpenDateDTO;
+import se.yrgo.employeasy.vacation.dto.ReservedDateDTO;
 import se.yrgo.employeasy.vacation.services.VacationService;
 
 @RestController
-@RequestMapping(value = "/v1/vacations")
+@RequestMapping(value = "/v1/vacations/")
 public class VacationController {
 
     private final VacationService vacationService;
@@ -29,17 +30,20 @@ public class VacationController {
         this.vacationService = vacationService;
     }
 
-	/**
-	 * @return List of all available vacations for the job title.
-	 */
-	@Operation(summary = "Get all available vacations for position.")
-	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Successfully retrieved available vacations", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = OpenDateDTO.class)))),
-			@ApiResponse(responseCode = "404", description = "The resource you were trying to find was not found", content = @Content) })
-	@RequestMapping(value = "/{jobTitle}", method = RequestMethod.GET)
-	public List<OpenDateDTO> getOpenVacations(@PathVariable String jobTitle) {
-		return vacationService.getAllFromJobTitle(jobTitle);
-	}
+    /**
+     * @return List of all available vacations for the job title.
+     */
+    @Operation(summary = "Get all available vacations for position.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved available vacations",
+                    content = @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = OpenDateDTO.class)))),
+            @ApiResponse(responseCode = "404", description = "The resource you were trying to find was not found",
+                    content = @Content)})
+    @RequestMapping(value = "{jobTitle}", method = RequestMethod.GET)
+    public Set<OpenDateDTO> getOpenVacations(@PathVariable String jobTitle) {
+        return vacationService.getAllFromJobTitle(jobTitle);
+    }
 
     /**
 	 * @return Object confirmation with date data.
@@ -54,4 +58,24 @@ public class VacationController {
 	public OpenDateDTO vacationBooking(@RequestBody OpenDateDTO openDate) {
 		return vacationService.addVacation(openDate);
 	}
+
+    /**
+     * @return ReservedDateDTO with reservation data.
+     * @param reservationRequest The reservation request.
+     */
+    @Operation(summary = "Reserve an open date with unique userId using specified job title.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully reserved the open date",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ReservedDateDTO.class))),
+            @ApiResponse(responseCode = "404", description = "The resource you were trying to update was not found",
+                    content = @Content) })
+    @RequestMapping(value = "{jobTitle}", method = RequestMethod.PUT)
+    public ReservedDateDTO reserveVacation(@RequestBody ReservedDateDTO reservationRequest, @PathVariable String jobTitle) {
+        return vacationService.requestReservationUsingJobTitle(
+                reservationRequest.getDate(),
+                reservationRequest.getUserId(),
+                jobTitle
+        );
+    }
 }

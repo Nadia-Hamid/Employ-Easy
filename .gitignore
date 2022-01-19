@@ -1,3 +1,6 @@
+#HTTPS ignore
+employ-easy/src/main/resources/local-ssl.p12
+
 #Vacation ignore
 vacation/target/
 
