@@ -22,7 +22,7 @@
                         <li class="list-group-item"><i class="fa fa-envelope float-right"></i>{{ infoEmployee?.jobTitle }}</li>
                         <li class="list-group-item"><i class="fa fa-envelope float-right"></i>{{ infoEmployee?.parentCompany }}</li>
                         <li class="list-group-item"><i class="fa fa-envelope float-right"></i>{{ infoEmployee?.startDate }}</li>
-                        <li class="list-group-item"><i class="fa fa-envelope float-right"></i>{{ infoEmployee?.endDate }}</li>
+                        <li class="list-group-item" *ngIf="infoEmployee?.endDate"><i class="fa fa-envelope float-right"></i>{{ infoEmployee?.endDate }}</li>
                     </ul>
                     <div class="modal-footer">
                         <button type="button" id="" class="btn btn-secondary" data-dismiss="modal">Close</button>
