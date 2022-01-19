@@ -85,8 +85,9 @@ public class EmployeeDTO implements Serializable {
     }
 
     public String generateName() {
-        String sb = firstName.substring(0, 3) + lastName.substring(0, 3);
-        return sb.toLowerCase();
+        String user = firstName.substring(0, 3) + lastName.substring(0, 3);
+        String lowerCase = user.toLowerCase();
+        return org.apache.commons.lang3.StringUtils.stripAccents(lowerCase);
     }
 
     @Override
@@ -224,9 +225,4 @@ public class EmployeeDTO implements Serializable {
     public void setSystemStatus(SystemStatus systemStatus) {
         this.systemStatus = systemStatus;
     }
-
-    /*
-     * public String getImageURL() { return imageURL; } public void
-     * setImageURL(String imageURL) { this.imageURL = imageURL; }
-     */
 }
