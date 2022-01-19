@@ -1,3 +1,17 @@
+#HTTPS ignore
+employ-easy/src/main/resources/local-ssl.p12
+
+#Vacation ignore
+vacation/target/
+
+vacation/.classpath
+vacation/.project
+vacation/.settings/
+vacation/src/main/resources/application.properties
+
+#Temp ignore local profile image folder
+image/
+
 #Marius files
 .metadata/
 id_publickey
@@ -8,7 +22,6 @@ employ-easy/target/
 !employ-easy/.mvn/wrapper/maven-wrapper.jar
 !employ-easy/**/src/main/**/target/
 !employ-easy/**/src/test/**/target/
-employ-easy/src/main/java/resources/
 
 ### STS ###
 employ-easy/.apt_generated
@@ -65,7 +78,6 @@ employ-easy/HELP.md
 !employ-easy/.mvn/wrapper/maven-wrapper.jar
 !employ-easy/**/src/main/**/target/
 !employ-easy/**/src/test/**/target/
-employ-easy/src/main/java/resources/
 
 # Package Files #
 *.jar
