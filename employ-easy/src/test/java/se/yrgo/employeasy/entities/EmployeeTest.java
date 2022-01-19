@@ -87,8 +87,22 @@ class EmployeeTest {
 
     @ParameterizedTest
     @MethodSource("badStrings")
-    void userIdMustHaveLength10(final String testValue) {
+    void setUserIdMustHaveLength10(final String testValue) {
         assertTrue(testValue == null || testValue.length() != USER_ID.length());
         assertThrows(UnsupportedOperationException.class, () -> new Employee(dto, testValue));
+    }
+
+    @Test
+    void setUserIdMustBeLowerCase() {
+        Employee emp = new Employee();
+        emp.setUserId("MarMar1234");
+        assertEquals("marmar1234", emp.getUserId());
+    }
+
+    @Test
+    void setUserIdMustStripAccents() {
+        Employee emp = new Employee();
+        emp.setUserId("mårher5678");
+        assertEquals("marher5678", emp.getUserId());
     }
 }

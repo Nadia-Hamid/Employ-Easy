@@ -91,10 +91,12 @@ public class Employee {
                 street, zip, city, jobTitle, parentCompany,
                 startDate, endDate, employeeStatus, systemStatus
         );
+        final String prefix = firstName.substring(0, 3) + lastName.substring(0, 3);
         if(id < 0) {
-            setUserId(generateUserId(firstName, lastName));
+            String userId = prefix + generateSuffix();
+            setUserId(userId);
         } else {
-            setUserId(firstName.substring(0, 3) + lastName.substring(0, 3) + id);
+            setUserId(prefix + id);
             this.id = id;
         }
     }
@@ -108,12 +110,6 @@ public class Employee {
             ", parentCompany=" + parentCompany + ", startDate=" + startDate + ", endDate=" + endDate + 
             ", employeeStatus=" + employeeStatus + ", systemStatus=" + systemStatus + "]"
         );
-    }
-
-    //only for tests
-    private String generateUserId(String firstName, String lastName) {
-        String userId = firstName.substring(0, 3) + lastName.substring(0, 3) + generateSuffix();
-        return userId;
     }
 
     public static String generateSuffix() {
@@ -130,7 +126,8 @@ public class Employee {
         if(userId == null || userId.length() != 10) {
             throw new UnsupportedOperationException("Server error: UserId must be String with length 10!");
         }
-        this.userId = userId.toLowerCase();
+        String lowerCase = userId.toLowerCase();
+        this.userId = org.apache.commons.lang3.StringUtils.stripAccents(lowerCase);
     }
 
     public String getFirstName() { return firstName; }
