@@ -108,6 +108,7 @@ public class EmployeeController {
     }
 
 	/**
+	 * Delete employee existing in database otherwise returns 404 not found.
 	 * @param userId The userId of the employee to be deleted.
 	 */
 	@Operation(summary = "Delete an employee.")
@@ -125,6 +126,7 @@ public class EmployeeController {
 	}
 
     /**
+	 * Update an existing employee correctly.
      * @return Employee with updated data.
      * @param employeeDTO The new data that should be updated.
      */
@@ -148,6 +150,7 @@ public class EmployeeController {
     }
 
 	/**
+	 * Find single employee by its unique email.
 	 * @return Get the employee using provided email.
 	 * @param email The email searched for.
 	 */
