@@ -21,4 +21,11 @@ public class ResourceExceptionHandler {
         StandardError err = new StandardError(status.value(), "Old vacation date", e.getMessage());
         return ResponseEntity.status(status).body(err);
     }
+
+    @ExceptionHandler(DoubleBookedException.class)
+    public ResponseEntity<StandardError> doubleBooked(DoubleBookedException e) {
+        HttpStatus status = HttpStatus.CONFLICT;
+        StandardError err = new StandardError(status.value(), "Double booking not allowed!", e.getMessage());
+        return ResponseEntity.status(status).body(err);
+    }
 }

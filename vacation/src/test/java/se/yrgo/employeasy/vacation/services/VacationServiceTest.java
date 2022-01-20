@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import se.yrgo.employeasy.vacation.dto.ReservedDateDTO;
 import se.yrgo.employeasy.vacation.entities.VacationDate;
+import se.yrgo.employeasy.vacation.exceptions.DoubleBookedException;
 import se.yrgo.employeasy.vacation.exceptions.ObjectNotFoundException;
 import se.yrgo.employeasy.vacation.exceptions.TimeException;
 import se.yrgo.employeasy.vacation.repositories.DateRepository;
@@ -61,7 +62,7 @@ class VacationServiceTest {
         VacationDate vd = new VacationDate(JOB_TITLE, MID_SUMMER);
         vd.setUserId(USER_ID);
 
-        when(mockedDateRepository.findOpenDateByJobTitle(JOB_TITLE, MID_SUMMER)).thenReturn(List.of(vd));
+        when(mockedDateRepository.findByJobTitleOpenDate(JOB_TITLE, MID_SUMMER)).thenReturn(List.of(vd));
         when(mockedDateRepository.save(any(VacationDate.class))).thenReturn(vd);
         ReservedDateDTO result = vacationServiceTest.requestReservationUsingJobTitle(MID_SUMMER, USER_ID, JOB_TITLE);
         assertEquals(MID_SUMMER, result.getDate());
@@ -84,8 +85,20 @@ class VacationServiceTest {
         VacationDate vd = new VacationDate(JOB_TITLE, futureWorkDate);
         vd.setUserId(USER_ID);
 
-        when(mockedDateRepository.findOpenDateByJobTitle(JOB_TITLE, futureWorkDate)).thenReturn(new ArrayList<>());
+        when(mockedDateRepository.findByJobTitleOpenDate(JOB_TITLE, futureWorkDate)).thenReturn(new ArrayList<>());
         assertThrows(ObjectNotFoundException.class,
                 () -> vacationServiceTest.requestReservationUsingJobTitle(futureWorkDate, USER_ID, JOB_TITLE));
     }
+
+    @Test
+    void requestAlreadyBookedVacationDate() {
+        VacationDate vd = new VacationDate(JOB_TITLE, MID_SUMMER);
+        vd.setUserId(USER_ID);
+
+        when(mockedDateRepository.findByJobTitleOpenDate(JOB_TITLE, MID_SUMMER)).thenReturn(List.of(vd));
+        when(mockedDateRepository.hasAlreadyBooked(MID_SUMMER, USER_ID)).thenReturn(true);
+        assertThrows(DoubleBookedException.class,
+                () -> vacationServiceTest.requestReservationUsingJobTitle(MID_SUMMER, USER_ID, JOB_TITLE));
+    }
+
 }

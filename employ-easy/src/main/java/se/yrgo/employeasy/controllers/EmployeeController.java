@@ -13,11 +13,15 @@ import se.yrgo.employeasy.services.EmployeeService;
 
 import java.util.List;
 
+/**
+ * class EmployeeController
+ * abstract Controller class using rest api to send http to client.
+ * updated 2022-01-20
+ */
 @RestController("employeeController")
 @RequestMapping(value = "/v1/employees")
 public class EmployeeController {
 
-	@Autowired
 	private final EmployeeService employeeService;
 
 	@Autowired
@@ -108,6 +112,7 @@ public class EmployeeController {
     }
 
 	/**
+	 * Delete employee existing in database otherwise returns 404 not found.
 	 * @param userId The userId of the employee to be deleted.
 	 */
 	@Operation(summary = "Delete an employee.")
@@ -125,6 +130,7 @@ public class EmployeeController {
 	}
 
     /**
+	 * Update an existing employee correctly.
      * @return Employee with updated data.
      * @param employeeDTO The new data that should be updated.
      */
@@ -148,6 +154,7 @@ public class EmployeeController {
     }
 
 	/**
+	 * Find single employee by its unique email.
 	 * @return Get the employee using provided email.
 	 * @param email The email searched for.
 	 */

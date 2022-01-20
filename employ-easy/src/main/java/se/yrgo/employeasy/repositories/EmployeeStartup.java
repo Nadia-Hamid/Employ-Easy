@@ -9,6 +9,11 @@ import se.yrgo.employeasy.entities.enums.SystemStatus;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * class EmployeeStartup
+ * abstract Database initializer for employee domain.
+ * updated 2022-01-20
+ */
 @Component
 public class EmployeeStartup implements CommandLineRunner {
 
@@ -18,6 +23,10 @@ public class EmployeeStartup implements CommandLineRunner {
         this.employeeRepository = employeeRepository;
     }
 
+    /**
+     * Employees added during start up
+     * @param args Main arguments during start up.
+     */
     @Override
     public void run(String... args) {
         employeeRepository.saveAll(List.of(

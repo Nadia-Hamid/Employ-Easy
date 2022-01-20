@@ -11,8 +11,13 @@ import se.yrgo.employeasy.dto.EmployeeDTO;
 import se.yrgo.employeasy.entities.enums.EmployeeStatus;
 import se.yrgo.employeasy.entities.enums.SystemStatus;
 
+/**
+ * class Employee
+ * abstract Domain employee entity with db id where userId must be set during creation.
+ * updated 2022-01-20
+ */
 @Entity
-@Table(name = "Employee")
+@Table(name = "EMPLOYEE")
 public class Employee {
 
     @Id
@@ -112,6 +117,10 @@ public class Employee {
         );
     }
 
+    /**
+     * User name suffix number generator
+     * @return A string representation of a number between 0 and 9999 with fixed length 4.
+     */
     public static String generateSuffix() {
         return String.format("%04d", ThreadLocalRandom.current().nextInt(0, 9999 + 1));
     }
@@ -122,6 +131,11 @@ public class Employee {
 
     public String getUserId() { return userId; }
 
+    /**
+     * Set user id upon creation method to be saved in domain database.
+     * @throws UnsupportedOperationException when String is null or does not have length 10.
+     * @param userId UserId representation with length 10 saved in lower case without accents.
+     */
     public void setUserId(String userId) {
         if(userId == null || userId.length() != 10) {
             throw new UnsupportedOperationException("Server error: UserId must be String with length 10!");
@@ -172,6 +186,10 @@ public class Employee {
 
     public String getParentCompany() { return parentCompany; }
 
+    /**
+     * Sets parent company to lower case if not null.
+     * @param parentCompany Used for consultants who is employed in different company.
+     */
     public void setParentCompany(String parentCompany) {
         this.parentCompany = parentCompany == null ? null: parentCompany.toLowerCase();
     }
@@ -188,9 +206,15 @@ public class Employee {
         return EmployeeStatus.valueOf(employeeStatus);
     }
 
+    /**
+     * @throws NullPointerException if employeeStatus was null
+     * @param employeeStatus Enum representing employee status not accepting null.
+     */
     public void setEmployeeStatus(EmployeeStatus employeeStatus) {
         if (employeeStatus != null) {
             this.employeeStatus = employeeStatus.getCode();
+        } else {
+            throw new NullPointerException("Employee status cannot be null");
         }
     }
 
@@ -198,9 +222,15 @@ public class Employee {
         return SystemStatus.valueOf(systemStatus);
     }
 
+    /**
+     * @throws NullPointerException if systemStatus was null
+     * @param systemStatus Enum representing system status not accepting null.
+     */
     public void setSystemStatus(SystemStatus systemStatus) {
         if (systemStatus != null) {
             this.systemStatus = systemStatus.getCode();
+        } else {
+            throw new NullPointerException("System status cannot be null");
         }
     }
 }

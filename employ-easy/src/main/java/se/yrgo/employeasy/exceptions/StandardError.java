@@ -3,6 +3,11 @@ package se.yrgo.employeasy.exceptions;
 import java.io.Serializable;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
+/**
+ * class StandardError
+ * abstract DTO transfer object for exceptions
+ * updated 2022-01-20
+ */
 @ControllerAdvice
 public class StandardError implements Serializable {
 
@@ -25,4 +30,11 @@ public class StandardError implements Serializable {
         return error;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public String getMessage() {
+        return message;
+    }
 }

@@ -12,6 +12,11 @@ import se.yrgo.employeasy.exceptions.ConflictException;
 import se.yrgo.employeasy.exceptions.ObjectNotFoundException;
 import se.yrgo.employeasy.repositories.EmployeeRepository;
 
+/**
+ * class EmployeeService
+ * abstract Service klass with use cases connecting controller with databases.
+ * updated 2022-01-19
+ */
 @Service("employeeService")
 @Transactional
 public class EmployeeService {
@@ -23,6 +28,10 @@ public class EmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
+    /**
+     *  Find all employees in the database.
+     * @return A DTO of all employees in the database
+     */
     public List<EmployeeDTO> findAll() {
         return employeeRepository.findAll().stream().map(EmployeeDTO::new).collect(Collectors.toList());
     }
@@ -31,6 +40,11 @@ public class EmployeeService {
         return new EmployeeDTO(employee);
     }
 
+    /**
+     * Register a new Employee.
+     * @return A DTO representational employee in the database.
+     * @param employeeDTO Representational entity of an Employee
+     */
     public EmployeeDTO addEmployee(EmployeeDTO employeeDTO) {
         final String newEmail = employeeDTO.getEmail();
         if(employeeRepository.findByEmail(newEmail).size() > 0){
@@ -48,6 +62,11 @@ public class EmployeeService {
         return dto(employee);
     }
 
+    /**
+     * Find an Employee by its user id.
+     * @return The entity employee in the database
+     * @param userId String of an user's id
+     */
     Employee getEmployeeByUserId(String userId) {
         Employee entity = employeeRepository.findEmployeeByUserId(userId.toLowerCase());
         if(entity == null){
@@ -56,10 +75,20 @@ public class EmployeeService {
         return entity;
     }
 
+    /**
+     * Find an Employee entity by its user id.
+     * @return A DTO employee in the database
+     * @param userId String of an user's id
+     */
     public EmployeeDTO getByUserId(String userId) {
         return dto(getEmployeeByUserId(userId));
     }
 
+    /**
+     * Update an employee in the database.
+     * @return A DTO representation of the employee in the database
+     * @param employeeDTO Data that was requested to be updated.
+     */
     public EmployeeDTO updateEmployee(EmployeeDTO employeeDTO) {
         Employee emp = getEmployeeByUserId(employeeDTO.getUserId());
         Employee updatedEmployee = new Employee(employeeDTO, emp.getId());
@@ -67,11 +96,20 @@ public class EmployeeService {
         return dto(employee);
     }
 
+    /**
+     * Delete an employee in the database.
+     * @param userId A String with the user's id to be deleted
+     */
     public void deleteEmployee(String userId) {
         Employee employee = getEmployeeByUserId(userId);
         employeeRepository.delete(employee);
     }
 
+    /**
+     * Find an employee by its email.
+     * @return A DTO representation of the employee in the database
+     * @param email A String with the user's email
+     */
     public EmployeeDTO findByEmail(String email) {
         if(email == null) {
             throw new NullPointerException("Null email value not allowed!");
@@ -94,6 +132,11 @@ public class EmployeeService {
         return dto(getEmployeeByEmail.get(0));
     }
 
+    /**
+     * Find employees by their job title.
+     * @return A DTO List of employees in the database
+     * @param jobTitle String with a job title
+     */
     public List<EmployeeDTO> findByJobTitle(String jobTitle) {
         return employeeRepository
                 .findByJobTitle(jobTitle.toLowerCase())

@@ -26,5 +26,8 @@ public class StandardError implements Serializable {
         return error;
     }
 
+    public Integer getStatus() { return status; }
+
+    public String getMessage() { return message; }
 }
 
