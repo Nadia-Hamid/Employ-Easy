@@ -61,13 +61,13 @@ public class VacationService {
     
 	public OpenDateDTO addVacation(OpenDateDTO booking) {
 		
-        List<VacationDate> openDates = dateRepository.findByJobTitle("developer");
-//        		.findByJobTitleOpenDate(booking.getJobTitle(), booking.getDate()); 
+		VacationDate vd = new VacationDate(booking.getUserId(), booking.getDate(), booking.getJobTitle());
+        List<VacationDate> openDates = dateRepository.findByJobTitleOpenDate(vd.getJobTitle(), vd.getDate());
         
         if(openDates.isEmpty()) { throw new ObjectNotFoundException("No open dates"); }
         
         long id = openDates.stream().filter(p -> p.getUserId().equals("")).findFirst().orElse(null).getId();
-        VacationDate vd = dateRepository.getById(id);
+        vd = dateRepository.getById(id);
         vd.setUserId(booking.getUserId());
 		dateRepository.save(vd);
 		return new OpenDateDTO(vd);

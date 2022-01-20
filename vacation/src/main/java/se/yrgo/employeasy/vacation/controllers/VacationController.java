@@ -68,7 +68,7 @@ public class VacationController {
     /**
      * @return Object confirmation with date data.
      */
-    @Operation(summary = "Book a date into vacation schedule.")
+    @Operation(summary = "Book a vacation date.")
     @ApiResponses(value = {
     		@ApiResponse(responseCode = "200", description = "Booking successfully completed.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = OpenDateDTO.class))),
     		@ApiResponse(responseCode = "400", description = "Illegal or corrupted data for request"),
