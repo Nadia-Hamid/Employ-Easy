@@ -1,13 +1,17 @@
 package se.yrgo.employeasy.dto;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
 
+/**
+ * class UserDTO
+ * abstract User transfer object for exposing username and role to frontend.
+ * updated 2022-01-20
+ */
 public class UserDTO implements Serializable {
 
     private final String username;

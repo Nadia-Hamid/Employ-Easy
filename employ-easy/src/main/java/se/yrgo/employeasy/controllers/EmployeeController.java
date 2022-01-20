@@ -13,11 +13,15 @@ import se.yrgo.employeasy.services.EmployeeService;
 
 import java.util.List;
 
+/**
+ * class EmployeeController
+ * abstract Controller class using rest api to send http to client.
+ * updated 2022-01-20
+ */
 @RestController("employeeController")
 @RequestMapping(value = "/v1/employees")
 public class EmployeeController {
 
-	@Autowired
 	private final EmployeeService employeeService;
 
 	@Autowired

@@ -6,9 +6,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
- * @class PasswordConfig
- * @abstract Encrypts passwords using BCrypt encoder.
- * @updated 2022-01-19
+ * class PasswordConfig
+ * abstract Encrypts passwords using BCrypt encoder.
+ * updated 2022-01-19
  */
 @Configuration
 public class PasswordConfig {

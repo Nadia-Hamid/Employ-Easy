@@ -13,9 +13,9 @@ import se.yrgo.employeasy.exceptions.ObjectNotFoundException;
 import se.yrgo.employeasy.repositories.EmployeeRepository;
 
 /**
- * @class EmployeeService
- * @abstract Service klass with use cases connecting controller with databases.
- * @updated 2022-01-19
+ * class EmployeeService
+ * abstract Service klass with use cases connecting controller with databases.
+ * updated 2022-01-19
  */
 @Service("employeeService")
 @Transactional

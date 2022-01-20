@@ -7,9 +7,9 @@ import org.springframework.data.repository.query.Param;
 import se.yrgo.employeasy.entities.Employee;
 
 /**
- * @class EmployeeRepository
- * @abstract Jpa Repository extension for Employee entities able to find employees by job, email and userid.
- * @updated 2022-01-19
+ * class EmployeeRepository
+ * abstract Jpa Repository extension for Employee entities able to find employees by job, email and userid.
+ * updated 2022-01-19
  */
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     @Query(value = "SELECT employee.* emp FROM EMPLOYEE WHERE employee.job_title = ?1", nativeQuery = true)

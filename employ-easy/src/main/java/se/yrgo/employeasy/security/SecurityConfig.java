@@ -15,9 +15,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 /**
- * @class PasswordConfig
- * @abstract Security Configuration and CorsFilter for Login.
- * @updated 2022-01-19
+ * class PasswordConfig
+ * abstract Security Configuration and CorsFilter for Login.
+ * updated 2022-01-19
  */
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
