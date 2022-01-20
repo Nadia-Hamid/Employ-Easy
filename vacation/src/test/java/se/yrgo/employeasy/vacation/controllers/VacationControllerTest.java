@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import se.yrgo.employeasy.vacation.dto.OpenDateDTO;
 import se.yrgo.employeasy.vacation.dto.ReservedDateDTO;
+import se.yrgo.employeasy.vacation.exceptions.DoubleBookedException;
 import se.yrgo.employeasy.vacation.exceptions.ObjectNotFoundException;
 import se.yrgo.employeasy.vacation.exceptions.TimeException;
 import se.yrgo.employeasy.vacation.services.VacationService;
@@ -82,11 +83,10 @@ public class VacationControllerTest {
 
 	@Test
 	void reserveVacationFutureDateAsUser() throws Exception {
-		LocalDate requestedDate = MID_SUMMER;
-		ReservedDateDTO dto = new ReservedDateDTO(requestedDate, USER_ID);
+		ReservedDateDTO dto = new ReservedDateDTO(MID_SUMMER, USER_ID);
 
-		LOGGER.info(LOG_DATE + requestedDate);
-		when(service.requestReservationUsingJobTitle(requestedDate, USER_ID, JOB_TITLE)).thenReturn(dto);
+		LOGGER.info(LOG_DATE + MID_SUMMER);
+		when(service.requestReservationUsingJobTitle(MID_SUMMER, USER_ID, JOB_TITLE)).thenReturn(dto);
 
 		MvcResult mvcResult = this.mockMvc
 				.perform(MockMvcRequestBuilders.put(URL + JOB_TITLE)
@@ -127,6 +127,21 @@ public class VacationControllerTest {
 				.perform(put(URL + JOB_TITLE).content(objectMapper.writeValueAsString(dto))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound()).andReturn();
 		assertEquals("{\"error\":\"Not Found\"}", mvcResult.getResponse().getContentAsString());
+	}
+
+	@Test
+	void doubleBookingVacationAsUserShouldNotBeAllowed() throws Exception  {
+		ReservedDateDTO dto = new ReservedDateDTO(MID_SUMMER, USER_ID);
+
+		LOGGER.info(LOG_DATE + MID_SUMMER);
+		when(service.requestReservationUsingJobTitle(MID_SUMMER, USER_ID, JOB_TITLE))
+				.thenThrow(new DoubleBookedException("A single user can only book a date once"));
+
+		this.mockMvc.perform(MockMvcRequestBuilders.put(URL + JOB_TITLE)
+						.content(objectMapper.writeValueAsString(dto))
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.CONFLICT.value()))
+				.andReturn();
 	}
 
 }
