@@ -12,7 +12,8 @@ import java.util.List;
 @Repository
 public interface DateRepository extends JpaRepository<VacationDate, Long> {
 
-    @Query(value = "SELECT * FROM VACATIONDATE WHERE VACATIONDATE.job_title = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM VACATIONDATE WHERE VACATIONDATE.job_title = ?1 AND VACATIONDATE.user_id IS NULL"
+            , nativeQuery = true)
     List<VacationDate> findByJobTitle(@Param(value = "jobTitle") String jobTitle);
 
     @Query(value = "SELECT * FROM VACATIONDATE WHERE VACATIONDATE.job_title = ?1" +
