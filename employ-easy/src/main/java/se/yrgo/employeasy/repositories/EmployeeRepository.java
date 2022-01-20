@@ -12,10 +12,10 @@ import se.yrgo.employeasy.entities.Employee;
  * updated 2022-01-19
  */
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
-    @Query(value = "SELECT employee.* emp FROM EMPLOYEE WHERE employee.job_title = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM EMPLOYEE e WHERE e.job_title = ?1", nativeQuery = true)
     List<Employee> findByJobTitle(@Param(value = "jobTitle") String jobTitle);
 
-    @Query(value = "SELECT employee.* emp FROM EMPLOYEE WHERE employee.email = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM EMPLOYEE e WHERE e.email = ?1", nativeQuery = true)
     List<Employee> findByEmail(@Param(value = "email") String email);
 
     @Query(value = "SELECT * FROM EMPLOYEE e WHERE e.user_id = ?1", nativeQuery = true)

@@ -16,6 +16,11 @@ import se.yrgo.employeasy.services.LoginService;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
+/**
+ * class LoginController
+ * abstract Controller class using rest api to send http to client.
+ * updated 2022-01-20
+ */
 @RestController("loginController")
 @RequestMapping(value = "/v1/")
 public class LoginController {
@@ -28,14 +33,16 @@ public class LoginController {
     }
 
     /**
-     * @return Get user from its user details.
+     * Get greeting for internet user.
+     * @return Greeting string based on username.
+     * @param username Internet username
      */
     @Operation(summary = "Get user details.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved the user",
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the greeting",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = UserDTO.class))),
-            @ApiResponse(responseCode = "401", description = "Authorization required to fetch the user",
+            @ApiResponse(responseCode = "401", description = "Authorization required to fetch the greeting",
                     content = @Content),
             @ApiResponse(responseCode = "403",
                     description = "Accessing the resource you were trying to reach is forbidden", content = @Content) })
@@ -45,7 +52,9 @@ public class LoginController {
     }
 
     /**
-     * @return Get user from its user details.
+     * Get https session token for current user
+     * @param session Current http session
+     * @return JSON with property token and value.
      */
     @Operation(summary = "Get user details.")
     @ApiResponses(value = {
@@ -61,7 +70,9 @@ public class LoginController {
     }
 
     /**
-     * @return Get user from its user details.
+     *
+     * Get current login username and role.
+     * @return Simplified object user for detecting user role.
      */
     @Operation(summary = "Get user details.")
     @ApiResponses(value = {
