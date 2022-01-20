@@ -1,0 +1,41 @@
+<div class="container" id="main-container">
+    <div class="row">
+        <div *ngFor="let employee of employees" class="col-md-6 col-xl-3">
+            <div class="card m-b-30">
+                <div class="card-body row">
+                    <div class="col-4">
+                        <a href=""><img src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png"
+                                alt="" class="img-fluid rounded-circle w-60" /></a>
+                    </div>
+                    <div class="col-8 card-title align-self-center mb-0" a (click)="onOpenModal(employee, 'info')" style="cursor: pointer">
+                        <h5>{{ employee?.firstName }}</h5>
+                        <h5>{{ employee?.lastName }}</h5>
+                        <p class="m-0">{{ employee?.jobTitle }}</p>
+                    </div>
+                </div>
+                <ul class="list-group list-group-flush" a (click)="onOpenModal(employee, 'info')" style="cursor: pointer">
+                    <li class="list-group-item">
+                        <i class="fa fa-envelope float-right"></i>{{ employee?.email }}
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fa fa-phoneNumber float-right"></i>phone : {{ employee?.phoneNumber }}
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fa fa-phoneNumber float-right"></i>Status : {{ employee?.employeeStatus }}
+                    </li>
+                </ul>
+                <div class="card-body">
+                    <div class="float-right btn-group btn-group-sm">
+                        <a class="btn btn-primary tooltips" a (click)="onOpenModal(employee, 'edit')"
+                            data-placement="top" data-original-title="Edit"><i class="fa fa-pencil"></i>
+                        </a>
+                        <a class="btn btn-secondary tooltips" a (click)="onOpenModal(employee, 'delete')"
+                            data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <info-modal [infoEmployee]="infoEmployee"></info-modal>
+    <update-modal [editEmployee]="editEmployee"></update-modal>
+    <delete-modal [deleteEmployee]="deleteEmployee"></delete-modal>
