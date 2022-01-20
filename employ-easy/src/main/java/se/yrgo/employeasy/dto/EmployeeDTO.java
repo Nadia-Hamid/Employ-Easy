@@ -8,6 +8,11 @@ import se.yrgo.employeasy.entities.Employee;
 import se.yrgo.employeasy.entities.enums.EmployeeStatus;
 import se.yrgo.employeasy.entities.enums.SystemStatus;
 
+/**
+ * class EmployeeDTO
+ * abstract Employee transfer object where userId can be null when posting.
+ * updated 2022-01-20
+ */
 public class EmployeeDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -23,29 +28,16 @@ public class EmployeeDTO implements Serializable {
     private String city;
     private String jobTitle;
     private LocalDate startDate;
+    private EmployeeStatus employeeStatus;
+    private SystemStatus systemStatus;
     // Optional fields
     private String parentCompany;
     private LocalDate endDate;
-    private EmployeeStatus employeeStatus;
-    private SystemStatus systemStatus;
-    // private String imageURL;
 
-    // , String imageURL
     public EmployeeDTO(
-        String firstName,
-        String lastName,
-        String personalNumber,
-        String email,
-        String phoneNumber,
-        String street,
-        String zip,
-        String city,
-        String jobTitle,
-        String parentCompany,
-        LocalDate startDate,
-        LocalDate endDate,
-        EmployeeStatus employeeStatus,
-        SystemStatus systemStatus
+        String firstName, String lastName, String personalNumber, String email, String phoneNumber,
+        String street, String zip, String city, String jobTitle, String parentCompany,
+        LocalDate startDate, LocalDate endDate, EmployeeStatus employeeStatus, SystemStatus systemStatus
     ) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -59,31 +51,23 @@ public class EmployeeDTO implements Serializable {
         this.parentCompany = parentCompany;
         this.startDate = startDate;
         this.endDate = endDate;
-        // this.imageURL = imageURL;
         setEmployeeStatus(employeeStatus);
         setSystemStatus(systemStatus);
     }
 
-    public EmployeeDTO(Employee employee) {
+    public EmployeeDTO(Employee emp) {
         this(
-                employee.getFirstName(),
-                employee.getLastName(),
-                employee.getPersonalNumber(),
-                employee.getEmail(),
-                employee.getPhoneNumber(),
-                employee.getStreet(),
-                employee.getZip(),
-                employee.getCity(),
-                employee.getJobTitle(),
-                employee.getParentCompany(),
-                employee.getStartDate(),
-                employee.getEndDate(),
-                employee.getEmployeeStatus(),
-                employee.getSystemStatus()
+                emp.getFirstName(), emp.getLastName(), emp.getPersonalNumber(), emp.getEmail(), emp.getPhoneNumber(),
+                emp.getStreet(), emp.getZip(), emp.getCity(), emp.getJobTitle(), emp.getParentCompany(),
+                emp.getStartDate(), emp.getEndDate(), emp.getEmployeeStatus(), emp.getSystemStatus()
         );
-        this.userId = employee.getUserId();
+        this.userId = emp.getUserId();
     }
 
+    /**
+     * Method for generating prefix used for creating userIds for Employee entity.
+     * @return A lower case string stripped of accents three first letters each from first and last name.
+     */
     public String generateName() {
         String user = firstName.substring(0, 3) + lastName.substring(0, 3);
         String lowerCase = user.toLowerCase();
@@ -139,6 +123,11 @@ public class EmployeeDTO implements Serializable {
         return email;
     }
 
+    /**
+     * Setter method where email is probably unique.
+     * @throws NullPointerException when email is null
+     * @param email
+     */
     public void setEmail(String email) {
         if(email == null){
             throw new NullPointerException("Null email value not allowed!");

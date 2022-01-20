@@ -1,5 +1,10 @@
 package se.yrgo.employeasy.entities.enums;
 
+/**
+ * class SystemStatus
+ * abstract Status codes describing the role of the employee. Use higher values when archiving.
+ * updated 2022-01-20
+ */
 public enum SystemStatus {
     SYSTEM_ADMIN(1),
     USER(2);
@@ -10,10 +15,18 @@ public enum SystemStatus {
         this.code = code;
     }
 
+    /**
+     @return System status integer representation.
+     */
     public int getCode() {
         return code;
     }
 
+    /**
+     * @throws IllegalArgumentException when status code is invalid.
+     * @param code System status integer representation.
+     * @return SystemStatus type representation of integer.
+     */
     public static SystemStatus valueOf(int code) {
         for (SystemStatus value : SystemStatus.values()) {
             if (value.getCode() == code) {
