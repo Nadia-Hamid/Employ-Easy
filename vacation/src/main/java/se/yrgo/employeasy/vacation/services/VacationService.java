@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import se.yrgo.employeasy.vacation.dto.OpenDateDTO;
 import se.yrgo.employeasy.vacation.dto.ReservedDateDTO;
 import se.yrgo.employeasy.vacation.entities.VacationDate;
+import se.yrgo.employeasy.vacation.exceptions.DoubleBookedException;
 import se.yrgo.employeasy.vacation.exceptions.ObjectNotFoundException;
 import se.yrgo.employeasy.vacation.exceptions.TimeException;
 import se.yrgo.employeasy.vacation.repositories.DateRepository;
@@ -40,10 +41,13 @@ public class VacationService {
         if(date.isBefore(LocalDate.now())) {
             throw new TimeException("Vacation date " + date + " needs to be in the future.");
         }
-        var openDates = dateRepository.findOpenDateByJobTitle(jobTitle, date);
+        var openDates = dateRepository.findByJobTitleOpenDate(jobTitle, date);
         if(openDates.isEmpty()) {
             throw new ObjectNotFoundException("No open dates with user " + userId + " was found.");
         } else {
+            if(dateRepository.hasAlreadyBooked(date, userId)) {
+                throw new DoubleBookedException("A single user can only book a date once");
+            }
             int randomElementIndex = ThreadLocalRandom.current().nextInt(openDates.size());
             var update = openDates.get(randomElementIndex);
             update.setUserId(userId);
