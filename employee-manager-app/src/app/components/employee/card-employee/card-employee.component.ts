@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core'
 import { HttpErrorResponse } from '@angular/common/http'
 import { EmployeeService } from '../../../services/employee.service'
 import { Employee } from '../employee'
-import { ModalService } from 'src/app/services/modal.service'
 
 @Component({ templateUrl: 'card-employee.component.html', selector: 'card' })
 export class CardComponent implements OnInit {

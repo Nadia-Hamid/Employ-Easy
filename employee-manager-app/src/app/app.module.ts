@@ -14,6 +14,7 @@ import { UpdateModalComponent } from './components/employee/update-employee/upda
 import { AddModalComponent } from './components/employee/add-employee/add-modal.component';
 import { CardComponent } from './components/employee/card-employee/card-employee.component';
 import { DeleteModalComponent } from './components/employee/delete-employee/delete-modal.component';
+import { VacationComponent } from './components/user-employee/book-vacation.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { DeleteModalComponent } from './components/employee/delete-employee/dele
     UpdateModalComponent,
     AddModalComponent,
     CardComponent,
-    DeleteModalComponent
+    DeleteModalComponent,
+    VacationComponent
   ],
   imports: [
     BrowserModule,
@@ -39,4 +41,4 @@ import { DeleteModalComponent } from './components/employee/delete-employee/dele
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

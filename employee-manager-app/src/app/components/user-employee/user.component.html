@@ -1,4 +1,4 @@
-<header-navbar></header-navbar> 
+<header-navbar *ngIf="employeeLoaded" [jobTitle]="employee?.jobTitle"></header-navbar>
 <div class="container" id="main-container">
     <h5 class="main-hello">Hello {{ employee?.firstName }} !</h5>
     <div class="row justify-content-center align-items-center">
@@ -27,7 +27,7 @@
                     <li class="list-group-item"><i class="fa fa-envelope float-right"></i>City: {{ employee?.city }}</li>
                     <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Personal Number: {{ employee?.personalNumber }}</li>
                     <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Start Date: {{ employee?.startDate }}</li>
-                    <li class="list-group-item"><i class="fa fa-envelope float-right"></i>End Date: {{ employee?.endDate }}</li>
+                    <li class="list-group-item" *ngIf="employee?.endDate"><i class="fa fa-envelope float-right"></i>End Date: {{ employee?.endDate }}</li>
                     <li class="list-group-item">
                       <!---  <i class="fa fa-phoneNumber float-right"></i>Phone : {{ employee?.phoneNumber }} -->
                     </li>

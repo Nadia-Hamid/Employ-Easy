@@ -7,6 +7,7 @@ import se.yrgo.employeasy.vacation.entities.VacationDate;
 import java.time.LocalDate;
 import java.util.List;
 
+
 @Component
 public class UserStartup implements CommandLineRunner {
 
@@ -20,6 +21,7 @@ public class UserStartup implements CommandLineRunner {
     public void run(String... args) {
         dateRepository.saveAll(List.of(
             new VacationDate("developer", LocalDate.of(2022, 6, 20)),
+            	new VacationDate("developer", LocalDate.of(2022, 6, 20)),
                 new VacationDate("developer", LocalDate.of(2022, 6, 21)),
                 new VacationDate("developer", LocalDate.of(2022, 6, 22))
         ));

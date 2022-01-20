@@ -12,7 +12,7 @@ export class AddModalComponent implements OnInit {
     ngOnInit(): void {
     }
 
-    constructor(private employeeService: EmployeeService, private modalService: ModalService) {}
+    constructor(private employeeService: EmployeeService) {}
 
     public onAddEmployee(addForm: NgForm): void {
         document.getElementById('add-employee-form')?.click()

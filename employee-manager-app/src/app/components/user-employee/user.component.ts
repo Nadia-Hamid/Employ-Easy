@@ -7,6 +7,7 @@ import { HttpErrorResponse } from '@angular/common/http'
 @Component({ templateUrl: 'user.component.html', styleUrls: ['./user.component.css'] })
 export class UserComponent implements OnInit {
   public employee?: Employee
+  public employeeLoaded: boolean = false
 
   constructor(private router: Router, private employeeService: EmployeeService) {}
 
@@ -22,6 +23,8 @@ export class UserComponent implements OnInit {
     this.employeeService.getOneEmployee(localStorage.getItem('userName')).subscribe(
       (response: Employee) => {
         this.employee = response
+        this.employeeLoaded = true;
+        
       },
       (error: HttpErrorResponse) => {
         alert(error.message)

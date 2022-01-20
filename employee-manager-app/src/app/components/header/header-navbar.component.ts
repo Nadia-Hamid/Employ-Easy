@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, Input, OnInit } from '@angular/core'
 import { ModalService } from 'src/app/services/modal.service'
-import { Employee } from '../employee/employee'
 
 @Component({ templateUrl: 'header-navbar.component.html', selector: 'header-navbar', styleUrls: ['./header-navbar.component.css'] })
 
 export class NavbarComponent implements OnInit {
+    public userRole: String = localStorage.getItem('userRole')
+    @Input()public jobTitle: String
 
+    constructor(private modalService: ModalService) {}
+    
     ngOnInit() {
     }
-      constructor(private modalService: ModalService) {}
-
       onOpenModal(mode: string) {
       this.modalService.onOpenModal(mode)
     }
