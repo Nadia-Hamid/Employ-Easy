@@ -94,7 +94,7 @@ class VacationServiceTest {
 
 		VacationDate od = new VacationDate("nadham31", LocalDate.of(2022, 6, 1), "developer");
 		OpenDateDTO odd = new OpenDateDTO("nadham31", LocalDate.of(2022, 6, 1), "developer");
-		when(mockedDateRepository.addVacationDate("nadham31", LocalDate.of(2022, 6, 1), "developer")).thenReturn(od);
+//		doNothing.when(mockedDateRepository.addVacationDate("nadham31", LocalDate.of(2022, 6, 1), "developer"));
 
 		OpenDateDTO odd2 = vacationServiceTest.addVacation(odd);
 

@@ -68,13 +68,13 @@ public class VacationController {
     /**
      * @return Object confirmation with date data.
      */
-    @Operation(summary = "Post a date into vacation schedule.")
+    @Operation(summary = "Book a date into vacation schedule.")
     @ApiResponses(value = {
     		@ApiResponse(responseCode = "200", description = "Booking successfully completed.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = OpenDateDTO.class))),
     		@ApiResponse(responseCode = "400", description = "Illegal or corrupted data for request"),
     		@ApiResponse(responseCode = "404", description = "The resource you were trying to update was not found"),
     		@ApiResponse(responseCode = "500", description = "Internal server error or unavailability.") })
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.PUT)
     public OpenDateDTO vacationBooking(@RequestBody OpenDateDTO openDate) {
     	return vacationService.addVacation(openDate);
     }

@@ -26,9 +26,9 @@ public interface DateRepository extends JpaRepository<VacationDate, Long> {
 			+ "VACATIONDATE v WHERE v.date = ?1 AND v.user_id = ?2", nativeQuery = true)
 	Boolean hasAlreadyBooked(@Param(value = "date") LocalDate date, @Param(value = "userId") String userId);
 
-	@Query(value = "UPDATE vacation v SET v.user_id = ?1 WHERE v.date = (cast(?2 as Date))"
-			+ " AND v.user_id IS NULL AND v.job_title = ?3", nativeQuery = true)
-	VacationDate addVacationDate(@Param(value = "userId") String userId, @Param(value = "date") LocalDate date,
-			@Param(value = "jobTitle") String jobTitle);
+//	@Transactional
+//	@Modifying(clearAutomatically = true)
+//	@Query(value = "UPDATE VACATIONDATE v SET v.user_id = :userId WHERE v.id = :id", nativeQuery = true)
+//	void addVacationDate(@Param(value = "userId") String userId, @Param(value = "id") long id);
 
 }

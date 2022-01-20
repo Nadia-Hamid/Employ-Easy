@@ -1,11 +1,14 @@
 package se.yrgo.employeasy.vacation.services;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
+import org.hibernate.jpa.TypedParameterValue;
+import org.hibernate.type.PostgresUUIDType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -57,10 +60,16 @@ public class VacationService {
     }
     
 	public OpenDateDTO addVacation(OpenDateDTO booking) {
-
-		VacationDate newBooking = new VacationDate(booking);
-		newBooking = dateRepository.addVacationDate(newBooking.getUserId(), newBooking.getDate(),
-				newBooking.getJobTitle());
-		return new OpenDateDTO(newBooking);
+		
+        List<VacationDate> openDates = dateRepository.findByJobTitle("developer");
+//        		.findByJobTitleOpenDate(booking.getJobTitle(), booking.getDate()); 
+        
+        if(openDates.isEmpty()) { throw new ObjectNotFoundException("No open dates"); }
+        
+        long id = openDates.stream().filter(p -> p.getUserId().equals("")).findFirst().orElse(null).getId();
+        VacationDate vd = dateRepository.getById(id);
+        vd.setUserId(booking.getUserId());
+		dateRepository.save(vd);
+		return new OpenDateDTO(vd);
 	}
 }

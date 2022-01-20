@@ -16,22 +16,22 @@ import se.yrgo.employeasy.vacation.dto.OpenDateDTO;
 
 @Entity
 @Table(name = "VACATIONDATE")
-public class VacationDate implements Serializable{
+public class VacationDate implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-    private String jobTitle;
-    private LocalDate date;
-    private String userId;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long id;
+	private String jobTitle;
+	private LocalDate date;
+	private String userId;
 
-    public VacationDate(String jobTitle, LocalDate date) {
-        this.jobTitle = jobTitle;
-        this.date = date;
-    }
+	public VacationDate(String jobTitle, LocalDate date) {
+		this.jobTitle = jobTitle;
+		this.date = date;
+	}
 
-    public VacationDate(String userId, LocalDate localDate, String jobTitle) {
+	public VacationDate(String userId, LocalDate localDate, String jobTitle) {
 		this.userId = userId;
 		this.date = localDate;
 		this.jobTitle = jobTitle;
@@ -43,57 +43,58 @@ public class VacationDate implements Serializable{
 		this.jobTitle = dto.getJobTitle();
 	}
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 
-    public VacationDate() {}
+	public VacationDate() {
+	}
 
-    public long getId() {
-        return id;
-    }
+	public void setId(long id) {
+		this.id = id;
+	}
 
-    public String getJobTitle() {
-        return jobTitle;
-    }
+	public long getId() {
+		return id;
+	}
 
-    public LocalDate getDate() {
-        return date;
-    }
+	public String getJobTitle() {
+		return jobTitle;
+	}
 
-    public String getUserId() {
-        return userId;
-    }
+	public LocalDate getDate() {
+		return date;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
+	public String getUserId() {
+		return userId;
+	}
 
-        if (o == null || getClass() != o.getClass()) return false;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
 
-        VacationDate that = (VacationDate) o;
+		if (o == null || getClass() != o.getClass())
+			return false;
 
-        if (userId == null) {
-            return new EqualsBuilder()
-                    .append(id, that.id).append(jobTitle, that.jobTitle).append(date, that.date)
-                    .isEquals();
-        } else {
-            return new EqualsBuilder()
-                    .append(jobTitle, that.jobTitle).append(date, that.date).append(userId, that.userId)
-                    .isEquals();
-        }
-    }
+		VacationDate that = (VacationDate) o;
 
-    @Override
-    public int hashCode() {
-        if (userId == null) {
-            return new HashCodeBuilder(17, 37)
-                    .append(id).append(jobTitle).append(date)
-                    .toHashCode();
-        } else {
-            return new HashCodeBuilder(17, 37)
-                    .append(jobTitle).append(date).append(userId)
-                    .toHashCode();
-        }
-    }
+		if (userId == null) {
+			return new EqualsBuilder().append(id, that.id).append(jobTitle, that.jobTitle).append(date, that.date)
+					.isEquals();
+		} else {
+			return new EqualsBuilder().append(jobTitle, that.jobTitle).append(date, that.date)
+					.append(userId, that.userId).isEquals();
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		if (userId == null) {
+			return new HashCodeBuilder(17, 37).append(id).append(jobTitle).append(date).toHashCode();
+		} else {
+			return new HashCodeBuilder(17, 37).append(jobTitle).append(date).append(userId).toHashCode();
+		}
+	}
 }
