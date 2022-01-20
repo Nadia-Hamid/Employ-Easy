@@ -18,6 +18,11 @@ public interface DateRepository extends JpaRepository<VacationDate, Long> {
 
     @Query(value = "SELECT * FROM VACATIONDATE WHERE VACATIONDATE.job_title = ?1" +
             " AND VACATIONDATE.date = ?2 AND VACATIONDATE.user_id IS NULL", nativeQuery = true)
-    List<VacationDate> findOpenDateByJobTitle(@Param(value = "jobTitle") String jobTitle,
+    List<VacationDate> findByJobTitleOpenDate(@Param(value = "jobTitle") String jobTitle,
                                               @Param(value = "date") LocalDate date);
+
+    @Query(value = "SELECT CASE WHEN COUNT(v) > 0 THEN true ELSE false END FROM "
+            + "VACATIONDATE v WHERE v.date = ?1 AND v.user_id = ?2"
+            , nativeQuery = true)
+    Boolean hasAlreadyBooked(@Param(value = "date") LocalDate date, @Param(value = "userId") String userId);
 }
