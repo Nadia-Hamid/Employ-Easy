@@ -1,3 +1,6 @@
+#Resources ignore
+employ-easy/src/main/resources/
+
 #Vacation ignore
 vacation/target/
 
