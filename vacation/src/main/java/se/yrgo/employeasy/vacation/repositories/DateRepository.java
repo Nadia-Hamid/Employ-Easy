@@ -25,10 +25,4 @@ public interface DateRepository extends JpaRepository<VacationDate, Long> {
 	@Query(value = "SELECT CASE WHEN COUNT(v) > 0 THEN true ELSE false END FROM "
 			+ "VACATIONDATE v WHERE v.date = ?1 AND v.user_id = ?2", nativeQuery = true)
 	Boolean hasAlreadyBooked(@Param(value = "date") LocalDate date, @Param(value = "userId") String userId);
-
-//	@Transactional
-//	@Modifying(clearAutomatically = true)
-//	@Query(value = "UPDATE VACATIONDATE v SET v.user_id = :userId WHERE v.id = :id", nativeQuery = true)
-//	void addVacationDate(@Param(value = "userId") String userId, @Param(value = "id") long id);
-
 }
