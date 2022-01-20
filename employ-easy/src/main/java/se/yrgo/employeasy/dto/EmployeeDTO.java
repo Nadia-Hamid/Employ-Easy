@@ -126,7 +126,7 @@ public class EmployeeDTO implements Serializable {
     /**
      * Setter method where email is probably unique.
      * @throws NullPointerException when email is null
-     * @param email
+     * @param email String with @ sign not null.
      */
     public void setEmail(String email) {
         if(email == null){

@@ -91,6 +91,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * Cors filter for ports. Only Angular frontend should have access (4200)
+     * @return Current cors filter.
      */
     @Bean
     public CorsFilter corsFilter() {
