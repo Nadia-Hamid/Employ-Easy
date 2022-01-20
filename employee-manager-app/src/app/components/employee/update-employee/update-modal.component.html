@@ -1,0 +1,102 @@
+<div class="modal fade" id="updateEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="updateEmployeeModal"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="updateEmployeeModal">Update Employee</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form #editForm="ngForm">
+                <div class="form-group">
+                    <input ngModel="{{editEmployee?.userId}}" type="text" name="userId" class="form-control"
+                        id="user-id" placeholder="userId" hidden />
+                </div>
+                <div class="form-group">
+                    <label for="userSystemStatus">Employee Status</label>
+                    <select ngModel="{{editEmployee?.employeeStatus}}" name="employeeStatus"
+                        class="form-control">
+                        <option disabled>Select Status</option>
+                        <option *ngFor="let status of userStatusList">{{ status }}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="systemStatus">System Status</label>
+                    <select ngModel="{{editEmployee?.systemStatus}}" name="systemStatus" class="form-control">
+                        <option disabled>Select Status</option>
+                        <option *ngFor="let status of systemStatusList">{{ status }}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="first-name">First name</label>
+                    <input ngModel="{{editEmployee?.firstName}}" type="text" name="firstName"
+                        class="form-control" id="first-name" placeholder="First name" required />
+                </div>
+                <div class="form-group">
+                    <label for="last-name">Last name</label>
+                    <input ngModel="{{editEmployee?.lastName}}" type="text" name="lastName" class="form-control"
+                        id="last-name" placeholder="Last name" required />
+                </div>
+                <div class="form-group">
+                    <label for="personal-number">Personal number</label>
+                    <input ngModel="{{editEmployee?.personalNumber}}" type="text" name="personalNumber"
+                        class="form-control" id="personal-number" placeholder="Personal number" required />
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input ngModel="{{editEmployee?.email}}" type="email" name="email" class="form-control"
+                        id="email" placeholder="Email" required />
+                </div>
+                <div class="form-group">
+                    <label for="phoneNumber">phoneNumber</label>
+                    <input ngModel="{{editEmployee?.phoneNumber}}" type="tel" name="phoneNumber"
+                        class="form-control" id="phoneNumber" placeholder="phoneNumber" required />
+                </div>
+                <div class="form-group">
+                    <label for="street">Street address</label>
+                    <input ngModel="{{editEmployee?.street}}" type="text" name="street" class="form-control"
+                        id="street" placeholder="Street address" required />
+                </div>
+                <div class="form-group">
+                    <label for="phoneNumber">ZIP</label>
+                    <input ngModel="{{editEmployee?.zip}}" type="text" name="zip" class="form-control" id="zip"
+                        placeholder="ZIP" required />
+                </div>
+                <div class="form-group">
+                    <label for="city">City</label>
+                    <input ngModel="{{editEmployee?.city}}" type="text" name="city" class="form-control"
+                        id="city" placeholder="City" required />
+                </div>
+                <div class="form-group">
+                    <label for="job-title">Job title</label>
+                    <input ngModel="{{editEmployee?.jobTitle}}" type="text" name="jobTitle" class="form-control"
+                        id="job-title" placeholder="Job title" required />
+                </div>
+                <div class="form-group">
+                    <label for="job-title">Parent company</label>
+                    <input ngModel="{{editEmployee?.parentCompany}}" type="text" name="parentCompany"
+                        class="form-control" id="parent-company" placeholder="Parent company" />
+                </div>
+                <div class="form-group">
+                    <label for="start-date">Start date</label>
+                    <input ngModel="{{editEmployee?.startDate}}" type="date" name="startDate"
+                        class="form-control" id="start-date" placeholder="Start date" required />
+                </div>
+                <div class="form-group">
+                    <label for="end-date">End date</label>
+                    <input ngModel="{{editEmployee?.endDate}}" type="date" name="endDate" class="form-control"
+                        id="end-date" placeholder="End date" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button a (click)='onUpdateEmployee(editForm.value)' type="submit" data-dismiss="modal"
+                        class="btn btn-primary">Save
+                        changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>

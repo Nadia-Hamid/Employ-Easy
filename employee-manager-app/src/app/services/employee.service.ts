@@ -1,12 +1,12 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { HttpClient } from '@angular/common/http';
-import { Employee } from "../employee/employee";
+import { Employee } from "../components/employee/employee";
 import { environment } from "src/environments/environment";
 
 @Injectable({providedIn: 'root'})
 export class EmployeeService {
-    private apiServerUrl = environment.apiBaseUrl;
+    private apiServerUrl = environment.apiBaseUrlEmployee;
 
     constructor(private http: HttpClient) {}
 
