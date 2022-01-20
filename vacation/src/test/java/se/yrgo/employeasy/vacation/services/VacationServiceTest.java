@@ -88,4 +88,5 @@ class VacationServiceTest {
         assertThrows(ObjectNotFoundException.class,
                 () -> vacationServiceTest.requestReservationUsingJobTitle(futureWorkDate, USER_ID, JOB_TITLE));
     }
+
 }
