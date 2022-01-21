@@ -1,25 +1,34 @@
 package se.yrgo.employeasy.vacation.services;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.annotation.ComponentScan;
+
 import se.yrgo.employeasy.vacation.dto.ReservedDateDTO;
+import se.yrgo.employeasy.vacation.dto.TableScheduleDTO;
 import se.yrgo.employeasy.vacation.entities.VacationDate;
 import se.yrgo.employeasy.vacation.exceptions.DoubleBookedException;
 import se.yrgo.employeasy.vacation.exceptions.ObjectNotFoundException;
 import se.yrgo.employeasy.vacation.exceptions.TimeException;
 import se.yrgo.employeasy.vacation.repositories.DateRepository;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class VacationServiceTest {
@@ -107,5 +116,32 @@ class VacationServiceTest {
         mockedDateRepository.resetFutureChoices(USER_ID);
         verify(mockedDateRepository, times(wantedNumberOfInvocations)).resetFutureChoices(USER_ID);
     }
+    
+	@Test
+	void InsertDatesIntoDB() {
 
+		LocalDate ld = LocalDate.of(2022, 07, 01);
+		LocalDate ld2 = LocalDate.of(2022, 07, 10);
+		
+		List<LocalDate> dates = dateList(ld, ld2);
+		List<VacationDate> vd = new ArrayList<>();
+
+		VacationDate v = new VacationDate("developer", ld2);
+
+		for (LocalDate localDate : dates) {
+			vd.addAll(Collections.nCopies(3, new VacationDate("developer", localDate)));
+		}
+
+		mockedDateRepository.save(v);
+		
+//		vd.stream().forEach(e -> mockedDateRepository.save(e));
+		verify(mockedDateRepository, times(1)).save(v);
+
+	}
+
+	private List<LocalDate> dateList(LocalDate dateFrom, LocalDate dateTo) {
+
+		List<LocalDate> dates = dateFrom.datesUntil(dateTo).collect(Collectors.toList());
+		return dates;
+	}
 }

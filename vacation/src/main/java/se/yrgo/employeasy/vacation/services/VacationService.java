@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import se.yrgo.employeasy.vacation.dto.OpenDateDTO;
 import se.yrgo.employeasy.vacation.dto.ReservedDateDTO;
-import se.yrgo.employeasy.vacation.dto.TableScheduleDTO;
 import se.yrgo.employeasy.vacation.entities.VacationDate;
 import se.yrgo.employeasy.vacation.exceptions.DoubleBookedException;
 import se.yrgo.employeasy.vacation.exceptions.ObjectNotFoundException;
@@ -64,55 +63,31 @@ public class VacationService {
             return new ReservedDateDTO(result.getDate(), result.getUserId());
         }
     }
-    
-//	public OpenDateDTO addVacation(OpenDateDTO booking) {
-//		
-//		VacationDate vd = new VacationDate(booking.getUserId(), booking.getDate(), booking.getJobTitle());
-//        List<VacationDate> openDates = dateRepository.findByJobTitleOpenDate(vd.getJobTitle(), vd.getDate());
-//        
-//        if(openDates.isEmpty()) { throw new ObjectNotFoundException("No open dates"); }
-//        
-//        long id = openDates.stream().filter(p -> p.getUserId().equals("")).findFirst().orElse(null).getId();
-//        vd = dateRepository.getById(id);
-//        vd.setUserId(booking.getUserId());
-//		dateRepository.save(vd);
-//		return new OpenDateDTO(vd);
-//	}
 
     /**
-     * This method add new available dates per jobtitle to DB.
+     * This method add new available dates per job title to DB.
      * 
      * @author Nadia Hamid
      * @param jobTitle
+     * @param i 
+     * @param localDate2 
+     * @param localDate 
      * @param schedule
      * @return TableScheduleDTO
      */
-	public TableScheduleDTO addSchedule(String jobTitle, TableScheduleDTO schedule) {
-
-		List<LocalDate> dates = dateList(schedule.getStartDate(), schedule.getEndDate());
+	public List<VacationDate> addSchedule(String jobTitle, LocalDate start, LocalDate end, int i) {
+				
+		List<LocalDate> dates = start.datesUntil(end.plusDays(1)).collect(Collectors.toList());
 		List<VacationDate> vd = new ArrayList<>();
 
 		for (LocalDate localDate : dates) {
-			vd.add((VacationDate) Collections.nCopies(schedule.getMultiple(), new VacationDate(jobTitle, localDate)));
+			vd.add((VacationDate) Collections.nCopies(i, new VacationDate(jobTitle, localDate)));
 		}
+		
+		vd = dateRepository.saveAll(vd);
+		return vd;
 
-		vd.stream().forEach(e -> dateRepository.save(e));
-		return null;
-	}
-
-	/**
-	 * Utility method to retrieve a List with all LocalDate to be inserted in DB.
-	 * 
-	 * @author Nadia Hamid
-	 * @param dateFrom
-	 * @param dateTo
-	 * @return List of LocalDate
-	 */
-	private List<LocalDate> dateList(LocalDate dateFrom, LocalDate dateTo) {
-
-		List<LocalDate> dates = dateFrom.datesUntil(dateTo).collect(Collectors.toList());
-		return dates;
-	}
+}
 
     @Transactional
     public void resetFutureVacationChoices(String userId) {
