@@ -4,21 +4,22 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class TableScheduleDTO implements Serializable{
+public class TableScheduleDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
-	private LocalDate startDate;
-	private LocalDate endDate;
-	private int multiple;
-	
-	public TableScheduleDTO() {}
+
+	public LocalDate startDate;
+	public LocalDate endDate;
+	public int multiple;
+
+	public TableScheduleDTO() {
+	}
 
 	public TableScheduleDTO(LocalDate startDate, LocalDate endDate, int multiple) {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.multiple = multiple;
 	}
-	
+
 	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}

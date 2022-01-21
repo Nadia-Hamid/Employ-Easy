@@ -83,7 +83,6 @@ public class VacationService {
 		for (LocalDate localDate : dates) {
 			vd.add((VacationDate) Collections.nCopies(i, new VacationDate(jobTitle, localDate)));
 		}
-		
 		vd = dateRepository.saveAll(vd);
 		return vd;
 
