@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import se.yrgo.employeasy.vacation.dto.OpenDateDTO;
 import se.yrgo.employeasy.vacation.dto.ReservedDateDTO;
+import se.yrgo.employeasy.vacation.dto.UserAnnualDatesDTO;
 import se.yrgo.employeasy.vacation.exceptions.DoubleBookedException;
 import se.yrgo.employeasy.vacation.exceptions.ObjectNotFoundException;
 import se.yrgo.employeasy.vacation.exceptions.TimeException;
@@ -156,6 +157,25 @@ public class VacationControllerTest {
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andReturn();
+	}
+
+	@Test
+	void userShouldSeeAnnualVacationBookingData() throws Exception {
+		final int pastBooked = 1, futureBooked = 1;
+		final Set<OpenDateDTO> futureBookable = new HashSet<>();
+		futureBookable.add(new OpenDateDTO(MID_SUMMER.plusDays(1)));
+		futureBookable.add(new OpenDateDTO(MID_SUMMER.plusDays(2)));
+		var userAnnualData = new UserAnnualDatesDTO(pastBooked, futureBooked, futureBookable);
+
+		when(service.getMyAvailableDates(JOB_TITLE, USER_ID)).thenReturn(userAnnualData);
+
+		MvcResult mvcResult = this.mockMvc.perform(get(URL + JOB_TITLE + "/" + USER_ID))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andReturn();
+
+		String actualResponseJson = mvcResult.getResponse().getContentAsString();
+		String expectedResultJson = objectMapper.writeValueAsString(userAnnualData);
+		assertEquals(expectedResultJson, actualResponseJson);
 	}
 
 }

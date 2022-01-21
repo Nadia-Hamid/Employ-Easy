@@ -13,22 +13,24 @@ import java.util.List;
 @Repository
 public interface DateRepository extends JpaRepository<VacationDate, Long> {
 
-    @Query(value = "SELECT * FROM VACATIONDATE WHERE VACATIONDATE.job_title = ?1 AND VACATIONDATE.user_id IS NULL"
-            , nativeQuery = true)
-    List<VacationDate> findByJobTitle(@Param(value = "jobTitle") String jobTitle);
+    @Query(value = "SELECT * FROM VACATIONDATE v WHERE v.job_title = ?1 AND v.user_id IS NULL " +
+            "AND (v.date > CURRENT_DATE)", nativeQuery = true)
+    List<VacationDate> findBookableByJobTitle(@Param(value = "jobTitle") String jobTitle);
 
-    @Query(value = "SELECT * FROM VACATIONDATE WHERE VACATIONDATE.job_title = ?1" +
-            " AND VACATIONDATE.date = ?2 AND VACATIONDATE.user_id IS NULL", nativeQuery = true)
-    List<VacationDate> findByJobTitleOpenDate(@Param(value = "jobTitle") String jobTitle,
-                                              @Param(value = "date") LocalDate date);
+    @Query(value = "SELECT * FROM VACATIONDATE v WHERE v.job_title = ?1 " +
+            "AND v.date = ?2 AND v.user_id IS NULL", nativeQuery = true)
+    List<VacationDate> findDateSlots(@Param(value = "jobTitle") String jobTitle, @Param(value = "date") LocalDate date);
 
     @Query(value = "SELECT CASE WHEN COUNT(v) > 0 THEN true ELSE false END FROM "
-            + "VACATIONDATE v WHERE v.date = ?1 AND v.user_id = ?2"
-            , nativeQuery = true)
+            + "VACATIONDATE v WHERE v.date = ?1 AND v.user_id = ?2", nativeQuery = true)
     Boolean hasAlreadyBooked(@Param(value = "date") LocalDate date, @Param(value = "userId") String userId);
 
     @Modifying
-    @Query(value = "UPDATE VACATIONDATE v SET user_id = NULL WHERE user_id = ?1 AND (date > CURRENT_DATE)"
-            , nativeQuery = true)
+    @Query(value = "UPDATE VACATIONDATE v SET user_id = NULL WHERE v.user_id = ?1 " +
+            "AND (v.date > CURRENT_DATE)", nativeQuery = true)
     void resetFutureChoices(@Param(value = "userId") String userId);
+
+    @Query(value = "SELECT * FROM VACATIONDATE v WHERE v.user_id = ?1 " +
+            "AND EXTRACT(YEAR from v.date) = date_part('year', CURRENT_DATE)", nativeQuery = true)
+    List<VacationDate> findAnnualByUserId(@Param(value = "userId") String userId);
 }

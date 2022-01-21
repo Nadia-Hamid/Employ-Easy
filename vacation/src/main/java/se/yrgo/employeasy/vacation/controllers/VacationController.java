@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import se.yrgo.employeasy.vacation.dto.OpenDateDTO;
 import se.yrgo.employeasy.vacation.dto.ReservedDateDTO;
+import se.yrgo.employeasy.vacation.dto.UserAnnualDatesDTO;
 import se.yrgo.employeasy.vacation.services.VacationService;
 
 import java.util.Set;
@@ -69,6 +70,18 @@ public class VacationController {
         vacationService.resetFutureVacationChoices(userId);
     }
 
-    //GET {jobTitle}/{userId} -> numberOfVacationChoicesThisYear, futureChoices, {future 1, future 2}
+    /**
+     * Get user's yearly selected and selectable dates.
+     * @return User's current annual data
+     */
+    @Operation(summary = "Get user details.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the data",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UserAnnualDatesDTO.class)))})
+            @RequestMapping(value = "{jobTitle}/{userId}", method = RequestMethod.GET)
+    public UserAnnualDatesDTO getOpenVacations(@PathVariable String jobTitle, @PathVariable String userId) {
+        return vacationService.getMyAvailableDates(jobTitle, userId);
+    }
 
 }

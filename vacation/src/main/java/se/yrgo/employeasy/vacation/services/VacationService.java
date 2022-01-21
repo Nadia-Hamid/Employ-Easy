@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.yrgo.employeasy.vacation.dto.OpenDateDTO;
 import se.yrgo.employeasy.vacation.dto.ReservedDateDTO;
+import se.yrgo.employeasy.vacation.dto.UserAnnualDatesDTO;
+import se.yrgo.employeasy.vacation.entities.VacationDate;
 import se.yrgo.employeasy.vacation.exceptions.DoubleBookedException;
 import se.yrgo.employeasy.vacation.exceptions.ObjectNotFoundException;
 import se.yrgo.employeasy.vacation.exceptions.TimeException;
@@ -11,8 +13,7 @@ import se.yrgo.employeasy.vacation.repositories.DateRepository;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,7 @@ public class VacationService {
 
     public Set<OpenDateDTO> getAllFromJobTitle(String jobTitle) {
         return dateRepository
-                .findByJobTitle(jobTitle.toLowerCase())
+                .findBookableByJobTitle(jobTitle)
                 .stream()
                 .map(OpenDateDTO::new)
                 .collect(Collectors.collectingAndThen(Collectors.toSet(), Optional::of))
@@ -40,7 +41,7 @@ public class VacationService {
         if(date.isBefore(LocalDate.now())) {
             throw new TimeException("Vacation date " + date + " needs to be in the future.");
         }
-        var openDates = dateRepository.findByJobTitleOpenDate(jobTitle, date);
+        var openDates = dateRepository.findDateSlots(jobTitle, date);
         if(openDates.isEmpty()) {
             throw new ObjectNotFoundException("No open dates with user " + userId + " was found.");
         } else {
@@ -58,5 +59,16 @@ public class VacationService {
     @Transactional
     public void resetFutureVacationChoices(String userId) {
         dateRepository.resetFutureChoices(userId);
+    }
+
+    public UserAnnualDatesDTO getMyAvailableDates(String jobTitle, String userId) {
+        final List<VacationDate> mutableUnbooked = dateRepository.findBookableByJobTitle(jobTitle);
+        final List<VacationDate> booked = Collections.unmodifiableList(dateRepository.findAnnualByUserId(userId));
+        mutableUnbooked.removeAll(booked);
+        var futureBookable = mutableUnbooked.stream().map(OpenDateDTO::new).collect(Collectors.toSet());
+        final LocalDate tomorrow = LocalDate.now().plusDays(1);
+        final int pastBooked = (int) booked.stream().filter(b -> b.getDate().isBefore(tomorrow)).count();
+        final int futureBooked = booked.size() - pastBooked;
+        return new UserAnnualDatesDTO(pastBooked, futureBooked, futureBookable);
     }
 }
