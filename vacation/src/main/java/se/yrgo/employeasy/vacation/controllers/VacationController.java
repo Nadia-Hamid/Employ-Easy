@@ -60,4 +60,15 @@ public class VacationController {
         );
     }
 
+    @Operation(summary = "Reset all future vacations choices for user.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully deleted future vacation choices"
+                    , content = @Content)})
+    @RequestMapping(value = "{userId}", method = RequestMethod.DELETE)
+    public void resetFutureVacationChoices(@PathVariable String userId) {
+        vacationService.resetFutureVacationChoices(userId);
+    }
+
+    //GET {jobTitle}/{userId} -> numberOfVacationChoicesThisYear, futureChoices, {future 1, future 2}
+
 }

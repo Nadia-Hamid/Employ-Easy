@@ -9,6 +9,7 @@ import se.yrgo.employeasy.vacation.exceptions.ObjectNotFoundException;
 import se.yrgo.employeasy.vacation.exceptions.TimeException;
 import se.yrgo.employeasy.vacation.repositories.DateRepository;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Set;
@@ -52,5 +53,10 @@ public class VacationService {
             var result = dateRepository.save(update);
             return new ReservedDateDTO(result.getDate(), result.getUserId());
         }
+    }
+
+    @Transactional
+    public void resetFutureVacationChoices(String userId) {
+        dateRepository.resetFutureChoices(userId);
     }
 }
