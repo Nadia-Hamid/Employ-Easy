@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -23,6 +24,12 @@ public interface DateRepository extends JpaRepository<VacationDate, Long> {
 			@Param(value = "date") LocalDate date);
 
 	@Query(value = "SELECT CASE WHEN COUNT(v) > 0 THEN true ELSE false END FROM "
-			+ "VACATIONDATE v WHERE v.date = ?1 AND v.user_id = ?2", nativeQuery = true)
-	Boolean hasAlreadyBooked(@Param(value = "date") LocalDate date, @Param(value = "userId") String userId);
+            + "VACATIONDATE v WHERE v.date = ?1 AND v.user_id = ?2"
+            , nativeQuery = true)
+    Boolean hasAlreadyBooked(@Param(value = "date") LocalDate date, @Param(value = "userId") String userId);
+
+    @Modifying
+    @Query(value = "UPDATE VACATIONDATE v SET user_id = NULL WHERE user_id = ?1 AND (date > CURRENT_DATE)"
+            , nativeQuery = true)
+    void resetFutureChoices(@Param(value = "userId") String userId);
 }

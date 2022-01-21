@@ -5,9 +5,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { EmployeeComponent } from './employee/employee.component';
-import { LoginComponent } from './login/login.component';
-import { UserComponent } from './user/user.component';
+import { EmployeeComponent } from './components/employee/employee.component';
+import { LoginComponent } from './components/login/login.component';
+import { UserComponent } from './components/user-employee/user.component';
+import { NavbarComponent } from './components/header/header-navbar.component'
+import { InfoModalComponent } from './components/employee/info-employee/info-modal.component';
+import { UpdateModalComponent } from './components/employee/update-employee/update-modal.component';
+import { AddModalComponent } from './components/employee/add-employee/add-modal.component';
+import { CardComponent } from './components/employee/card-employee/card-employee.component';
+import { DeleteModalComponent } from './components/employee/delete-employee/delete-modal.component';
+import { VacationComponent } from './components/user-employee/book-vacation.component';
 
 
 @NgModule({
@@ -15,7 +22,14 @@ import { UserComponent } from './user/user.component';
     AppComponent,
     EmployeeComponent,
     LoginComponent,
-    UserComponent
+    UserComponent,
+    NavbarComponent,
+    InfoModalComponent,
+    UpdateModalComponent,
+    AddModalComponent,
+    CardComponent,
+    DeleteModalComponent,
+    VacationComponent
   ],
   imports: [
     BrowserModule,
@@ -27,4 +41,4 @@ import { UserComponent } from './user/user.component';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

@@ -14,6 +14,11 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+/**
+ * class PasswordConfig
+ * abstract Security Configuration and CorsFilter for Login.
+ * updated 2022-01-19
+ */
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -24,6 +29,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * User name and role configuration.
+     * @param auth Spring security manager builder for Authentication
+     * @throws Exception Not in use. See https://github.com/spring-projects/spring-security/pull/7580
+     */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
@@ -32,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .password(passwordEncoder.encode("password123"))
             .roles("ADMIN")
             .and()
-            .withUser("marten")
+            .withUser("marher1235")
             .password(passwordEncoder.encode("password"))
             .roles("EMPLOYEE")
                 .and()
@@ -46,6 +56,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
+    /**
+     * Cors and csrf disabler for admin role
+     * @param http Spring security https
+     * @throws Exception Not in use. See https://github.com/spring-projects/spring-security/pull/7580
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -74,6 +89,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .httpBasic();
     }
 
+    /**
+     * Cors filter for ports. Only Angular frontend should have access (4200)
+     * @return Current cors filter.
+     */
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();

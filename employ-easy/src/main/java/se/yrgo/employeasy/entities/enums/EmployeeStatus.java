@@ -1,5 +1,10 @@
 package se.yrgo.employeasy.entities.enums;
 
+/**
+ * class EmployeeStatus
+ * abstract Status codes describing the employee. Archive deleted when audit is needed.
+ * updated 2022-01-20
+ */
 public enum EmployeeStatus {
     ACTIVE(1),
     INACTIVE(2),
@@ -14,10 +19,18 @@ public enum EmployeeStatus {
         this.code = code;
     }
 
+    /**
+    @return Employee status integer representation.
+     */
     public int getCode() {
         return code;
     }
 
+    /**
+     * @throws IllegalArgumentException when status code is invalid.
+     * @param code Employee status integer representation.
+     * @return EmployeeStatus type representation of integer.
+     */
     public static EmployeeStatus valueOf(int code) {
         for (EmployeeStatus value : EmployeeStatus.values()) {
             if (value.getCode() == code) {

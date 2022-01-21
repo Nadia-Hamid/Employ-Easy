@@ -78,7 +78,9 @@ public class VacationControllerTest {
 				.thenThrow(new ObjectNotFoundException("No open dates with job title " + nonExistent + " was found."));
 		MvcResult mvcResult = this.mockMvc
 				.perform(get(URL + nonExistent)).andExpect(status().isNotFound()).andReturn();
-		assertEquals("{\"error\":\"Not Found\"}", mvcResult.getResponse().getContentAsString());
+		assertEquals("{\"status\":404,\"error\":\"Not Found\"," +
+				"\"message\":\"No open dates with job title nonexistent was found.\"}",
+				mvcResult.getResponse().getContentAsString());
 	}
 
 	@Test
@@ -112,7 +114,9 @@ public class VacationControllerTest {
 				.perform(put(URL + JOB_TITLE).content(objectMapper.writeValueAsString(dto))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest()).andReturn();
 
-		assertEquals("{\"error\":\"Old vacation date\"}", mvcResult.getResponse().getContentAsString());
+		assertEquals("{\"status\":400,\"error\":\"Old vacation date\"," +
+				"\"message\":\"Vacation date 2021-12-24 needs to be in the future.\"}",
+				mvcResult.getResponse().getContentAsString());
 	}
 
 	@Test
@@ -126,7 +130,9 @@ public class VacationControllerTest {
 		MvcResult mvcResult = this.mockMvc
 				.perform(put(URL + JOB_TITLE).content(objectMapper.writeValueAsString(dto))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound()).andReturn();
-		assertEquals("{\"error\":\"Not Found\"}", mvcResult.getResponse().getContentAsString());
+		assertEquals("{\"status\":404,\"error\":\"Not Found\"," +
+						"\"message\":\"No open dates with date 2023-03-28 was found.\"}",
+				mvcResult.getResponse().getContentAsString());
 	}
 
 	@Test
@@ -141,6 +147,14 @@ public class VacationControllerTest {
 						.content(objectMapper.writeValueAsString(dto))
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.CONFLICT.value()))
+				.andReturn();
+	}
+
+	@Test
+	void userShouldBeAbleToResetFutureVacationDatesChoices() throws Exception {
+		this.mockMvc.perform(MockMvcRequestBuilders.delete(URL + USER_ID)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andReturn();
 	}
 

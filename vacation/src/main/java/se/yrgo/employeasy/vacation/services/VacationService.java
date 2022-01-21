@@ -9,6 +9,8 @@ import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,7 @@ import se.yrgo.employeasy.vacation.exceptions.DoubleBookedException;
 import se.yrgo.employeasy.vacation.exceptions.ObjectNotFoundException;
 import se.yrgo.employeasy.vacation.exceptions.TimeException;
 import se.yrgo.employeasy.vacation.repositories.DateRepository;
+
 
 @Service
 public class VacationService {
@@ -110,4 +113,9 @@ public class VacationService {
 		List<LocalDate> dates = dateFrom.datesUntil(dateTo).collect(Collectors.toList());
 		return dates;
 	}
+
+    @Transactional
+    public void resetFutureVacationChoices(String userId) {
+        dateRepository.resetFutureChoices(userId);
+    }
 }

@@ -101,4 +101,11 @@ class VacationServiceTest {
                 () -> vacationServiceTest.requestReservationUsingJobTitle(MID_SUMMER, USER_ID, JOB_TITLE));
     }
 
+    @Test
+    void resetFutureVacationChoicesAsUser() {
+        final int wantedNumberOfInvocations = 1;
+        mockedDateRepository.resetFutureChoices(USER_ID);
+        verify(mockedDateRepository, times(wantedNumberOfInvocations)).resetFutureChoices(USER_ID);
+    }
+
 }
