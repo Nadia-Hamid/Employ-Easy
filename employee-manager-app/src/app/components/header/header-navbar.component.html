@@ -22,5 +22,5 @@
         </form>
     </div>
     <add-modal></add-modal>
-    <book-vacation [jobTitle]="jobTitle"></book-vacation>
+    <book-vacation *ngIf="userRole === 'ROLE_EMPLOYEE'" [jobTitle]="jobTitle"></book-vacation>
 </nav>
