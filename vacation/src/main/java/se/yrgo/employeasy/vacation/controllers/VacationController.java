@@ -2,6 +2,8 @@ package se.yrgo.employeasy.vacation.controllers;
 
 import java.util.Set;
 
+import javax.websocket.server.PathParam;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import se.yrgo.employeasy.vacation.dto.OpenDateDTO;
 import se.yrgo.employeasy.vacation.dto.ReservedDateDTO;
+import se.yrgo.employeasy.vacation.dto.TableScheduleDTO;
+import se.yrgo.employeasy.vacation.entities.VacationDate;
 import se.yrgo.employeasy.vacation.services.VacationService;
 
 @RestController
@@ -65,17 +69,18 @@ public class VacationController {
                 jobTitle
         );
     }
+    
     /**
      * @return Object confirmation with date data.
      */
-    @Operation(summary = "Book a vacation date.")
+    @Operation(summary = "Post new dates into DB.")
     @ApiResponses(value = {
     		@ApiResponse(responseCode = "200", description = "Booking successfully completed.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = OpenDateDTO.class))),
     		@ApiResponse(responseCode = "400", description = "Illegal or corrupted data for request"),
     		@ApiResponse(responseCode = "404", description = "The resource you were trying to update was not found"),
     		@ApiResponse(responseCode = "500", description = "Internal server error or unavailability.") })
-    @RequestMapping(value = "", method = RequestMethod.PUT)
-    public OpenDateDTO vacationBooking(@RequestBody OpenDateDTO openDate) {
-    	return vacationService.addVacation(openDate);
+    @RequestMapping(value = "{jobTitle}", method = RequestMethod.POST)
+    public TableScheduleDTO vacationSchedule(@PathVariable String jobTitle, @RequestBody TableScheduleDTO schedule) {
+    	return vacationService.addSchedule(jobTitle, schedule);
     }
 }
