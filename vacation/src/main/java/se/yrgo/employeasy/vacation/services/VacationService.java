@@ -65,28 +65,27 @@ public class VacationService {
     }
 
     /**
-     * This method add new available dates per job title to DB.
-     * 
-     * @author Nadia Hamid
+     * Insert new available dates into DB
      * @param jobTitle
-     * @param i 
-     * @param localDate2 
-     * @param localDate 
-     * @param schedule
-     * @return TableScheduleDTO
+     * @param start
+     * @param end
+     * @param i
+     * @return List of VacatioDate
      */
-	public List<VacationDate> addSchedule(String jobTitle, LocalDate start, LocalDate end, int i) {
-				
+    public List<VacationDate> addSchedule(String jobTitle, LocalDate start, LocalDate end, int i) {
+
 		List<LocalDate> dates = start.datesUntil(end.plusDays(1)).collect(Collectors.toList());
 		List<VacationDate> vd = new ArrayList<>();
-
+		
 		for (LocalDate localDate : dates) {
-			vd.add((VacationDate) Collections.nCopies(i, new VacationDate(jobTitle, localDate)));
+			for (int j = 0; j < i; j++) {
+				vd.add(new VacationDate(jobTitle, localDate));
+			}
 		}
-		vd = dateRepository.saveAll(vd);
+		
+		vd.stream().forEach(x -> dateRepository.save(x));
 		return vd;
-
-}
+	}
 
     @Transactional
     public void resetFutureVacationChoices(String userId) {
