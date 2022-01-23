@@ -16,4 +16,8 @@ export class VacationService {
         const arr = this.http.get<Vacation[]>(`${this.apiServerUrl}/v1/vacations/${jobTitle}`);
         return arr;
     }
+
+    public reserveVacationDate(jobTitle: String, vacation: any): Observable<void> {
+        return this.http.put<void>(`${this.apiServerUrl}/v1/vacations/${jobTitle}`, vacation);
+    }
 }

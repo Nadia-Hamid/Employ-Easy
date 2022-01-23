@@ -17,8 +17,7 @@ export class DeleteModalComponent implements OnInit {
     this.modalService.getEmployees();
   }
 
-  public onDeleteEmployee(userId: String) {
-      console.log(userId)   
+  public onDeleteEmployee(userId: String) { 
     this.employeeService.deleteEmployee(userId).subscribe(
       (response: void) => {
         this.getEmployees()
