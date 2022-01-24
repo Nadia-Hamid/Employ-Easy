@@ -9,8 +9,6 @@ public class ReservedDateDTO implements Serializable {
     private LocalDate date;
     private String userId;
 
-    public ReservedDateDTO() {}
-
     public ReservedDateDTO(LocalDate date, String userId) {
         this.date = date;
         this.userId = userId;

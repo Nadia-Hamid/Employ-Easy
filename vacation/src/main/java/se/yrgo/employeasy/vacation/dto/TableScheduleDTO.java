@@ -9,30 +9,15 @@ import java.util.Objects;
  * @author nadiahamid
  */
 public class TableScheduleDTO implements Serializable {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 7L;
 
 	private LocalDate startDate;
 	private LocalDate endDate;
 	private int multiple;
 
-	public TableScheduleDTO() {
-	}
-
 	public TableScheduleDTO(LocalDate startDate, LocalDate endDate, int multiple) {
 		this.startDate = startDate;
 		this.endDate = endDate;
-		this.multiple = multiple;
-	}
-
-	public void setStartDate(LocalDate startDate) {
-		this.startDate = startDate;
-	}
-
-	public void setEndDate(LocalDate endDate) {
-		this.endDate = endDate;
-	}
-
-	public void setMultiple(int multiple) {
 		this.multiple = multiple;
 	}
 

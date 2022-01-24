@@ -8,11 +8,9 @@ import java.util.Objects;
 
 public class OpenDateDTO implements Serializable, Comparable<OpenDateDTO> {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 6L;
 
     private LocalDate date;
-    
-    public OpenDateDTO() {}
  
     public OpenDateDTO(LocalDate date) {
     	this.date = date; 

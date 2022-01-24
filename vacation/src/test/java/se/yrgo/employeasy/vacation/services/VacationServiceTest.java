@@ -37,8 +37,6 @@ class VacationServiceTest {
     private static final String USER_ID = "marmar1234";
     private static final int CURRENT = LocalDate.now().getYear();
     private static final LocalDate MID_SUMMER = LocalDate.of(CURRENT, 6, 20);
-    private static final LocalDate START_DATE = LocalDate.of(CURRENT, 6, 21);
-    private static final LocalDate END_DATE = LocalDate.of(CURRENT, 6, 29);
 
     @Test
     void getAllFromExistentJobTitle() {
@@ -131,32 +129,16 @@ class VacationServiceTest {
         vacationServiceTest.resetFutureVacationChoices(USER_ID);
         verify(mockedDateRepository, times(1)).resetFutureChoices(any(String.class));
     }
-    
-    /**
-     * Test to check if repository is called the correct N° of times by the method,
-     * here it is supposed to be called 18 times, and here the result it's achieved.
-     * @Test, @class VacationService
-     * @method addSchedule
-     * @author Nadia Hamid
-     */
-	@Test
-	void InsertDatesIntoDB() {
-				
-		List<LocalDate> dates = START_DATE.datesUntil(END_DATE.plusDays(1)).collect(Collectors.toList());
-		List<VacationDate> vd = new ArrayList<>();
-		
-		VacationDate v = new VacationDate();
 
-		for (LocalDate localDate : dates) {
-			for (int j = 0; j < 2; j++) {
-				vd.add(new VacationDate("developer", localDate));
-			}		
-		}
-		
-		vd.stream().forEach(x -> mockedDateRepository.save(x));
-		
-//		mockedDateRepository.save(v);
-		
-		verify( mockedDateRepository, times(18)).save(any(VacationDate.class));
-	}
+    @Test
+    void addSummerVacationsAsAdmin() {
+        final List<VacationDate> vacationDates = List.of(
+                new VacationDate(JOB_TITLE, MID_SUMMER),
+                new VacationDate(JOB_TITLE, MID_SUMMER.plusDays(1)),
+                new VacationDate(JOB_TITLE, MID_SUMMER.plusDays(2))
+        );
+        var result = vacationServiceTest.addSchedule(JOB_TITLE, MID_SUMMER, MID_SUMMER.plusDays(2), 1);
+        verify(mockedDateRepository, times(1)).saveAll(any(Iterable.class));
+        assertEquals(vacationDates, result);
+    }
 }

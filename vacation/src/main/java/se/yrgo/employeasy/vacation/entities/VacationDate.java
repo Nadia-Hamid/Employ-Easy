@@ -15,7 +15,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 @Entity
 @Table(name = "VACATIONDATE")
 public class VacationDate implements Serializable {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 4L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,7 +33,7 @@ public class VacationDate implements Serializable {
 		this.userId = userId;
 	}
 
-	public VacationDate() {
+	protected VacationDate() {
 	}
 
 	public long getId() {
