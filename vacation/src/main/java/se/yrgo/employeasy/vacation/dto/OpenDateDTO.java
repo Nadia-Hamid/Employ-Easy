@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class OpenDateDTO implements Serializable {
+public class OpenDateDTO implements Serializable, Comparable<OpenDateDTO> {
 
     private LocalDate date;
 
@@ -31,5 +31,10 @@ public class OpenDateDTO implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(date);
+    }
+
+    @Override
+    public int compareTo(OpenDateDTO anotherDto) {
+        return this.date.compareTo(anotherDto.getDate());
     }
 }

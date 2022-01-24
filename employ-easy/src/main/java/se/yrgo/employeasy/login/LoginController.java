@@ -40,8 +40,7 @@ public class LoginController {
     @Operation(summary = "Get user details.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved the greeting",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = UserDTO.class))),
+                    content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "401", description = "Authorization required to fetch the greeting",
                     content = @Content),
             @ApiResponse(responseCode = "403",
@@ -70,7 +69,6 @@ public class LoginController {
     }
 
     /**
-     *
      * Get current login username and role.
      * @return Simplified object user for detecting user role.
      */
