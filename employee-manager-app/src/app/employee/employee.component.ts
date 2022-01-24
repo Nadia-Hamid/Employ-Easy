@@ -5,7 +5,7 @@ import { EmployeeService } from '../services/employee.service'
 import { Employee } from './employee'
 import { Router, ActivatedRoute } from '@angular/router'
 
-@Component({ templateUrl: 'employee.component.html' })
+@Component({ templateUrl: 'employee.component.html', styleUrls: ['./employee.component.css']})
 export class EmployeeComponent implements OnInit {
   public employees?: Employee[]
   public deleteEmployee: Employee

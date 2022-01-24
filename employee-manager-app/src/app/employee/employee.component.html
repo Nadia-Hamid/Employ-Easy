@@ -18,9 +18,11 @@
         </form>
     </div>
 </nav>
+
 <div class="container" id="main-container">
     <div class="row">
         <div *ngFor="let employee of employees" class="col-md-6 col-xl-3">
+
             <div class="card m-b-30">
                 <div class="card-body row">
                     <div class="col-4">
@@ -57,6 +59,7 @@
         </div>
     </div>
 
+    
     <!-- Update Employee Modal -->
     <div class="modal fade" id="updateEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="updateEmployeeModal"
         aria-hidden="true">
@@ -72,21 +75,22 @@
                     <form #editForm="ngForm">
                         <div class="form-group">
                             <input ngModel="{{editEmployee?.userId}}" type="text" name="userId" class="form-control"
-                                id="user-id" placeholder="userId" hidden/>
+                                id="user-id" placeholder="userId" hidden />
                         </div>
                         <div class="form-group">
                             <label for="userSystemStatus">Employee Status</label>
-                            <select ngModel="{{editEmployee?.employeeStatus}}" name="employeeStatus" class="form-control">
-                                <option disabled>Select Status</option> 
-                                <option *ngFor="let status of userStatusList">{{ status }}</option>  
+                            <select ngModel="{{editEmployee?.employeeStatus}}" name="employeeStatus"
+                                class="form-control">
+                                <option disabled>Select Status</option>
+                                <option *ngFor="let status of userStatusList">{{ status }}</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="systemStatus">System Status</label>
                             <select ngModel="{{editEmployee?.systemStatus}}" name="systemStatus" class="form-control">
                                 <option disabled>Select Status</option>
-                                <option *ngFor="let status of systemStatusList">{{ status }}</option>  
-                            </select>  
+                                <option *ngFor="let status of systemStatusList">{{ status }}</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="first-name">First name</label>
@@ -149,8 +153,7 @@
                                 id="end-date" placeholder="End date" />
                         </div>
                         <div class="modal-footer">
-                            <button type="button" id="" class="btn btn-secondary"
-                                data-dismiss="modal">Close</button>
+                            <button type="button" id="" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button a (click)='onUpdateEmployee(editForm.value)' type="submit" data-dismiss="modal"
                                 class="btn btn-primary">Save
                                 changes</button>
@@ -177,15 +180,15 @@
                         <div class="form-group">
                             <label for="userSystemStatus">Employee Status</label>
                             <select ngModel name="employeeStatus" class="form-control">
-                                <option disabled>Select Status</option> 
-                                <option *ngFor="let status of userStatusList">{{ status }}</option>  
-                            </select>  
+                                <option disabled>Select Status</option>
+                                <option *ngFor="let status of userStatusList">{{ status }}</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="systemStatus">System Status</label>
                             <select ngModel name="systemStatus" class="form-control">
                                 <option disabled>Select Status</option>
-                                <option *ngFor="let status of systemStatusList">{{ status }}</option>  
+                                <option *ngFor="let status of systemStatusList">{{ status }}</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -251,7 +254,7 @@
                         <div class="modal-footer">
                             <button type="button" id="add-employee-form" class="btn btn-secondary"
                                 data-dismiss="modal">Close</button>
-                            <button [disabled]="addForm.invalid" type="submit"  class="btn btn-primary">Save
+                            <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Save
                                 changes</button>
                         </div>
                     </form>
@@ -282,4 +285,48 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="main-body">
+    <section class="big-container">
+        <section *ngFor="let employee of employees" class="main-container zoom">
+            <article class="user-container">
+                <div class="image-container"><img src="./assets/user_image.png" alt="" class="image"></div>
+                <div class="user-information">
+                    <div>
+                        <p>Name:</p>
+                        <p>{{ employee?.firstName }} {{ employee?.lastName }}</p>
+                    </div>
+                    <div>
+                        <p>Role:</p>
+                        <p>{{ employee?.jobTitle }}</p>
+                    </div>
+                    <div>
+                        <p>E-mail:</p>
+                        <p>{{ employee?.email }}</p>
+                    </div>
+                    <div>
+                        <p>Phone:</p>
+                        <p>{{ employee?.phoneNumber }}</p>
+                    </div>
+                    <div>
+                        <p>Status:</p>
+                        <p>{{ employee?.employeeStatus }}</p>
+                    </div>
+                </div>
+                
+            </article>
+            <article class="button">
+                    <div class="float-right btn-group btn-group-sm buttons">
+                        <!-- a (click)="onOpenModal(employee, 'edit')"-->
+                        <a class="btn btn-primary tooltips" a (click)="onOpenModal(employee, 'edit')"
+                            data-placement="top" data-original-title="Edit"><i class="fa fa-pencil"></i>
+                        </a>
+                        <!-- a (click)="onOpenModal(employee, 'delete')"-->
+                        <a class="btn btn-secondary tooltips" a (click)="onOpenModal(employee, 'delete')"
+                            data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i></a>
+                    </div>
+            </article>
+        </section>
+    </section>
 </div>
