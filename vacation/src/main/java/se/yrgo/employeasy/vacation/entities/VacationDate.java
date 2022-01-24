@@ -12,8 +12,6 @@ import javax.persistence.Table;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import se.yrgo.employeasy.vacation.dto.OpenDateDTO;
-
 @Entity
 @Table(name = "VACATIONDATE")
 public class VacationDate implements Serializable {
@@ -31,27 +29,11 @@ public class VacationDate implements Serializable {
 		this.date = date;
 	}
 
-	public VacationDate(String userId, LocalDate localDate, String jobTitle) {
-		this.userId = userId;
-		this.date = localDate;
-		this.jobTitle = jobTitle;
-	}
-
-	public VacationDate(OpenDateDTO dto) {
-		this.userId = dto.getUserId();
-		this.date = dto.getDate();
-		this.jobTitle = dto.getJobTitle();
-	}
-
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
 	public VacationDate() {
-	}
-
-	public void setId(long id) {
-		this.id = id;
 	}
 
 	public long getId() {
