@@ -9,6 +9,7 @@ export class CardComponent implements OnInit {
   @Input() public deleteEmployee: Employee
   @Input() public editEmployee: Employee
   @Input() public infoEmployee: Employee
+  @Input() public reload: boolean
 
   public userStatusList: string[] = ['ACTIVE', 'INACTIVE', 'VACATION', 'MATERNITY_LEAVE', 'OFF_DUTY', 'ARCHIVE']
   public systemStatusList: string[] = ['SYSTEM_ADMIN', 'USER']
@@ -17,6 +18,16 @@ export class CardComponent implements OnInit {
 
   ngOnInit(): void {
     this.getEmployees()
+  }
+
+  ngOnChanges() {
+    if (this.reload === true) {
+      window.location.reload()
+    }
+  }
+
+  reloadPage() {
+    window.location.reload()
   }
 
   getEmployees() {
@@ -48,9 +59,9 @@ export class CardComponent implements OnInit {
       button.setAttribute('data-target', '#updateEmployeeModal')
     }
     if (mode == 'info') {
-        this.infoEmployee = employee
-        button.setAttribute('data-target', '#infoEmployeeModal')
-      }
+      this.infoEmployee = employee
+      button.setAttribute('data-target', '#infoEmployeeModal')
+    }
 
     container?.appendChild(button)
     button.click()
