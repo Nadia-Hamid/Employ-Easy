@@ -66,6 +66,7 @@ public class VacationService {
 
     /**
      * Insert new available dates into DB
+     * @author Nadia Hamid
      * @param jobTitle
      * @param start
      * @param end

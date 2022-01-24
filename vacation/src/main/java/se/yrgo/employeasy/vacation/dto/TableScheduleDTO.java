@@ -4,12 +4,16 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
+/**
+ * DTO class to receive a List with dates and job title to be added to the DB, with vacant holiday dates
+ * @author nadiahamid
+ */
 public class TableScheduleDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	public LocalDate startDate;
-	public LocalDate endDate;
-	public int multiple;
+	private LocalDate startDate;
+	private LocalDate endDate;
+	private int multiple;
 
 	public TableScheduleDTO() {
 	}

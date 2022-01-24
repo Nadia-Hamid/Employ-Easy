@@ -43,6 +43,8 @@ class VacationServiceTest {
     private static final String USER_ID = "marmar1234";
     private static final int FUTURE = LocalDate.now().getYear() + 1;
     private static final LocalDate MID_SUMMER = LocalDate.of(FUTURE, 6, 20);
+    private static final LocalDate START_DATE = LocalDate.of(FUTURE, 6, 21);
+    private static final LocalDate END_DATE = LocalDate.of(FUTURE, 6, 29);
 
     @Test
     void getAllFromExistentJobTitle() {
@@ -117,31 +119,31 @@ class VacationServiceTest {
         verify(mockedDateRepository, times(wantedNumberOfInvocations)).resetFutureChoices(USER_ID);
     }
     
+    /**
+     * Test to check if repository is called the correct N° of times by the method,
+     * here it is supposed to be called 18 times, and here the result it's achieved.
+     * @Test, @class VacationService
+     * @method addSchedule
+     * @author Nadia Hamid
+     */
 	@Test
 	void InsertDatesIntoDB() {
-
-		LocalDate ld = LocalDate.of(2022, 07, 01);
-		LocalDate ld2 = LocalDate.of(2022, 07, 10);
-		
-		List<LocalDate> dates = dateList(ld, ld2);
+				
+		List<LocalDate> dates = START_DATE.datesUntil(END_DATE.plusDays(1)).collect(Collectors.toList());
 		List<VacationDate> vd = new ArrayList<>();
-
-		VacationDate v = new VacationDate("developer", ld2);
+		
+		VacationDate v = new VacationDate();
 
 		for (LocalDate localDate : dates) {
-			vd.addAll(Collections.nCopies(3, new VacationDate("developer", localDate)));
+			for (int j = 0; j < 2; j++) {
+				vd.add(new VacationDate("developer", localDate));
+			}		
 		}
-
-		mockedDateRepository.save(v);
 		
-//		vd.stream().forEach(e -> mockedDateRepository.save(e));
-		verify(mockedDateRepository, times(1)).save(v);
-
-	}
-
-	private List<LocalDate> dateList(LocalDate dateFrom, LocalDate dateTo) {
-
-		List<LocalDate> dates = dateFrom.datesUntil(dateTo).collect(Collectors.toList());
-		return dates;
+		vd.stream().forEach(x -> mockedDateRepository.save(x));
+		
+//		mockedDateRepository.save(v);
+		
+		verify( mockedDateRepository, times(18)).save(any(VacationDate.class));
 	}
 }

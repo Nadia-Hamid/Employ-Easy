@@ -162,6 +162,13 @@ public class VacationControllerTest {
 				.andReturn();
 	}
 	
+	/**
+	 * Endpoint to retrieve List with TableScheduleDTO to be inserted in DB with vacant holiday dates.
+	 * @author Nadia Hamid
+	 * @throws Exception
+	 * @pathparam jobTitle
+	 * @body TableScheduleDTO
+	 */
 	@Test
 	void addScheduleTest() throws Exception {
 		TableScheduleDTO schedule = new TableScheduleDTO(START, END, MULTIPLES);
