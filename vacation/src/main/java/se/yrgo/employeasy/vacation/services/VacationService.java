@@ -41,20 +41,23 @@ public class VacationService {
 
     
     
-    public ReservedDateDTO requestReservationUsingJobTitle(LocalDate date, String userId, String jobTitle) {
-        if(date.isBefore(LocalDate.now())) {
-            throw new TimeException("Vacation date " + date + " needs to be in the future.");
+    public ReservedDateDTO requestReservationUsingJobTitle(ReservedDateDTO request, String jobTitle) {
+        final LocalDate dateRequested = request.getDate();
+        if(dateRequested.isBefore(LocalDate.now())) {
+            throw new TimeException("Vacation date " + dateRequested + " needs to be in the future.");
         }
-        var openDates = dateRepository.findDateSlots(jobTitle, date);
+        var openDates = dateRepository.findDateSlots(jobTitle, dateRequested);
+
+        final String userIdRequested = request.getUserId();
         if(openDates.isEmpty()) {
-            throw new ObjectNotFoundException("No open dates with user " + userId + " was found.");
+            throw new ObjectNotFoundException("No open dates with user " + userIdRequested + " was found.");
         } else {
-            if(dateRepository.hasAlreadyBooked(date, userId)) {
+            if(dateRepository.hasAlreadyBooked(dateRequested, userIdRequested)) {
                 throw new DoubleBookedException("A single user can only book a date once");
             }
             int randomElementIndex = ThreadLocalRandom.current().nextInt(openDates.size());
             var update = openDates.get(randomElementIndex);
-            update.setUserId(userId);
+            update.setUserId(userIdRequested);
             var result = dateRepository.save(update);
             return new ReservedDateDTO(result.getDate(), result.getUserId());
         }
@@ -78,20 +81,20 @@ public class VacationService {
         return new UserAnnualDatesDTO(pastBooked, futureBooked, futureBookable);
     }
 
-    public TableScheduleDTO addSchedule(TableScheduleDTO schedule, String jobTitle) {
+    @Transactional
+    public void addSchedule(TableScheduleDTO schedule, String jobTitle) {
         List<LocalDate> dates = schedule
                 .getStartDate()
                 .datesUntil(schedule.getEndDate().plusDays(1))
                 .collect(Collectors.toList());
-        List<VacationDate> vd = new ArrayList<>();
 
+        List<VacationDate> vd = new ArrayList<>();
+        final int multiple = schedule.getMultiple();
         for (LocalDate localDate : dates) {
-            for (int j = 0; j < schedule.getMultiple(); j++) {
+            for (int i = 0; i < multiple; i++) {
                 vd.add(new VacationDate(jobTitle, localDate));
             }
         }
-
         dateRepository.saveAll(vd);
-        return schedule;
     }
 }

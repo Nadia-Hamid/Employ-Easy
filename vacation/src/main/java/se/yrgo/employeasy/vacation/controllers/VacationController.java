@@ -34,8 +34,10 @@ public class VacationController {
 	 */
 	@Operation(summary = "Get all available vacations for position.")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Successfully retrieved available vacations", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = OpenDateDTO.class)))),
-			@ApiResponse(responseCode = "404", description = "The resource you were trying to find was not found", content = @Content) })
+			@ApiResponse(responseCode = "200", description = "Successfully retrieved available vacations",
+					content = @Content(mediaType = "application/json"
+							, array = @ArraySchema(schema = @Schema(implementation = OpenDateDTO.class)))),
+			@ApiResponse(responseCode = "404", description = "No open dates was found", content = @Content) })
 	@RequestMapping(value = "{jobTitle}", method = RequestMethod.GET)
 	public Set<OpenDateDTO> getOpenVacations(@PathVariable String jobTitle) {
 		return vacationService.getAllFromJobTitle(jobTitle);
@@ -47,20 +49,18 @@ public class VacationController {
 	 */
 	@Operation(summary = "Reserve an open date with unique userId using specified job title.")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Successfully reserved the open date",
+			@ApiResponse(responseCode = "200", description = "Successfully reserved the open date.",
 					content = @Content(mediaType = "application/json",
 							schema = @Schema(implementation = ReservedDateDTO.class))),
-			@ApiResponse(responseCode = "400", description = "The reservation request was not in the future",
+			@ApiResponse(responseCode = "400", description = "The reservation request was not in the future.",
 					content = @Content),
-			@ApiResponse(responseCode = "404", description = "The resource you were trying to update was not found",
-					content = @Content) })
+			@ApiResponse(responseCode = "404", description = "Request another date preferable, otherwise email admin.",
+					content = @Content),
+			@ApiResponse(responseCode = "409", description = "The date has already been booked. Please choose another one.",
+					content = @Content)})
 	@RequestMapping(value = "{jobTitle}", method = RequestMethod.PUT)
 	public ReservedDateDTO reserveVacation(@RequestBody ReservedDateDTO reservationRequest, @PathVariable String jobTitle) {
-		return vacationService.requestReservationUsingJobTitle(
-				reservationRequest.getDate(),
-				reservationRequest.getUserId(),
-				jobTitle
-		);
+		return vacationService.requestReservationUsingJobTitle(reservationRequest, jobTitle);
 	}
 
     /**
@@ -71,7 +71,7 @@ public class VacationController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved the data",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = UserAnnualDatesDTO.class)))})
+							schema = @Schema(implementation = UserAnnualDatesDTO.class)))})
             @RequestMapping(value = "{jobTitle}/{userId}", method = RequestMethod.GET)
     public UserAnnualDatesDTO getOpenVacations(@PathVariable String jobTitle, @PathVariable String userId) {
         return vacationService.getMyAvailableDates(jobTitle, userId);
@@ -79,7 +79,8 @@ public class VacationController {
 
 	@Operation(summary = "Reset all future vacations choices for user.")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Successfully deleted future vacation choices", content = @Content) })
+			@ApiResponse(responseCode = "200", description = "Successfully deleted future vacation choices",
+					content = @Content) })
 	@RequestMapping(value = "/{userId}", method = RequestMethod.DELETE)
 	public void resetFutureVacationChoices(@PathVariable String userId) {
 		vacationService.resetFutureVacationChoices(userId);
@@ -92,12 +93,10 @@ public class VacationController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Insertions successfully completed.", 
 					content = @Content(mediaType = "application/json",
-					schema = @Schema(implementation = TableScheduleDTO.class))),
-			@ApiResponse(responseCode = "400", description = "Illegal or corrupted data for request"),
-			@ApiResponse(responseCode = "404", description = "The resource you were trying to update was not found"),
-			@ApiResponse(responseCode = "500", description = "Internal server error or unavailability.") })
-	@RequestMapping(value = "{jobTitle}", method = RequestMethod.POST)
+							schema = @Schema(implementation = TableScheduleDTO.class)))})
+			@RequestMapping(value = "{jobTitle}", method = RequestMethod.POST)
 	public TableScheduleDTO vacationSchedule(@PathVariable String jobTitle, @RequestBody TableScheduleDTO schedule) {
-		return vacationService.addSchedule(schedule, jobTitle);
+		vacationService.addSchedule(schedule, jobTitle);
+		return schedule;
 	}
 }

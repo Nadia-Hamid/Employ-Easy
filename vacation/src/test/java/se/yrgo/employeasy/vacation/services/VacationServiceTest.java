@@ -68,7 +68,9 @@ class VacationServiceTest {
 
         when(mockedDateRepository.findDateSlots(JOB_TITLE, MID_SUMMER)).thenReturn(List.of(vd));
         when(mockedDateRepository.save(any(VacationDate.class))).thenReturn(vd);
-        ReservedDateDTO result = vacationServiceTest.requestReservationUsingJobTitle(MID_SUMMER, USER_ID, JOB_TITLE);
+        ReservedDateDTO result = vacationServiceTest.requestReservationUsingJobTitle(
+                new ReservedDateDTO(MID_SUMMER, USER_ID) , JOB_TITLE
+        );
         assertEquals(MID_SUMMER, result.getDate());
         assertEquals(USER_ID, result.getUserId());
     }
@@ -76,11 +78,8 @@ class VacationServiceTest {
     @Test
     void requestOldVacationDateAsUser() {
         final LocalDate oldDate = LocalDate.of(2021,12,24);
-        VacationDate vd = new VacationDate(JOB_TITLE, oldDate);
-        vd.setUserId(USER_ID);
-
         assertThrows(TimeException.class,
-                () -> vacationServiceTest.requestReservationUsingJobTitle(oldDate, USER_ID, JOB_TITLE));
+                () -> vacationServiceTest.requestReservationUsingJobTitle(new ReservedDateDTO(oldDate, USER_ID), JOB_TITLE));
     }
 
     @Test
@@ -90,8 +89,8 @@ class VacationServiceTest {
         vd.setUserId(USER_ID);
 
         when(mockedDateRepository.findDateSlots(JOB_TITLE, futureWorkDate)).thenReturn(new ArrayList<>());
-        assertThrows(ObjectNotFoundException.class,
-                () -> vacationServiceTest.requestReservationUsingJobTitle(futureWorkDate, USER_ID, JOB_TITLE));
+        assertThrows(ObjectNotFoundException.class, () -> vacationServiceTest
+                .requestReservationUsingJobTitle(new ReservedDateDTO(futureWorkDate, USER_ID), JOB_TITLE));
     }
 
     @Test
@@ -101,8 +100,8 @@ class VacationServiceTest {
 
         when(mockedDateRepository.findDateSlots(JOB_TITLE, MID_SUMMER)).thenReturn(List.of(vd));
         when(mockedDateRepository.hasAlreadyBooked(MID_SUMMER, USER_ID)).thenReturn(true);
-        assertThrows(DoubleBookedException.class,
-                () -> vacationServiceTest.requestReservationUsingJobTitle(MID_SUMMER, USER_ID, JOB_TITLE));
+        assertThrows(DoubleBookedException.class, () -> vacationServiceTest
+                .requestReservationUsingJobTitle(new ReservedDateDTO(MID_SUMMER, USER_ID), JOB_TITLE));
     }
 
     @Test
@@ -135,8 +134,7 @@ class VacationServiceTest {
     void addSummerVacationsAsAdmin() {
         final int multiple = 1, wantedNumberOfInvocations = 1, two = 2;
         final var schedule = new TableScheduleDTO(MID_SUMMER, MID_SUMMER.plusDays(two), multiple);
-        var result = vacationServiceTest.addSchedule(schedule, JOB_TITLE);
+        vacationServiceTest.addSchedule(schedule, JOB_TITLE);
         verify(mockedDateRepository, times(wantedNumberOfInvocations)).saveAll(any(Iterable.class));
-        assertEquals(schedule, result);
     }
 }
