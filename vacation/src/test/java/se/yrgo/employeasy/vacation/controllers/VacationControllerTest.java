@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import se.yrgo.employeasy.vacation.dto.OpenDateDTO;
 import se.yrgo.employeasy.vacation.dto.ReservedDateDTO;
+import se.yrgo.employeasy.vacation.dto.UserAnnualDatesDTO;
 import se.yrgo.employeasy.vacation.exceptions.DoubleBookedException;
 import se.yrgo.employeasy.vacation.exceptions.ObjectNotFoundException;
 import se.yrgo.employeasy.vacation.exceptions.TimeException;
@@ -78,7 +79,9 @@ public class VacationControllerTest {
 				.thenThrow(new ObjectNotFoundException("No open dates with job title " + nonExistent + " was found."));
 		MvcResult mvcResult = this.mockMvc
 				.perform(get(URL + nonExistent)).andExpect(status().isNotFound()).andReturn();
-		assertEquals("{\"error\":\"Not Found\"}", mvcResult.getResponse().getContentAsString());
+		assertEquals("{\"status\":404,\"error\":\"Not Found\"," +
+				"\"message\":\"No open dates with job title nonexistent was found.\"}",
+				mvcResult.getResponse().getContentAsString());
 	}
 
 	@Test
@@ -112,7 +115,9 @@ public class VacationControllerTest {
 				.perform(put(URL + JOB_TITLE).content(objectMapper.writeValueAsString(dto))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest()).andReturn();
 
-		assertEquals("{\"error\":\"Old vacation date\"}", mvcResult.getResponse().getContentAsString());
+		assertEquals("{\"status\":400,\"error\":\"Old vacation date\"," +
+				"\"message\":\"Vacation date 2021-12-24 needs to be in the future.\"}",
+				mvcResult.getResponse().getContentAsString());
 	}
 
 	@Test
@@ -126,7 +131,9 @@ public class VacationControllerTest {
 		MvcResult mvcResult = this.mockMvc
 				.perform(put(URL + JOB_TITLE).content(objectMapper.writeValueAsString(dto))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound()).andReturn();
-		assertEquals("{\"error\":\"Not Found\"}", mvcResult.getResponse().getContentAsString());
+		assertEquals("{\"status\":404,\"error\":\"Not Found\"," +
+						"\"message\":\"No open dates with date 2023-03-28 was found.\"}",
+				mvcResult.getResponse().getContentAsString());
 	}
 
 	@Test
@@ -142,6 +149,33 @@ public class VacationControllerTest {
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.CONFLICT.value()))
 				.andReturn();
+	}
+
+	@Test
+	void userShouldBeAbleToResetFutureVacationDatesChoices() throws Exception {
+		this.mockMvc.perform(MockMvcRequestBuilders.delete(URL + USER_ID)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andReturn();
+	}
+
+	@Test
+	void userShouldSeeAnnualVacationBookingData() throws Exception {
+		final int pastBooked = 1, futureBooked = 1;
+		final Set<OpenDateDTO> futureBookable = new HashSet<>();
+		futureBookable.add(new OpenDateDTO(MID_SUMMER.plusDays(1)));
+		futureBookable.add(new OpenDateDTO(MID_SUMMER.plusDays(2)));
+		var userAnnualData = new UserAnnualDatesDTO(pastBooked, futureBooked, futureBookable);
+
+		when(service.getMyAvailableDates(JOB_TITLE, USER_ID)).thenReturn(userAnnualData);
+
+		MvcResult mvcResult = this.mockMvc.perform(get(URL + JOB_TITLE + "/" + USER_ID))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andReturn();
+
+		String actualResponseJson = mvcResult.getResponse().getContentAsString();
+		String expectedResultJson = objectMapper.writeValueAsString(userAnnualData);
+		assertEquals(expectedResultJson, actualResponseJson);
 	}
 
 }
