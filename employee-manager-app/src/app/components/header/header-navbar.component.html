@@ -1,0 +1,26 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" style="color: white">Employ Easy</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02"
+        aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor02">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active" *ngIf="userRole === 'ROLE_ADMIN'">
+                <a class="nav-link" a (click)="onOpenModal('add')">Add Employee <span
+                        class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active" *ngIf="userRole === 'ROLE_EMPLOYEE'">
+                <a class="nav-link" a (click)="onOpenModal('vacation')">Vacation <span
+                        class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0" hidden="true">
+            <!-- input #key="ngModel" (ngModelChange)="searchEmployees(key.value)" ngModel-->
+            <input type="search" name="key" id="searchName" class="form-control mr-sm-2"
+                placeholder="Search employees..." required />
+        </form>
+    </div>
+    <add-modal (reload)="reloadPage()"></add-modal>
+    <book-vacation *ngIf="userRole === 'ROLE_EMPLOYEE'" [employee]="employee"></book-vacation>
+</nav>

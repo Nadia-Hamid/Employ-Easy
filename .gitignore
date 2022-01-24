@@ -1,3 +1,17 @@
+#HTTPS ignore
+employ-easy/src/main/resources/local-ssl.p12
+
+#Resources ignore
+employ-easy/src/main/resources/
+
+#Vacation ignore
+vacation/target/
+
+vacation/.classpath
+vacation/.project
+vacation/.settings/
+vacation/src/main/resources/application.properties
+
 #Temp ignore local profile image folder
 image/
 
