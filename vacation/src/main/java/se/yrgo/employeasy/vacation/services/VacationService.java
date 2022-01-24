@@ -32,9 +32,10 @@ public class VacationService {
                 .findBookableByJobTitle(jobTitle)
                 .stream()
                 .map(OpenDateDTO::new)
-                .collect(Collectors.collectingAndThen(Collectors.toSet(), Optional::of))
+                .collect(Collectors.collectingAndThen(Collectors.toCollection(TreeSet::new), Optional::of))
                 .filter(l -> !l.isEmpty())
-                .orElseThrow(() -> new ObjectNotFoundException("No open dates with job title " + jobTitle + " was found."));
+                .orElseThrow(() -> new ObjectNotFoundException(
+                        "No open dates with job title " + jobTitle + " was found."));
     }
 
     public ReservedDateDTO requestReservationUsingJobTitle(LocalDate date, String userId, String jobTitle) {
@@ -65,7 +66,9 @@ public class VacationService {
         final List<VacationDate> mutableUnbooked = dateRepository.findBookableByJobTitle(jobTitle);
         final List<VacationDate> booked = Collections.unmodifiableList(dateRepository.findAnnualByUserId(userId));
         mutableUnbooked.removeAll(booked);
-        var futureBookable = mutableUnbooked.stream().map(OpenDateDTO::new).collect(Collectors.toSet());
+        var futureBookable = mutableUnbooked.stream()
+                .map(OpenDateDTO::new)
+                .collect(Collectors.toCollection(TreeSet::new));
         final LocalDate tomorrow = LocalDate.now().plusDays(1);
         final int pastBooked = (int) booked.stream().filter(b -> b.getDate().isBefore(tomorrow)).count();
         final int futureBooked = booked.size() - pastBooked;
