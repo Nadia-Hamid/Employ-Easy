@@ -97,7 +97,7 @@ public class VacationController {
 			@ApiResponse(responseCode = "404", description = "The resource you were trying to update was not found"),
 			@ApiResponse(responseCode = "500", description = "Internal server error or unavailability.") })
 	@RequestMapping(value = "{jobTitle}", method = RequestMethod.POST)
-	public List<VacationDate> vacationSchedule(@PathVariable String jobTitle, @RequestBody TableScheduleDTO schedule) {
-		return vacationService.addSchedule(jobTitle, schedule.getStartDate(), schedule.getEndDate(), schedule.getMultiple());
+	public TableScheduleDTO vacationSchedule(@PathVariable String jobTitle, @RequestBody TableScheduleDTO schedule) {
+		return vacationService.addSchedule(schedule, jobTitle);
 	}
 }

@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import se.yrgo.employeasy.vacation.dto.OpenDateDTO;
 import se.yrgo.employeasy.vacation.dto.ReservedDateDTO;
+import se.yrgo.employeasy.vacation.dto.TableScheduleDTO;
 import se.yrgo.employeasy.vacation.dto.UserAnnualDatesDTO;
 import se.yrgo.employeasy.vacation.entities.VacationDate;
 import se.yrgo.employeasy.vacation.exceptions.DoubleBookedException;
@@ -132,13 +133,10 @@ class VacationServiceTest {
 
     @Test
     void addSummerVacationsAsAdmin() {
-        final List<VacationDate> vacationDates = List.of(
-                new VacationDate(JOB_TITLE, MID_SUMMER),
-                new VacationDate(JOB_TITLE, MID_SUMMER.plusDays(1)),
-                new VacationDate(JOB_TITLE, MID_SUMMER.plusDays(2))
-        );
-        var result = vacationServiceTest.addSchedule(JOB_TITLE, MID_SUMMER, MID_SUMMER.plusDays(2), 1);
-        verify(mockedDateRepository, times(1)).saveAll(any(Iterable.class));
-        assertEquals(vacationDates, result);
+        final int multiple = 1, wantedNumberOfInvocations = 1, two = 2;
+        final var schedule = new TableScheduleDTO(MID_SUMMER, MID_SUMMER.plusDays(two), multiple);
+        var result = vacationServiceTest.addSchedule(schedule, JOB_TITLE);
+        verify(mockedDateRepository, times(wantedNumberOfInvocations)).saveAll(any(Iterable.class));
+        assertEquals(schedule, result);
     }
 }

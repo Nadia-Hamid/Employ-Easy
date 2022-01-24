@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.yrgo.employeasy.vacation.dto.OpenDateDTO;
 import se.yrgo.employeasy.vacation.dto.ReservedDateDTO;
+import se.yrgo.employeasy.vacation.dto.TableScheduleDTO;
 import se.yrgo.employeasy.vacation.dto.UserAnnualDatesDTO;
 import se.yrgo.employeasy.vacation.entities.VacationDate;
 import se.yrgo.employeasy.vacation.exceptions.DoubleBookedException;
@@ -59,26 +60,6 @@ public class VacationService {
         }
     }
 
-    /**
-     * Insert new available dates into DB
-     * @author Nadia Hamid
-     * @return List of VacationDate
-     */
-    public List<VacationDate> addSchedule(String jobTitle, LocalDate start, LocalDate end, int i) {
-
-		List<LocalDate> dates = start.datesUntil(end.plusDays(1)).collect(Collectors.toList());
-		List<VacationDate> vd = new ArrayList<>();
-		
-		for (LocalDate localDate : dates) {
-			for (int j = 0; j < i; j++) {
-				vd.add(new VacationDate(jobTitle, localDate));
-			}
-		}
-
-        dateRepository.saveAll(vd);
-		return vd;
-	}
-
     @Transactional
     public void resetFutureVacationChoices(String userId) {
         dateRepository.resetFutureChoices(userId);
@@ -95,5 +76,22 @@ public class VacationService {
         final int pastBooked = (int) booked.stream().filter(b -> b.getDate().isBefore(tomorrow)).count();
         final int futureBooked = booked.size() - pastBooked;
         return new UserAnnualDatesDTO(pastBooked, futureBooked, futureBookable);
+    }
+
+    public TableScheduleDTO addSchedule(TableScheduleDTO schedule, String jobTitle) {
+        List<LocalDate> dates = schedule
+                .getStartDate()
+                .datesUntil(schedule.getEndDate().plusDays(1))
+                .collect(Collectors.toList());
+        List<VacationDate> vd = new ArrayList<>();
+
+        for (LocalDate localDate : dates) {
+            for (int j = 0; j < schedule.getMultiple(); j++) {
+                vd.add(new VacationDate(jobTitle, localDate));
+            }
+        }
+
+        dateRepository.saveAll(vd);
+        return schedule;
     }
 }
