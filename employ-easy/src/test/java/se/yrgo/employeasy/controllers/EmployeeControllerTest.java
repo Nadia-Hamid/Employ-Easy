@@ -41,149 +41,149 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(EmployeeController.class)
 class EmployeeControllerTest {
 
-	@MockBean
-	private EmployeeService service;
+    @MockBean
+    private EmployeeService service;
 
-	@Autowired
-	private EmployeeController controller;
+    @Autowired
+    private EmployeeController controller;
 
-	@Autowired
-	private MockMvc mockMvc;
+    @Autowired
+    private MockMvc mockMvc;
 
-	@Autowired
-	private ObjectMapper objectMapper;
+    @Autowired
+    private ObjectMapper objectMapper;
 
-	private static final String URL = "/v1/employees/";
+    private static final String URL = "/v1/employees/";
 
-	private EmployeeDTO nadia;
-	
-	@BeforeEach
-	void setUp() {
+    private EmployeeDTO nadia;
 
-		var mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
-		mappingJackson2HttpMessageConverter.setObjectMapper(objectMapper);
-		
-		this.mockMvc = MockMvcBuilders
-				.standaloneSetup(controller)
-				.setMessageConverters(mappingJackson2HttpMessageConverter)
-				.build();
+    @BeforeEach
+    void setUp() {
 
-		nadia = new EmployeeDTO("Nadia", "Hamid", "900519-XXXX", "Nadia@gmail.com", "87654321", "Norra Vagen",
-				"44556", "Goteborg", "developer", "saab", LocalDate.of(2005, 1, 1), null, EmployeeStatus.VACATION,
-				SystemStatus.SYSTEM_ADMIN);
-		nadia.setUserId("nadham4321");
-	}
+        var mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
+        mappingJackson2HttpMessageConverter.setObjectMapper(objectMapper);
 
-	@Test
-	void getAllEmployeesTest() throws Exception {
-		final List<EmployeeDTO> dtos = new ArrayList<>();
-		dtos.add(nadia);
-		EmployeeDTO marius = new EmployeeDTO( "Marius", "Marthinussen", "881005-XXXX", "marius@gmail.com", "90654321", "Sodra Vagen",
-				"44556", "Goteborg", "developer", "saab", LocalDate.of(2005, 1, 1), null, EmployeeStatus.ACTIVE,
-				SystemStatus.USER);
-		marius.setUserId("marmar1234");
-		dtos.add(marius);
+        this.mockMvc = MockMvcBuilders
+                .standaloneSetup(controller)
+                .setMessageConverters(mappingJackson2HttpMessageConverter)
+                .build();
 
-		when(service.findAll()).thenReturn(dtos);
-		MvcResult mvcResult = mockMvc
-			.perform(get(URL).with(user("admin").roles("ADMIN")))
-			.andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
-			.andReturn();
+        nadia = new EmployeeDTO("Nadia", "Hamid", "900519-XXXX", "Nadia@gmail.com", "87654321", "Norra Vagen",
+                "44556", "Goteborg", "developer", "saab", LocalDate.of(2005, 1, 1), null, EmployeeStatus.VACATION,
+                SystemStatus.SYSTEM_ADMIN);
+        nadia.setUserId("nadham4321");
+    }
 
-		String actualResponseJson = mvcResult.getResponse().getContentAsString();
-		String expectedResultJson = objectMapper.writeValueAsString(dtos);
-		assertEquals(expectedResultJson, actualResponseJson);
-	}
+    @Test
+    void getAllEmployeesTest() throws Exception {
+        final List<EmployeeDTO> dtos = new ArrayList<>();
+        dtos.add(nadia);
+        EmployeeDTO marius = new EmployeeDTO( "Marius", "Marthinussen", "881005-XXXX", "marius@gmail.com", "90654321", "Sodra Vagen",
+                "44556", "Goteborg", "developer", "saab", LocalDate.of(2005, 1, 1), null, EmployeeStatus.ACTIVE,
+                SystemStatus.USER);
+        marius.setUserId("marmar1234");
+        dtos.add(marius);
 
-	@Test
-	void registerEmployeeTest() throws Exception {
-		when(service.addEmployee(Mockito.any(EmployeeDTO.class))).thenReturn(nadia);
-		MvcResult mvcResult = this.mockMvc
-				.perform(MockMvcRequestBuilders.post(URL).with(user("admin").roles("ADMIN"))
-						.content(objectMapper.writeValueAsString(nadia)).contentType(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
-				.andReturn();
+        when(service.findAll()).thenReturn(dtos);
+        MvcResult mvcResult = mockMvc
+                .perform(get(URL).with(user("admin").roles("ADMIN")))
+                .andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
+                .andReturn();
 
-		String actualResponseJson = mvcResult.getResponse().getContentAsString();
-		String expectedResultJson = objectMapper.writeValueAsString(nadia);
-		assertEquals(expectedResultJson, actualResponseJson);
-	}
+        String actualResponseJson = mvcResult.getResponse().getContentAsString();
+        String expectedResultJson = objectMapper.writeValueAsString(dtos);
+        assertEquals(expectedResultJson, actualResponseJson);
+    }
 
-	@Test
-	void deleteEmployeeTest() throws Exception {
-		MvcResult mvcResult = mockMvc
-				.perform(delete(URL + "/" + nadia.getUserId()).with(user("admin").roles("ADMIN")))
-				.andExpect(status().isOk())
-				.andReturn();
+    @Test
+    void registerEmployeeTest() throws Exception {
+        when(service.addEmployee(Mockito.any(EmployeeDTO.class))).thenReturn(nadia);
+        MvcResult mvcResult = this.mockMvc
+                .perform(MockMvcRequestBuilders.post(URL).with(user("admin").roles("ADMIN"))
+                        .content(objectMapper.writeValueAsString(nadia)).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
+                .andReturn();
 
-		assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
-	}
+        String actualResponseJson = mvcResult.getResponse().getContentAsString();
+        String expectedResultJson = objectMapper.writeValueAsString(nadia);
+        assertEquals(expectedResultJson, actualResponseJson);
+    }
 
-	@Test
-	void editEmployeeTest() throws Exception {
-		final String email = "new@email.com";
-		assertNotEquals(email, nadia.getEmail());
+    @Test
+    void deleteEmployeeTest() throws Exception {
+        MvcResult mvcResult = mockMvc
+                .perform(delete(URL + "/" + nadia.getUserId()).with(user("admin").roles("ADMIN")))
+                .andExpect(status().isOk())
+                .andReturn();
 
-		nadia.setEmail(email);
-		when(service.updateEmployee(Mockito.any(EmployeeDTO.class))).thenReturn(nadia);
-		MvcResult mvcResult = this.mockMvc
-				.perform(MockMvcRequestBuilders.put(URL).with(user("admin").roles("ADMIN"))
-						.content(objectMapper.writeValueAsString(nadia)).contentType(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
-				.andReturn();
+        assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
+    }
 
-		String actualResponseJson = mvcResult.getResponse().getContentAsString();
-		String expectedResponseJson = objectMapper.writeValueAsString(nadia);
-		assertEquals(expectedResponseJson, actualResponseJson);
-	}
+    @Test
+    void editEmployeeTest() throws Exception {
+        final String email = "new@email.com";
+        assertNotEquals(email, nadia.getEmail());
 
-	@Test
-	void findEqualEmailTest() throws Exception {
-		when(service.findByEmail(Mockito.any(String.class))).thenReturn(nadia);
-		MvcResult mvcResult = this.mockMvc
-				.perform(MockMvcRequestBuilders.get(URL + "/email/nadia@gmail.com")
-						.with(user("admin").roles("ADMIN")).contentType(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
-				.andReturn();
-		
-		String actualResponseJson = mvcResult.getResponse().getContentAsString();
-		String expectedResponseJson = objectMapper.writeValueAsString(nadia);
-		assertEquals(expectedResponseJson, actualResponseJson);
-	}
+        nadia.setEmail(email);
+        when(service.updateEmployee(Mockito.any(EmployeeDTO.class))).thenReturn(nadia);
+        MvcResult mvcResult = this.mockMvc
+                .perform(MockMvcRequestBuilders.put(URL).with(user("admin").roles("ADMIN"))
+                        .content(objectMapper.writeValueAsString(nadia)).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
+                .andReturn();
 
-	@Test
-	void findByJobTitleTest() throws Exception {
-		final List<EmployeeDTO> dtos = new ArrayList<>();
-		dtos.add(nadia);
-		EmployeeDTO marius = new EmployeeDTO( "Marius", "Marthinussen", "881005-XXXX", "marius@gmail.com", "90654321", "Sodra Vagen",
-				"44556", "Goteborg", "developer", "saab", LocalDate.of(2005, 1, 1), null, EmployeeStatus.ACTIVE,
-				SystemStatus.USER);
-		marius.setUserId("marmar1234");
-		dtos.add(marius);
+        String actualResponseJson = mvcResult.getResponse().getContentAsString();
+        String expectedResponseJson = objectMapper.writeValueAsString(nadia);
+        assertEquals(expectedResponseJson, actualResponseJson);
+    }
 
-		when(service.findByJobTitle(Mockito.any(String.class))).thenReturn(dtos);
-		MvcResult mvcResult = this.mockMvc
-				.perform(MockMvcRequestBuilders.get(URL + "/jobtitle/developer")
-						.with(user("admin").roles("ADMIN")).contentType(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
-				.andReturn();
+    @Test
+    void findEqualEmailTest() throws Exception {
+        when(service.findByEmail(Mockito.any(String.class))).thenReturn(nadia);
+        MvcResult mvcResult = this.mockMvc
+                .perform(MockMvcRequestBuilders.get(URL + "/email/nadia@gmail.com")
+                        .with(user("admin").roles("ADMIN")).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
+                .andReturn();
 
-		String actualResponseJson = mvcResult.getResponse().getContentAsString();
-		String expectedResultJson = objectMapper.writeValueAsString(dtos);
-		assertEquals(expectedResultJson, actualResponseJson);
-	}
+        String actualResponseJson = mvcResult.getResponse().getContentAsString();
+        String expectedResponseJson = objectMapper.writeValueAsString(nadia);
+        assertEquals(expectedResponseJson, actualResponseJson);
+    }
 
-	@Test
-	void findByUserIdTest() throws Exception {
-		when(service.getByUserId(Mockito.any(String.class))).thenReturn(nadia);
-		MvcResult mvcResult = this.mockMvc
-				.perform(MockMvcRequestBuilders.get(URL + "/" + nadia.getUserId())
-						.with(user("admin").roles("ADMIN")).contentType(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
-				.andReturn();
+    @Test
+    void findByJobTitleTest() throws Exception {
+        final List<EmployeeDTO> dtos = new ArrayList<>();
+        dtos.add(nadia);
+        EmployeeDTO marius = new EmployeeDTO( "Marius", "Marthinussen", "881005-XXXX", "marius@gmail.com", "90654321", "Sodra Vagen",
+                "44556", "Goteborg", "developer", "saab", LocalDate.of(2005, 1, 1), null, EmployeeStatus.ACTIVE,
+                SystemStatus.USER);
+        marius.setUserId("marmar1234");
+        dtos.add(marius);
 
-		String actualResponseJson = mvcResult.getResponse().getContentAsString();
-		String expectedResultJson = objectMapper.writeValueAsString(nadia);
-		assertEquals(expectedResultJson, actualResponseJson);
-	}
+        when(service.findByJobTitle(Mockito.any(String.class))).thenReturn(dtos);
+        MvcResult mvcResult = this.mockMvc
+                .perform(MockMvcRequestBuilders.get(URL + "/jobtitle/developer")
+                        .with(user("admin").roles("ADMIN")).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
+                .andReturn();
+
+        String actualResponseJson = mvcResult.getResponse().getContentAsString();
+        String expectedResultJson = objectMapper.writeValueAsString(dtos);
+        assertEquals(expectedResultJson, actualResponseJson);
+    }
+
+    @Test
+    void findByUserIdTest() throws Exception {
+        when(service.getByUserId(Mockito.any(String.class))).thenReturn(nadia);
+        MvcResult mvcResult = this.mockMvc
+                .perform(MockMvcRequestBuilders.get(URL + "/" + nadia.getUserId())
+                        .with(user("admin").roles("ADMIN")).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
+                .andReturn();
+
+        String actualResponseJson = mvcResult.getResponse().getContentAsString();
+        String expectedResultJson = objectMapper.writeValueAsString(nadia);
+        assertEquals(expectedResultJson, actualResponseJson);
+    }
 }

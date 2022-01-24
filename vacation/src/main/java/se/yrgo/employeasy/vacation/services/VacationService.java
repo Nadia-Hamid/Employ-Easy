@@ -38,6 +38,8 @@ public class VacationService {
                         "No open dates with job title " + jobTitle + " was found."));
     }
 
+    
+    
     public ReservedDateDTO requestReservationUsingJobTitle(LocalDate date, String userId, String jobTitle) {
         if(date.isBefore(LocalDate.now())) {
             throw new TimeException("Vacation date " + date + " needs to be in the future.");
@@ -56,6 +58,26 @@ public class VacationService {
             return new ReservedDateDTO(result.getDate(), result.getUserId());
         }
     }
+
+    /**
+     * Insert new available dates into DB
+     * @author Nadia Hamid
+     * @return List of VacationDate
+     */
+    public List<VacationDate> addSchedule(String jobTitle, LocalDate start, LocalDate end, int i) {
+
+		List<LocalDate> dates = start.datesUntil(end.plusDays(1)).collect(Collectors.toList());
+		List<VacationDate> vd = new ArrayList<>();
+		
+		for (LocalDate localDate : dates) {
+			for (int j = 0; j < i; j++) {
+				vd.add(new VacationDate(jobTitle, localDate));
+			}
+		}
+
+        dateRepository.saveAll(vd);
+		return vd;
+	}
 
     @Transactional
     public void resetFutureVacationChoices(String userId) {

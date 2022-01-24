@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import se.yrgo.employeasy.vacation.dto.OpenDateDTO;
 import se.yrgo.employeasy.vacation.dto.ReservedDateDTO;
+import se.yrgo.employeasy.vacation.dto.TableScheduleDTO;
 import se.yrgo.employeasy.vacation.dto.UserAnnualDatesDTO;
 import se.yrgo.employeasy.vacation.exceptions.DoubleBookedException;
 import se.yrgo.employeasy.vacation.exceptions.ObjectNotFoundException;
@@ -52,6 +53,9 @@ public class VacationControllerTest {
 	private static final String USER_ID = "marmar1234";
 	private static final int FUTURE = LocalDate.now().getYear() + 1;
 	private static final LocalDate MID_SUMMER = LocalDate.of(FUTURE, 6, 20);
+	private static final LocalDate START = LocalDate.of(FUTURE, 6, 21);
+	private static final LocalDate END = LocalDate.of(FUTURE, 6, 29).plusDays(1);
+	private static final int MULTIPLES = 3;
 
 	@Test
 	void getAvailableDatesAsDeveloperSuccessfully() throws Exception {
@@ -157,6 +161,20 @@ public class VacationControllerTest {
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andReturn();
+	}
+	
+	/**
+	 * Endpoint to retrieve List with TableScheduleDTO to be inserted in DB with vacant holiday dates.
+	 * @author Nadia Hamid
+	 */
+	@Test
+	void addScheduleTest() throws Exception {
+		TableScheduleDTO schedule = new TableScheduleDTO(START, END, MULTIPLES);
+		this.mockMvc.perform(MockMvcRequestBuilders.post(URL + JOB_TITLE)
+				.content(objectMapper.writeValueAsString(schedule))
+				.contentType(MediaType.APPLICATION_JSON))
+		.andExpect(MockMvcResultMatchers.status().isOk())
+		.andReturn();
 	}
 
 	@Test
