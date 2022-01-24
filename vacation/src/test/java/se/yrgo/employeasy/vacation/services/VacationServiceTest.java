@@ -123,4 +123,10 @@ class VacationServiceTest {
         assertEquals(dtos, annualData.getFutureUnbooked());
     }
 
+    @Test
+    void resetWasCalled() {
+        vacationServiceTest.resetFutureVacationChoices(USER_ID);
+        verify(mockedDateRepository, times(1)).resetFutureChoices(any(String.class));
+    }
+
 }
