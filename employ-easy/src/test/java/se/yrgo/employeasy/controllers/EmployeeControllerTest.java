@@ -98,25 +98,26 @@ class EmployeeControllerTest {
     @Test
     void registerEmployeeTest() throws Exception {
         when(service.addEmployee(Mockito.any(EmployeeDTO.class))).thenReturn(nadia);
-        MvcResult mvcResult = this.mockMvc
+
+        String expectedResultJson = objectMapper.writeValueAsString(nadia);
+        String actualResponseJson = this.mockMvc
                 .perform(MockMvcRequestBuilders.post(URL).with(user("admin").roles("ADMIN"))
                         .content(objectMapper.writeValueAsString(nadia)).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
-                .andReturn();
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
 
-        String actualResponseJson = mvcResult.getResponse().getContentAsString();
-        String expectedResultJson = objectMapper.writeValueAsString(nadia);
         assertEquals(expectedResultJson, actualResponseJson);
     }
 
     @Test
     void deleteEmployeeTest() throws Exception {
-        MvcResult mvcResult = mockMvc
-                .perform(delete(URL + "/" + nadia.getUserId()).with(user("admin").roles("ADMIN")))
+        mockMvc.perform(
+                delete(URL + "/" + nadia.getUserId())
+                        .with(user("admin").roles("ADMIN")))
                 .andExpect(status().isOk())
                 .andReturn();
-
-        assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
     }
 
     @Test
@@ -126,14 +127,16 @@ class EmployeeControllerTest {
 
         nadia.setEmail(email);
         when(service.updateEmployee(Mockito.any(EmployeeDTO.class))).thenReturn(nadia);
-        MvcResult mvcResult = this.mockMvc
+
+        String expectedResponseJson = objectMapper.writeValueAsString(nadia);
+        String actualResponseJson = this.mockMvc
                 .perform(MockMvcRequestBuilders.put(URL).with(user("admin").roles("ADMIN"))
                         .content(objectMapper.writeValueAsString(nadia)).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
-                .andReturn();
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
 
-        String actualResponseJson = mvcResult.getResponse().getContentAsString();
-        String expectedResponseJson = objectMapper.writeValueAsString(nadia);
         assertEquals(expectedResponseJson, actualResponseJson);
     }
 
@@ -142,7 +145,8 @@ class EmployeeControllerTest {
         when(service.findByEmail(Mockito.any(String.class))).thenReturn(nadia);
         MvcResult mvcResult = this.mockMvc
                 .perform(MockMvcRequestBuilders.get(URL + "/email/nadia@gmail.com")
-                        .with(user("admin").roles("ADMIN")).contentType(MediaType.APPLICATION_JSON))
+                        .with(user("admin").roles("ADMIN"))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
                 .andReturn();
 
@@ -164,7 +168,8 @@ class EmployeeControllerTest {
         when(service.findByJobTitle(Mockito.any(String.class))).thenReturn(dtos);
         MvcResult mvcResult = this.mockMvc
                 .perform(MockMvcRequestBuilders.get(URL + "/jobtitle/developer")
-                        .with(user("admin").roles("ADMIN")).contentType(MediaType.APPLICATION_JSON))
+                        .with(user("admin").roles("ADMIN"))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
                 .andReturn();
 
@@ -178,7 +183,8 @@ class EmployeeControllerTest {
         when(service.getByUserId(Mockito.any(String.class))).thenReturn(nadia);
         MvcResult mvcResult = this.mockMvc
                 .perform(MockMvcRequestBuilders.get(URL + "/" + nadia.getUserId())
-                        .with(user("admin").roles("ADMIN")).contentType(MediaType.APPLICATION_JSON))
+                        .with(user("admin").roles("ADMIN"))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
                 .andReturn();
 
