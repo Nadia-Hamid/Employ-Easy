@@ -13,10 +13,10 @@ export class VacationComponent implements OnInit {
   constructor(private vacationService: VacationService) {}
 
   ngOnInit() {
-    this.getVacationaDates(this.employee?.jobTitle)
+    this.getVacationDates(this.employee?.jobTitle)
   }
 
-  getVacationaDates(jobTitle: String) {
+  getVacationDates(jobTitle: String) {
     this.vacationService.getVacationDates(jobTitle).subscribe(
       (response: Vacation[]) => {
         this.vacationDates = response
@@ -28,13 +28,12 @@ export class VacationComponent implements OnInit {
   }
 
   onAddVacation(addForm: NgForm, userId: String, jobTitle: String): void {
-    console.log(addForm.value, userId, jobTitle)
     let vacation = addForm.value
     vacation['userId'] = userId
 
     this.vacationService.reserveVacationDate(jobTitle, vacation).subscribe(
       (response: void) => {
-        this.getVacationaDates(this.employee?.jobTitle)
+        this.getVacationDates(this.employee?.jobTitle)
       },
       (error: HttpErrorResponse) => {
         alert(error.message)
