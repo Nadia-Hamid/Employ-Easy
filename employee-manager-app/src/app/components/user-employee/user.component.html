@@ -1,4 +1,4 @@
-<header-navbar *ngIf="employeeLoaded" [jobTitle]="employee?.jobTitle"></header-navbar>
+<header-navbar *ngIf="employeeLoaded" [employee]="employee"></header-navbar>
 <div class="container" id="main-container">
     <h5 class="main-hello">Hello {{ employee?.firstName }} !</h5>
     <div class="row justify-content-center align-items-center">

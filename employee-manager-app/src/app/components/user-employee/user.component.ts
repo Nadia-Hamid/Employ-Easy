@@ -23,8 +23,7 @@ export class UserComponent implements OnInit {
     this.employeeService.getOneEmployee(localStorage.getItem('userName')).subscribe(
       (response: Employee) => {
         this.employee = response
-        this.employeeLoaded = true;
-        
+        this.employeeLoaded = true
       },
       (error: HttpErrorResponse) => {
         alert(error.message)

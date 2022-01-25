@@ -22,7 +22,8 @@ public class UserStartup implements CommandLineRunner {
             new VacationDate("developer", LocalDate.of(2022, 6, 20)),
                 new VacationDate("developer", LocalDate.of(2022, 6, 20)),
                 new VacationDate("developer", LocalDate.of(2022, 6, 21)),
-                new VacationDate("developer", LocalDate.of(2022, 6, 22))
+                new VacationDate("developer", LocalDate.of(2022, 6, 22)),
+                new VacationDate("developer", LocalDate.of(2022, 6, 23))
         ));
     }
 }

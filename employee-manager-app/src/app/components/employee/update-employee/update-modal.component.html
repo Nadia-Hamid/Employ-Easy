@@ -92,7 +92,7 @@ aria-hidden="true">
                 <div class="modal-footer">
                     <button type="button" id="" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button a (click)='onUpdateEmployee(editForm.value)' type="submit" data-dismiss="modal"
-                        class="btn btn-primary">Save
+                        class="btn btn-primary" (click)="reloadPage()">Save
                         changes</button>
                 </div>
             </form>

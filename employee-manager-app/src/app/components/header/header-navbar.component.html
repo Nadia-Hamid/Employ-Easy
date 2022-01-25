@@ -21,6 +21,6 @@
                 placeholder="Search employees..." required />
         </form>
     </div>
-    <add-modal></add-modal>
-    <book-vacation [jobTitle]="jobTitle"></book-vacation>
+    <add-modal (reload)="reloadPage()"></add-modal>
+    <book-vacation *ngIf="userRole === 'ROLE_EMPLOYEE'" [employee]="employee"></book-vacation>
 </nav>
