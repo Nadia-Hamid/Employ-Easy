@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from "src/environments/environment";
 import { Observable } from "rxjs";
 import { Vacation } from "../components/user-employee/vacation";
+import { VacationBookedPeriod } from "../components/employee/schedule-vacation/vacationBookedPeriod";
 
 
 @Injectable({providedIn: 'root'})
@@ -21,7 +22,7 @@ export class VacationService {
         return this.http.put<void>(`${this.apiServerUrl}/v1/vacations/${jobTitle}`, vacation);
     }
 
-    public scheduleVacationPeriods(jobTitle: String, vacationTerm: Object): Observable<void> {
-        return this.http.post<void>(`${this.apiServerUrl}/v1/vacations/${jobTitle}`, vacationTerm);
+    public scheduleVacationPeriods(jobTitle: String, vacationTerm: Object): Observable<VacationBookedPeriod> {
+        return this.http.post<VacationBookedPeriod>(`${this.apiServerUrl}/v1/vacations/${jobTitle}`, vacationTerm);
     }
 }
