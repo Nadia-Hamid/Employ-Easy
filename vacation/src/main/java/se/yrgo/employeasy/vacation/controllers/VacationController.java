@@ -3,8 +3,6 @@ package se.yrgo.employeasy.vacation.controllers;
 import java.util.List;
 import java.util.Set;
 
-import javax.websocket.server.PathParam;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,7 +60,6 @@ public class VacationController {
 				reservationRequest.getUserId(), jobTitle);
 	}
 
-
 	@Operation(summary = "Reset all future vacations choices for user.")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Successfully deleted future vacation choices", content = @Content) })
@@ -76,16 +73,13 @@ public class VacationController {
 	 */
 	@Operation(summary = "Post new dates into DB.")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Insertions successfully completed.", 
-					content = @Content(mediaType = "application/json",
-					schema = @Schema(implementation = TableScheduleDTO.class))),
+			@ApiResponse(responseCode = "200", description = "Insertions successfully completed.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TableScheduleDTO.class))),
 			@ApiResponse(responseCode = "400", description = "Illegal or corrupted data for request"),
 			@ApiResponse(responseCode = "404", description = "The resource you were trying to update was not found"),
 			@ApiResponse(responseCode = "500", description = "Internal server error or unavailability.") })
 	@RequestMapping(value = "{jobTitle}", method = RequestMethod.POST)
 	public List<VacationDate> vacationSchedule(@PathVariable String jobTitle, @RequestBody TableScheduleDTO schedule) {
-		return vacationService.addSchedule(jobTitle, schedule.getStartDate(), schedule.getEndDate(), schedule.getMultiple());
+		return vacationService.addSchedule(jobTitle, schedule.getStartDate(), schedule.getEndDate(),
+				schedule.getMultiple());
 	}
-	// GET {jobTitle}/{userId} -> numberOfVacationChoicesThisYear, futureChoices,
-	// {future 1, future 2}
 }
