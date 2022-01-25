@@ -17,7 +17,11 @@ export class VacationService {
         return arr;
     }
 
-    public reserveVacationDate(jobTitle: String, vacation: any): Observable<void> {
+    public reserveVacationDate(jobTitle: String, vacation: Object): Observable<void> {
         return this.http.put<void>(`${this.apiServerUrl}/v1/vacations/${jobTitle}`, vacation);
+    }
+
+    public scheduleVacationPeriods(jobTitle: String, vacationTerm: Object): Observable<void> {
+        return this.http.post<void>(`${this.apiServerUrl}/v1/vacations/${jobTitle}`, vacationTerm);
     }
 }

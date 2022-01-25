@@ -40,7 +40,7 @@ export class CardComponent implements OnInit {
       }
     )
   }
-
+  
   public onOpenModal(employee: Employee, mode: string): void {
     const container = document.getElementById('main-container')
     const button = document.createElement('button')
@@ -62,7 +62,7 @@ export class CardComponent implements OnInit {
       this.infoEmployee = employee
       button.setAttribute('data-target', '#infoEmployeeModal')
     }
-
+    
     container?.appendChild(button)
     button.click()
   }

@@ -1,9 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core'
-import { HttpErrorResponse } from '@angular/common/http'
-import { NgForm } from '@angular/forms'
-import { EmployeeService } from '../../../services/employee.service'
 import { Employee } from '../employee'
-import { ModalService } from 'src/app/services/modal.service'
+
 
 @Component({ templateUrl: 'info-modal.component.html', selector: 'info-modal' })
 export class InfoModalComponent implements OnInit {
@@ -12,7 +9,7 @@ export class InfoModalComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  constructor(private employeeService: EmployeeService, private modalService: ModalService) {}
+  constructor() {}
 
   public onOpenModal(employee: Employee, mode: string): void {
     const container = document.getElementById('main-container')

@@ -14,7 +14,8 @@ import { AddModalComponent } from './components/employee/add-employee/add-modal.
 import { CardComponent } from './components/employee/card-employee/card-employee.component';
 import { DeleteModalComponent } from './components/employee/delete-employee/delete-modal.component';
 import { VacationComponent } from './components/user-employee/book-vacation.component';
-
+import { ScheduleVacationComponent } from './components/employee/schedule-vacation/schedule-vacation.component';
+import { TermVacationComponent } from './components/employee/schedule-vacation/vacation-term/term-vacation.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,10 @@ import { VacationComponent } from './components/user-employee/book-vacation.comp
     AddModalComponent,
     CardComponent,
     DeleteModalComponent,
-    VacationComponent
+    VacationComponent,
+    ScheduleVacationComponent,
+    TermVacationComponent
+
   ],
   imports: [
     BrowserModule,
