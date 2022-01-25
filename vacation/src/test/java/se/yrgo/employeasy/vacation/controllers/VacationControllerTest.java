@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import se.yrgo.employeasy.vacation.dto.OpenDateDTO;
 import se.yrgo.employeasy.vacation.dto.ReservedDateDTO;
+import se.yrgo.employeasy.vacation.dto.TableScheduleDTO;
 import se.yrgo.employeasy.vacation.dto.UserAnnualDatesDTO;
 import se.yrgo.employeasy.vacation.exceptions.DoubleBookedException;
 import se.yrgo.employeasy.vacation.exceptions.ObjectNotFoundException;
@@ -89,17 +90,18 @@ public class VacationControllerTest {
 		ReservedDateDTO dto = new ReservedDateDTO(MID_SUMMER, USER_ID);
 
 		LOGGER.info(LOG_DATE + MID_SUMMER);
-		when(service.requestReservationUsingJobTitle(MID_SUMMER, USER_ID, JOB_TITLE)).thenReturn(dto);
+		when(service.requestReservationUsingJobTitle(dto, JOB_TITLE)).thenReturn(dto);
 
-		MvcResult mvcResult = this.mockMvc
+		String expectedResultJson = objectMapper.writeValueAsString(dto);
+		String actualResponseJson = this.mockMvc
 				.perform(MockMvcRequestBuilders.put(URL + JOB_TITLE)
-						.content(objectMapper.writeValueAsString(dto))
+						.content(expectedResultJson)
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
-				.andReturn();
+				.andReturn()
+				.getResponse()
+				.getContentAsString();
 
-		String actualResponseJson = mvcResult.getResponse().getContentAsString();
-		String expectedResultJson = objectMapper.writeValueAsString(dto);
 		assertEquals(expectedResultJson, actualResponseJson);
 	}
 
@@ -109,7 +111,7 @@ public class VacationControllerTest {
 		ReservedDateDTO dto = new ReservedDateDTO(oldDate, USER_ID);
 
 		LOGGER.info(LOG_DATE + oldDate);
-		when(service.requestReservationUsingJobTitle(oldDate, USER_ID, JOB_TITLE))
+		when(service.requestReservationUsingJobTitle(dto, JOB_TITLE))
 				.thenThrow(new TimeException("Vacation date " + oldDate + " needs to be in the future."));
 		MvcResult mvcResult = this.mockMvc
 				.perform(put(URL + JOB_TITLE).content(objectMapper.writeValueAsString(dto))
@@ -126,7 +128,7 @@ public class VacationControllerTest {
 		ReservedDateDTO dto = new ReservedDateDTO(futureWorkDay, USER_ID);
 
 		LOGGER.info(LOG_DATE + futureWorkDay);
-		when(service.requestReservationUsingJobTitle(futureWorkDay, USER_ID, JOB_TITLE))
+		when(service.requestReservationUsingJobTitle(dto, JOB_TITLE))
 				.thenThrow(new ObjectNotFoundException("No open dates with date " + futureWorkDay + " was found."));
 		MvcResult mvcResult = this.mockMvc
 				.perform(put(URL + JOB_TITLE).content(objectMapper.writeValueAsString(dto))
@@ -141,7 +143,7 @@ public class VacationControllerTest {
 		ReservedDateDTO dto = new ReservedDateDTO(MID_SUMMER, USER_ID);
 
 		LOGGER.info(LOG_DATE + MID_SUMMER);
-		when(service.requestReservationUsingJobTitle(MID_SUMMER, USER_ID, JOB_TITLE))
+		when(service.requestReservationUsingJobTitle(dto, JOB_TITLE))
 				.thenThrow(new DoubleBookedException("A single user can only book a date once"));
 
 		this.mockMvc.perform(MockMvcRequestBuilders.put(URL + JOB_TITLE)
@@ -157,6 +159,28 @@ public class VacationControllerTest {
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andReturn();
+	}
+	
+	/**
+	 * Endpoint to retrieve List with TableScheduleDTO to be inserted in DB with vacant holiday dates.
+	 * @author Nadia Hamid
+	 */
+	@Test
+	void addScheduleTest() throws Exception {
+		final int multiple = 1;
+		String expectedJsonSchedule = objectMapper.writeValueAsString(
+				new TableScheduleDTO(MID_SUMMER, MID_SUMMER.plusDays(2), multiple)
+		);
+		String actualJsonResponse = this.mockMvc
+				.perform(MockMvcRequestBuilders.post(URL + JOB_TITLE)
+				.content(expectedJsonSchedule)
+				.contentType(MediaType.APPLICATION_JSON))
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andReturn()
+				.getResponse()
+				.getContentAsString();
+
+		assertEquals(expectedJsonSchedule, actualJsonResponse);
 	}
 
 	@Test

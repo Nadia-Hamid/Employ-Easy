@@ -1,27 +1,25 @@
-import { Component, Input, OnInit } from '@angular/core'
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core'
 import { EmployeeService } from '../../../services/employee.service'
 import { HttpErrorResponse } from '@angular/common/http'
 import { Employee } from '../employee'
 import { ModalService } from 'src/app/services/modal.service'
 
 @Component({ templateUrl: 'delete-modal.component.html', selector: 'delete-modal' })
-export class DeleteModalComponent implements OnInit { 
-    @Input() public deleteEmployee: Employee
+export class DeleteModalComponent implements OnInit {
+  @Input() public deleteEmployee: Employee
+  @Output() reload = new EventEmitter()
 
   constructor(private employeeService: EmployeeService, private modalService: ModalService) {}
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  reloadPage() {
+    this.reload.emit()
   }
 
-  getEmployees() {
-    this.modalService.getEmployees();
-  }
-
-  public onDeleteEmployee(userId: String) { 
+  public onDeleteEmployee(userId: String) {
     this.employeeService.deleteEmployee(userId).subscribe(
-      (response: void) => {
-        this.getEmployees()
-      },
+      (response: void) => {},
       (error: HttpErrorResponse) => {
         alert(error.message)
       }

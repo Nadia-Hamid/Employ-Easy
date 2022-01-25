@@ -33,7 +33,7 @@ public class EmployeeService {
      * @return A DTO of all employees in the database
      */
     public List<EmployeeDTO> findAll() {
-        return employeeRepository.findAll().stream().map(EmployeeDTO::new).collect(Collectors.toList());
+        return employeeRepository.findAll().stream().map(EmployeeDTO::new).sorted().collect(Collectors.toList());
     }
 
     private EmployeeDTO dto(Employee employee){
@@ -142,6 +142,7 @@ public class EmployeeService {
                 .findByJobTitle(jobTitle.toLowerCase())
                 .stream()
                 .map(EmployeeDTO::new)
+                .sorted()
                 .collect(Collectors.collectingAndThen(Collectors.toList(), Optional::of))
                 .filter(l -> !l.isEmpty())
                 .orElseThrow(() -> new ObjectNotFoundException("No user with job title " + jobTitle + " was found"));
