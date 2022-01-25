@@ -28,4 +28,11 @@ public class ResourceExceptionHandler {
         StandardError err = new StandardError(status.value(), "Double booking not allowed!", e.getMessage());
         return ResponseEntity.status(status).body(err);
     }
+
+    @ExceptionHandler(NumberFormatException.class)
+    public ResponseEntity<StandardError> numberFormat(NumberFormatException e) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError err = new StandardError(status.value(), "Year must be an integer", e.getMessage());
+        return ResponseEntity.status(status).body(err);
+    }
 }

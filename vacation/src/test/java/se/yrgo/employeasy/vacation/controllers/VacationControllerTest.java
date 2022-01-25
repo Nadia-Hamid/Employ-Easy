@@ -1,6 +1,11 @@
 package se.yrgo.employeasy.vacation.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,20 +19,22 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import se.yrgo.employeasy.vacation.dto.OpenDateDTO;
-import se.yrgo.employeasy.vacation.dto.ReservedDateDTO;
-import se.yrgo.employeasy.vacation.dto.TableScheduleDTO;
-import se.yrgo.employeasy.vacation.dto.UserAnnualDatesDTO;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import se.yrgo.employeasy.vacation.dto.*;
 import se.yrgo.employeasy.vacation.exceptions.DoubleBookedException;
 import se.yrgo.employeasy.vacation.exceptions.ObjectNotFoundException;
 import se.yrgo.employeasy.vacation.exceptions.TimeException;
 import se.yrgo.employeasy.vacation.services.VacationService;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -51,8 +58,8 @@ public class VacationControllerTest {
 	private static final String URL = "/v1/vacations/";
 	private static final String JOB_TITLE = "developer";
 	private static final String USER_ID = "marmar1234";
-	private static final int FUTURE = LocalDate.now().getYear() + 1;
-	private static final LocalDate MID_SUMMER = LocalDate.of(FUTURE, 6, 20);
+	private static final int CURRENT = LocalDate.now().getYear();
+	private static final LocalDate MID_SUMMER = LocalDate.of(CURRENT, 6, 20);
 
 	@Test
 	void getAvailableDatesAsDeveloperSuccessfully() throws Exception {
@@ -124,7 +131,7 @@ public class VacationControllerTest {
 
 	@Test
 	void reserveVacationNonExistentFutureDateShouldThrowNotFound() throws Exception {
-		LocalDate futureWorkDay = LocalDate.of(FUTURE, 3, 28);
+		LocalDate futureWorkDay = LocalDate.of(CURRENT, 3, 28);
 		ReservedDateDTO dto = new ReservedDateDTO(futureWorkDay, USER_ID);
 
 		LOGGER.info(LOG_DATE + futureWorkDay);
@@ -134,7 +141,7 @@ public class VacationControllerTest {
 				.perform(put(URL + JOB_TITLE).content(objectMapper.writeValueAsString(dto))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound()).andReturn();
 		assertEquals("{\"status\":404,\"error\":\"Not Found\"," +
-						"\"message\":\"No open dates with date 2023-03-28 was found.\"}",
+						"\"message\":\"No open dates with date 2022-03-28 was found.\"}",
 				mvcResult.getResponse().getContentAsString());
 	}
 
@@ -202,4 +209,79 @@ public class VacationControllerTest {
 		assertEquals(expectedResultJson, actualResponseJson);
 	}
 
+	@Test
+	void adminShouldSeeAnnualVacationBookingData() throws Exception {
+		final long midSummerMultiple = 2L, single = 1L;
+		final HashMap<LocalDate, Long> bookable = new HashMap<>();
+		bookable.put(MID_SUMMER, midSummerMultiple);
+		bookable.put(MID_SUMMER.plusDays(1), single);
+		bookable.put(MID_SUMMER.plusDays(2), single);
+		final var dto = new TableBookableDTO(bookable);
+
+		when(service.getBookableByYearAndJobTitle(JOB_TITLE, String.valueOf(CURRENT))).thenReturn(dto);
+
+		MvcResult mvcResult = this.mockMvc.perform(get(URL + JOB_TITLE  + "/" + "year" + "/" + CURRENT))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andReturn();
+
+		String actualResponseJson = mvcResult.getResponse().getContentAsString();
+		String expectedResultJson = objectMapper.writeValueAsString(dto);
+		assertEquals(expectedResultJson, actualResponseJson);
+	}
+
+	@Test
+	void startDateMustBeBeforeEndDate() throws Exception {
+		String startDateAfterEndDate = "{\n" +
+				"  \"startDate\": \"2022-06-02\",\n" +
+				"  \"endDate\": \"2022-06-01\",\n" +
+				"  \"multiple\": 1\n" +
+				"}";
+		doThrow(new TimeException("End time must be after start time!"))
+				.when(service).addSchedule(any(TableScheduleDTO.class), any(String.class));
+		String actualJsonResponse = this.mockMvc
+				.perform(MockMvcRequestBuilders.post(URL + JOB_TITLE)
+						.content(startDateAfterEndDate)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isBadRequest())
+				.andReturn()
+				.getResponse()
+				.getContentAsString();
+
+		assertEquals("{\"status\":400,\"error\":\"Old vacation date\"," +
+				"\"message\":\"End time must be after start time!\"}", actualJsonResponse);
+	}
+
+	@Test
+	void getAllBookableDates() throws Exception {
+		final long midSummerMultiple = 2L, single = 1L;
+		final HashMap<LocalDate, Long> bookable = new HashMap<>();
+		bookable.put(MID_SUMMER, midSummerMultiple);
+		bookable.put(MID_SUMMER.plusDays(1), single);
+		bookable.put(MID_SUMMER.plusDays(2), single);
+		final var dto = new TableBookableDTO(bookable);
+
+		when(service.getAllBookable()).thenReturn(dto);
+
+		MvcResult mvcResult = this.mockMvc.perform(get(URL))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andReturn();
+
+		String actualResponseJson = mvcResult.getResponse().getContentAsString();
+		String expectedResultJson = objectMapper.writeValueAsString(dto);
+		assertEquals(expectedResultJson, actualResponseJson);
+	}
+
+	@Test
+	void yearMustBeInteger() throws Exception {
+		when(service.getBookableByYearAndJobTitle(JOB_TITLE, "two%20thousand"))
+				.thenThrow(new NumberFormatException("Year must be integer!"));
+		String actualJsonResponse = this.mockMvc.perform(get(URL + JOB_TITLE  + "/" + "year" + "/" + "two%20thousand"))
+				.andExpect(MockMvcResultMatchers.status().isBadRequest())
+				.andReturn()
+				.getResponse()
+				.getContentAsString();
+
+		assertEquals("{\"status\":400,\"error\":\"Year must be an integer\"," +
+				"\"message\":\"Year must be integer!\"}", actualJsonResponse);
+	}
 }
