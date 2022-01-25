@@ -2,10 +2,7 @@ package se.yrgo.employeasy.vacation.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import se.yrgo.employeasy.vacation.dto.OpenDateDTO;
-import se.yrgo.employeasy.vacation.dto.ReservedDateDTO;
-import se.yrgo.employeasy.vacation.dto.TableScheduleDTO;
-import se.yrgo.employeasy.vacation.dto.UserAnnualDatesDTO;
+import se.yrgo.employeasy.vacation.dto.*;
 import se.yrgo.employeasy.vacation.entities.VacationDate;
 import se.yrgo.employeasy.vacation.exceptions.DoubleBookedException;
 import se.yrgo.employeasy.vacation.exceptions.ObjectNotFoundException;
@@ -83,9 +80,14 @@ public class VacationService {
 
     @Transactional
     public void addSchedule(TableScheduleDTO schedule, String jobTitle) {
-        List<LocalDate> dates = schedule
-                .getStartDate()
-                .datesUntil(schedule.getEndDate().plusDays(1))
+        var startDate = schedule.getStartDate();
+        var endDate = schedule.getEndDate();
+        if(startDate.isAfter(endDate)) {
+            throw new TimeException("End date must be after start date");
+        }
+
+        List<LocalDate> dates = startDate
+                .datesUntil(endDate.plusDays(1))
                 .collect(Collectors.toList());
 
         List<VacationDate> vd = new ArrayList<>();
@@ -96,5 +98,21 @@ public class VacationService {
             }
         }
         dateRepository.saveAll(vd);
+    }
+
+    public TableBookableDTO getBookableByYearAndJobTitle(String jobTitle, String year) {
+        List<VacationDate> allMatching = dateRepository.findAllByYearAndJobTitle(Integer.parseInt(year), jobTitle);
+        Map<LocalDate, Long> allMatchingAsMap = allMatching
+                .stream()
+                .collect(Collectors.groupingBy(VacationDate::getDate, Collectors.counting()));
+        return new TableBookableDTO(allMatchingAsMap);
+    }
+
+    public TableBookableDTO getAllBookable() {
+        List<VacationDate> allMatching = dateRepository.findAllAnnual();
+        Map<LocalDate, Long> allMatchingAsMap = allMatching
+                .stream()
+                .collect(Collectors.groupingBy(VacationDate::getDate, Collectors.counting()));
+        return new TableBookableDTO(allMatchingAsMap);
     }
 }

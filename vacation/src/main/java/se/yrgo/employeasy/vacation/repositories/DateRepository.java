@@ -35,4 +35,11 @@ public interface DateRepository extends JpaRepository<VacationDate, Long> {
     @Query(value = "SELECT * FROM VACATIONDATE v WHERE v.user_id = ?1 " +
             "AND EXTRACT(YEAR from v.date) = date_part('year', CURRENT_DATE)", nativeQuery = true)
     List<VacationDate> findAnnualByUserId(@Param(value = "userId") String userId);
+
+    @Query(value = "SELECT * FROM VACATIONDATE v WHERE EXTRACT(YEAR from v.date) = date_part('year', CURRENT_DATE)"
+            , nativeQuery = true)
+    List<VacationDate> findAllAnnual();
+
+    @Query(value = "SELECT * FROM VACATIONDATE v WHERE v.job_title = ?2 AND EXTRACT(year FROM v.date) = ?1", nativeQuery = true)
+    List<VacationDate> findAllByYearAndJobTitle(@Param(value = "year") int year, @Param(value = "jobTitle") String jobTitle);
 }
