@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.yrgo.employeasy.vacation.dto.OpenDateDTO;
 import se.yrgo.employeasy.vacation.dto.ReservedDateDTO;
+import se.yrgo.employeasy.vacation.dto.TableScheduleDTO;
 import se.yrgo.employeasy.vacation.dto.UserAnnualDatesDTO;
 import se.yrgo.employeasy.vacation.entities.VacationDate;
 import se.yrgo.employeasy.vacation.exceptions.DoubleBookedException;
@@ -38,20 +39,25 @@ public class VacationService {
                         "No open dates with job title " + jobTitle + " was found."));
     }
 
-    public ReservedDateDTO requestReservationUsingJobTitle(LocalDate date, String userId, String jobTitle) {
-        if(date.isBefore(LocalDate.now())) {
-            throw new TimeException("Vacation date " + date + " needs to be in the future.");
+    
+    
+    public ReservedDateDTO requestReservationUsingJobTitle(ReservedDateDTO request, String jobTitle) {
+        final LocalDate dateRequested = request.getDate();
+        if(dateRequested.isBefore(LocalDate.now())) {
+            throw new TimeException("Vacation date " + dateRequested + " needs to be in the future.");
         }
-        var openDates = dateRepository.findDateSlots(jobTitle, date);
+        var openDates = dateRepository.findDateSlots(jobTitle, dateRequested);
+
+        final String userIdRequested = request.getUserId();
         if(openDates.isEmpty()) {
-            throw new ObjectNotFoundException("No open dates with user " + userId + " was found.");
+            throw new ObjectNotFoundException("No open dates with user " + userIdRequested + " was found.");
         } else {
-            if(dateRepository.hasAlreadyBooked(date, userId)) {
+            if(dateRepository.hasAlreadyBooked(dateRequested, userIdRequested)) {
                 throw new DoubleBookedException("A single user can only book a date once");
             }
             int randomElementIndex = ThreadLocalRandom.current().nextInt(openDates.size());
             var update = openDates.get(randomElementIndex);
-            update.setUserId(userId);
+            update.setUserId(userIdRequested);
             var result = dateRepository.save(update);
             return new ReservedDateDTO(result.getDate(), result.getUserId());
         }
@@ -73,5 +79,22 @@ public class VacationService {
         final int pastBooked = (int) booked.stream().filter(b -> b.getDate().isBefore(tomorrow)).count();
         final int futureBooked = booked.size() - pastBooked;
         return new UserAnnualDatesDTO(pastBooked, futureBooked, futureBookable);
+    }
+
+    @Transactional
+    public void addSchedule(TableScheduleDTO schedule, String jobTitle) {
+        List<LocalDate> dates = schedule
+                .getStartDate()
+                .datesUntil(schedule.getEndDate().plusDays(1))
+                .collect(Collectors.toList());
+
+        List<VacationDate> vd = new ArrayList<>();
+        final int multiple = schedule.getMultiple();
+        for (LocalDate localDate : dates) {
+            for (int i = 0; i < multiple; i++) {
+                vd.add(new VacationDate(jobTitle, localDate));
+            }
+        }
+        dateRepository.saveAll(vd);
     }
 }

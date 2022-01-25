@@ -13,7 +13,7 @@ import se.yrgo.employeasy.entities.enums.SystemStatus;
  * abstract Employee transfer object where userId can be null when posting.
  * updated 2022-01-20
  */
-public class EmployeeDTO implements Serializable {
+public class EmployeeDTO implements Serializable, Comparable<EmployeeDTO> {
 
     private static final long serialVersionUID = 1L;
     // Mandatory fields
@@ -72,6 +72,11 @@ public class EmployeeDTO implements Serializable {
         String user = firstName.substring(0, 3) + lastName.substring(0, 3);
         String lowerCase = user.toLowerCase();
         return org.apache.commons.lang3.StringUtils.stripAccents(lowerCase);
+    }
+
+    @Override
+    public int compareTo(EmployeeDTO other) {
+        return this.getFirstName().compareTo(other.getFirstName());
     }
 
     @Override
@@ -214,4 +219,5 @@ public class EmployeeDTO implements Serializable {
     public void setSystemStatus(SystemStatus systemStatus) {
         this.systemStatus = systemStatus;
     }
+
 }

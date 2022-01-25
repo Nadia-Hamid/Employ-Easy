@@ -15,12 +15,10 @@ export class EmployeeComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-      console.log(this.reload)
   }
 
   reloadPage() {
     this.reload = true
-    console.log("hej")
   }
 }
 
