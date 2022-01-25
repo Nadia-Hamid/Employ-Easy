@@ -12,10 +12,8 @@ import se.yrgo.employeasy.vacation.dto.OpenDateDTO;
 import se.yrgo.employeasy.vacation.dto.ReservedDateDTO;
 import se.yrgo.employeasy.vacation.dto.TableScheduleDTO;
 import se.yrgo.employeasy.vacation.dto.UserAnnualDatesDTO;
-import se.yrgo.employeasy.vacation.entities.VacationDate;
 import se.yrgo.employeasy.vacation.services.VacationService;
 
-import java.util.List;
 import java.util.Set;
 
 @RestController
