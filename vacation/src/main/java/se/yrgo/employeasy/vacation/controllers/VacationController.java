@@ -8,14 +8,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import se.yrgo.employeasy.vacation.dto.OpenDateDTO;
-import se.yrgo.employeasy.vacation.dto.ReservedDateDTO;
-import se.yrgo.employeasy.vacation.dto.TableScheduleDTO;
-import se.yrgo.employeasy.vacation.dto.UserAnnualDatesDTO;
-import se.yrgo.employeasy.vacation.entities.VacationDate;
+import se.yrgo.employeasy.vacation.dto.*;
 import se.yrgo.employeasy.vacation.services.VacationService;
 
-import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -81,7 +76,7 @@ public class VacationController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Successfully deleted future vacation choices",
 					content = @Content) })
-	@RequestMapping(value = "/{userId}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "{userId}", method = RequestMethod.DELETE)
 	public void resetFutureVacationChoices(@PathVariable String userId) {
 		vacationService.resetFutureVacationChoices(userId);
 	}
@@ -98,5 +93,19 @@ public class VacationController {
 	public TableScheduleDTO vacationSchedule(@PathVariable String jobTitle, @RequestBody TableScheduleDTO schedule) {
 		vacationService.addSchedule(schedule, jobTitle);
 		return schedule;
+	}
+
+	/**
+	 * Get yearly maximum simultaneous booked workers per day.
+	 * @return Map with date and number
+	 */
+	@Operation(summary = "Get yearly data.")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Successfully retrieved the data",
+					content = @Content(mediaType = "application/json",
+							schema = @Schema(implementation = TableBookableDTO.class)))})
+	@RequestMapping(value = "{jobTitle}/year/{year}", method = RequestMethod.GET)
+	public TableBookableDTO getAllBookableDates(@PathVariable String jobTitle, @PathVariable String year) {
+		return vacationService.getAllBookableDates(jobTitle, year);
 	}
 }

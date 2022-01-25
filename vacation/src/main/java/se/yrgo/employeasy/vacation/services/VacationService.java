@@ -2,10 +2,7 @@ package se.yrgo.employeasy.vacation.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import se.yrgo.employeasy.vacation.dto.OpenDateDTO;
-import se.yrgo.employeasy.vacation.dto.ReservedDateDTO;
-import se.yrgo.employeasy.vacation.dto.TableScheduleDTO;
-import se.yrgo.employeasy.vacation.dto.UserAnnualDatesDTO;
+import se.yrgo.employeasy.vacation.dto.*;
 import se.yrgo.employeasy.vacation.entities.VacationDate;
 import se.yrgo.employeasy.vacation.exceptions.DoubleBookedException;
 import se.yrgo.employeasy.vacation.exceptions.ObjectNotFoundException;
@@ -96,5 +93,13 @@ public class VacationService {
             }
         }
         dateRepository.saveAll(vd);
+    }
+
+    public TableBookableDTO getAllBookableDates(String jobTitle, String year) {
+        List<VacationDate> allFromThisYear = dateRepository.findAllAnnual();
+        Map<LocalDate, Long> allFromThisYearMap = allFromThisYear
+                .stream()
+                .collect(Collectors.groupingBy(VacationDate::getDate, Collectors.counting()));
+        return new TableBookableDTO(allFromThisYearMap);
     }
 }
