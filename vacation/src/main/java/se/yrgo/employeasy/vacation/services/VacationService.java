@@ -80,9 +80,14 @@ public class VacationService {
 
     @Transactional
     public void addSchedule(TableScheduleDTO schedule, String jobTitle) {
-        List<LocalDate> dates = schedule
-                .getStartDate()
-                .datesUntil(schedule.getEndDate().plusDays(1))
+        var startDate = schedule.getStartDate();
+        var endDate = schedule.getEndDate();
+        if(startDate.isAfter(endDate)) {
+            throw new TimeException("End date must be after start date");
+        }
+
+        List<LocalDate> dates = startDate
+                .datesUntil(endDate.plusDays(1))
                 .collect(Collectors.toList());
 
         List<VacationDate> vd = new ArrayList<>();
@@ -95,11 +100,19 @@ public class VacationService {
         dateRepository.saveAll(vd);
     }
 
-    public TableBookableDTO getAllBookableDates(String jobTitle, String year) {
-        List<VacationDate> allFromThisYear = dateRepository.findAllAnnual();
-        Map<LocalDate, Long> allFromThisYearMap = allFromThisYear
+    public TableBookableDTO getBookableByYearAndJobTitle(String jobTitle, String year) {
+        List<VacationDate> allMatching = dateRepository.findAllByYearAndJobTitle(Integer.parseInt(year), jobTitle);
+        Map<LocalDate, Long> allMatchingAsMap = allMatching
                 .stream()
                 .collect(Collectors.groupingBy(VacationDate::getDate, Collectors.counting()));
-        return new TableBookableDTO(allFromThisYearMap);
+        return new TableBookableDTO(allMatchingAsMap);
+    }
+
+    public TableBookableDTO getAllBookable() {
+        List<VacationDate> allMatching = dateRepository.findAllAnnual();
+        Map<LocalDate, Long> allMatchingAsMap = allMatching
+                .stream()
+                .collect(Collectors.groupingBy(VacationDate::getDate, Collectors.counting()));
+        return new TableBookableDTO(allMatchingAsMap);
     }
 }

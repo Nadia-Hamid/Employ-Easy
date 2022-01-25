@@ -88,7 +88,9 @@ public class VacationController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Insertions successfully completed.", 
 					content = @Content(mediaType = "application/json",
-							schema = @Schema(implementation = TableScheduleDTO.class)))})
+							schema = @Schema(implementation = TableScheduleDTO.class))),
+			@ApiResponse(responseCode = "400", description = "The end time must be after start time.",
+					content = @Content)})
 			@RequestMapping(value = "{jobTitle}", method = RequestMethod.POST)
 	public TableScheduleDTO vacationSchedule(@PathVariable String jobTitle, @RequestBody TableScheduleDTO schedule) {
 		vacationService.addSchedule(schedule, jobTitle);
@@ -99,13 +101,29 @@ public class VacationController {
 	 * Get yearly maximum simultaneous booked workers per day.
 	 * @return Map with date and number
 	 */
-	@Operation(summary = "Get yearly data.")
+	@Operation(summary = "Get yearly data by job title.")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Successfully retrieved the data",
+					content = @Content(mediaType = "application/json",
+							schema = @Schema(implementation = TableBookableDTO.class))),
+			@ApiResponse(responseCode = "400", description = "The year must be an integer.",
+					content = @Content),})
+	@RequestMapping(value = "{jobTitle}/year/{year}", method = RequestMethod.GET)
+	public TableBookableDTO getBookableDates(@PathVariable String jobTitle, @PathVariable String year) {
+		return vacationService.getBookableByYearAndJobTitle(jobTitle, year);
+	}
+
+	/**
+	 * Get this year's maximum simultaneous booked workers per day.
+	 * @return Map with date and number
+	 */
+	@Operation(summary = "Get current year data.")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Successfully retrieved the data",
 					content = @Content(mediaType = "application/json",
 							schema = @Schema(implementation = TableBookableDTO.class)))})
-	@RequestMapping(value = "{jobTitle}/year/{year}", method = RequestMethod.GET)
-	public TableBookableDTO getAllBookableDates(@PathVariable String jobTitle, @PathVariable String year) {
-		return vacationService.getAllBookableDates(jobTitle, year);
+	@RequestMapping(value = "", method = RequestMethod.GET)
+	public TableBookableDTO getAllBookableDates() {
+		return vacationService.getAllBookable();
 	}
 }

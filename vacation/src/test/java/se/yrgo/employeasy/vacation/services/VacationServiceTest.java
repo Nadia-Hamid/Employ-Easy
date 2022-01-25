@@ -137,7 +137,25 @@ class VacationServiceTest {
     }
 
     @Test
-    void getAllBookableDates() {
+    void getBookableByYearAndJobTitle() {
+        final long midSummerMultiple = 2L, single = 1L;
+        final HashMap<LocalDate, Long> bookable = new HashMap<>();
+        bookable.put(MID_SUMMER, midSummerMultiple);
+        bookable.put(MID_SUMMER.plusDays(1), single);
+        bookable.put(MID_SUMMER.plusDays(2), single);
+        final var expected = new TableBookableDTO(bookable);
+        when(mockedDateRepository.findAllByYearAndJobTitle(CURRENT, JOB_TITLE)).thenReturn(List.of(
+                new VacationDate(JOB_TITLE, MID_SUMMER),
+                new VacationDate(JOB_TITLE, MID_SUMMER),
+                new VacationDate(JOB_TITLE, MID_SUMMER.plusDays(1)),
+                new VacationDate(JOB_TITLE, MID_SUMMER.plusDays(2))
+        ));
+        final var actual = vacationServiceTest.getBookableByYearAndJobTitle(JOB_TITLE, "2022");
+        assertEquals(expected.getVacationAvailable(), actual.getVacationAvailable());
+    }
+
+    @Test
+    void getAllBookable() {
         final long midSummerMultiple = 2L, single = 1L;
         final HashMap<LocalDate, Long> bookable = new HashMap<>();
         bookable.put(MID_SUMMER, midSummerMultiple);
@@ -150,7 +168,13 @@ class VacationServiceTest {
                 new VacationDate(JOB_TITLE, MID_SUMMER.plusDays(1)),
                 new VacationDate(JOB_TITLE, MID_SUMMER.plusDays(2))
         ));
-        final var actual = vacationServiceTest.getAllBookableDates(JOB_TITLE, "2022");
+        final var actual = vacationServiceTest.getAllBookable();
         assertEquals(expected.getVacationAvailable(), actual.getVacationAvailable());
+    }
+
+    @Test
+    void addScheduleThrowsWhenEndTimeIsBeforeStartTime() {
+        assertThrows(TimeException.class, () -> vacationServiceTest.addSchedule(
+                new TableScheduleDTO(MID_SUMMER, MID_SUMMER.minusDays(1), 1), JOB_TITLE));
     }
 }
