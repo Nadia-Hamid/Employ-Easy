@@ -1,0 +1,42 @@
+<div class="modal fade" id="vacationScheduleEmployeeModal" tabindex="-1" role="dialog"
+    aria-labelledby="vacationEmployeeModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="vacationScheduleEmployeeModal">Schedule Vacation Term</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form #vacationForm="ngForm">
+                    <div class="form-group">
+                        <label for="jobTitle"> Job Title</label>
+                        <input ngModel type="text" name="jobTitle" class="form-control" id="job-title"
+                            placeholder="Job Title" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="start-date">Start date</label>
+                        <input ngModel type="date" name="startDate" class="form-control" id="start-date"
+                            placeholder="Start date" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="end-date">End date</label>
+                        <input ngModel type="date" name="endDate" class="form-control" id="end-date"
+                            placeholder="End date" />
+                    </div>
+                    <div class="form-group">
+                        <label for="multipleDatesAvailable">Number of reservations allowed</label>
+                        <input ngModel type="number" name="multiple" class="form-control" id="multiple"
+                            placeholder=0 required />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="scheduleVacation-employee-form" class="btn btn-secondary"
+                            data-dismiss="modal">Close</button>
+                        <button [disabled]="vacationForm.invalid" a (click)='onScheduleVacation(vacationForm)' type="submit" data-dismiss="modal" class="btn btn-primary">Save
+                            changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>

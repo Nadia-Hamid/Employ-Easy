@@ -45,7 +45,7 @@ public class VacationApplication {
                 "Access-Control-Allow-Credentials"
             )
         );
-        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "PUT"));
+        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "PUT", "POST", "DELETE"));
         UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
         return new CorsFilter(urlBasedCorsConfigurationSource);
