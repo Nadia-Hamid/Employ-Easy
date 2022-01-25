@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core"
-import { Employee } from '../components/employee/employee'
 import { HttpClient } from '@angular/common/http';
 import { environment } from "src/environments/environment";
 import { Observable } from "rxjs";
@@ -24,5 +23,9 @@ export class VacationService {
 
     public scheduleVacationPeriods(jobTitle: String, vacationTerm: Object): Observable<VacationBookedPeriod> {
         return this.http.post<VacationBookedPeriod>(`${this.apiServerUrl}/v1/vacations/${jobTitle}`, vacationTerm);
+    }
+
+    public getBookableDates(jobTitle: String, year: String): Observable<any> {
+        return this.http.get<any>(`${this.apiServerUrl}/v1/vacations/${jobTitle}/year/${year}`);
     }
 }
