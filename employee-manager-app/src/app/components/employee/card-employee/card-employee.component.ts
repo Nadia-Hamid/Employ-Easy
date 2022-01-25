@@ -3,7 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http'
 import { EmployeeService } from '../../../services/employee.service'
 import { Employee } from '../employee'
 
-@Component({ templateUrl: 'card-employee.component.html', selector: 'card' })
+@Component({ templateUrl: 'card-employee.component.html', selector: 'card', styleUrls: ['./card-employee.component.css']})
 export class CardComponent implements OnInit {
   @Input() public employees?: Employee[]
   @Input() public deleteEmployee: Employee
