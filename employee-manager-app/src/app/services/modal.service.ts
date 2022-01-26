@@ -15,7 +15,11 @@ export class ModalService {
         this.employees = response
       },
       (error: HttpErrorResponse) => {
-        alert(error.message)
+        if (error.error instanceof Error) {
+            alert('An error occurred:'+ error.error.message);
+        } else {
+          alert(`${JSON.stringify(error.error)}`);
+        }
       }
     )
   }

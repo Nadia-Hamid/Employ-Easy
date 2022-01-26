@@ -33,7 +33,11 @@ export class VacationComponent implements OnInit {
         }
       },
       (error: HttpErrorResponse) => {
-        alert(error.message)
+        if (error.error instanceof Error) {
+            alert('An error occurred:'+ error.error.message);
+        } else {
+          alert(`${JSON.stringify(error.error)}`);
+        }
       }
     )
   }
@@ -47,7 +51,11 @@ export class VacationComponent implements OnInit {
         this.getVacationDatesForUser(this.employee?.jobTitle, this.employee?.userId)
       },
       (error: HttpErrorResponse) => {
-        alert(error.message)
+        if (error.error instanceof Error) {
+            alert('An error occurred:'+ error.error.message);
+        } else {
+          alert(`${JSON.stringify(error.error)}`);
+        }
       }
     )
   }

@@ -21,7 +21,11 @@ export class DeleteModalComponent implements OnInit {
     this.employeeService.deleteEmployee(userId).subscribe(
       (response: void) => {},
       (error: HttpErrorResponse) => {
-        alert(error.message)
+        if (error.error instanceof Error) {
+            alert('An error occurred:'+ error.error.message);
+        } else {
+          alert(`${JSON.stringify(error.error)}`);
+        }
       }
     )
   }
