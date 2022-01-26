@@ -1,8 +1,13 @@
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300&display=swap" rel="stylesheet"> 
+</head>
 <div class="main-body" id="main-container">
     <section class="big-container">
         <section *ngFor="let employee of employees" class="main-container zoom">
             <article class="user-container">
-                <div class="image-container"><img src="./assets/user_image.png" alt="" class="image"></div>
+                <div class="image-container"><img src="./assets/user_image.png" alt="" class="image" a (click)="onOpenModal(employee, 'info')"></div>
                 <div class="user-information" a (click)="onOpenModal(employee, 'info')">
                     <div>
                         <p>Name:</p>
@@ -27,7 +32,7 @@
                 </div>
 
             </article>
-            <article class="button" >
+            <article class="button">
                 <div class="float-right btn-group btn-group-sm buttons">
                     <a class="btn btn-primary tooltips" a (click)="onOpenModal(employee, 'edit')" data-placement="top"
                         data-original-title="Edit"><i class="fa fa-pencil"></i>
