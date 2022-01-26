@@ -24,24 +24,22 @@ export class ReservedVacationUser implements OnInit {
   }
 
   ngOnChanges() {
-    if (this.update === true) {
-        console.log("hej")
-      }
+    this.getVacationDates;
     }
   
   
-  getVacationDates() {
-    this.futureUnbookedDates = new Array()
-    this.vacationService.getVacationDatesForUser(this.employee.jobTitle, this.employee.userId).subscribe(
-      (response: MyAnnualAllowance) => {
-        this.annualAllowance = response
-        for (let item in response.futureUnbooked) {
-          this.futureUnbookedDates.push(response.futureUnbooked[item].date.toString())
-        }
-      },
-      (httpError: HttpErrorResponse) => {
-        CustomErrorMessage(httpError)
+    getVacationDates() {
+        this.futureUnbookedDates = new Array()
+        this.vacationService.getVacationDatesForUser(this.employee.jobTitle, this.employee.userId).subscribe(
+          (response: MyAnnualAllowance) => {
+            this.annualAllowance = response
+            for (let item in response.futureUnbooked) {
+              this.futureUnbookedDates.push(response.futureUnbooked[item].date.toString())
+            }
+          },
+          (httpError: HttpErrorResponse) => {
+            CustomErrorMessage(httpError)
+          }
+        )
       }
-    )
-  }
 }
