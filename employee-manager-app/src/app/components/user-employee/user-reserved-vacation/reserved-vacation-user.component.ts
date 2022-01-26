@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http'
-import { Component, Input, OnInit } from '@angular/core'
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core'
 import { CustomErrorMessage } from 'src/app/alerts/custom-error-message'
 import { VacationService } from 'src/app/services/vacation.service'
 import { Employee } from '../../employee/employee'
@@ -20,16 +20,17 @@ export class ReservedVacationUser implements OnInit {
   constructor(private vacationService: VacationService) {}
 
   ngOnInit() {
+      this.getVacationDates()
   }
 
   ngOnChanges() {
-      console.log(this.update)
-      if(this.update === true) {
-        this.getVacationDatesForUser()
+    if (this.update === true) {
+        console.log("hej")
       }
-  }
-
-  getVacationDatesForUser() {
+    }
+  
+  
+  getVacationDates() {
     this.futureUnbookedDates = new Array()
     this.vacationService.getVacationDatesForUser(this.employee.jobTitle, this.employee.userId).subscribe(
       (response: MyAnnualAllowance) => {

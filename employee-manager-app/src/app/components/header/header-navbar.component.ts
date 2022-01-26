@@ -18,7 +18,6 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {}
 
   reloadPage() {
-    this.reload.emit()
     this.update = true
   }
 
