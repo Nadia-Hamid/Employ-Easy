@@ -42,6 +42,10 @@ export class ModalService {
     if (mode === 'vacationTermPeriods') {
       button.setAttribute('data-target', '#vacationTermPeriodsEmployeeModal')
     }
+
+    if (mode === 'reservedVacation') {
+        button.setAttribute('data-target', '#reservedVacationEmployeeModal')
+      }
     container?.appendChild(button)
     button.click()
   }

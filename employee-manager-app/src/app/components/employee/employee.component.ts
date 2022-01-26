@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, EventEmitter } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { Employee } from './employee'
 
 @Component({ templateUrl: 'employee.component.html' })

@@ -1,0 +1,32 @@
+<div class="modal fade" id="reservedVacationEmployeeModal" tabindex="-1" role="dialog"
+    aria-labelledby="vacationEmployeeModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reservedVacationEmployeeModal">Booked Vacation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form #reservedVacationForm="ngForm">
+                    <div class="form-group">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Past Booked Dates: {{ annualAllowance?.pastBooked }}</li>
+                            <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Booked Dates: {{ annualAllowance?.futureBooked }}</li>
+                            <li class="list-group-item">Future Bookable Dates:</li>
+                            <li class="list-group-item" *ngFor="let item of futureUnbookedDates"><i class="fa fa-envelope float-right"></i>{{ item }}</li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="reserved-vacation-employee-form"  class="btn btn-secondary"
+                            data-dismiss="modal" >Close</button>
+                        <button type="submit" [disabled]="reservedVacationForm.invalid" type="submit" data-dismiss="modal"
+                        class="btn btn-primary"class="btn btn-primary">Save
+                            changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

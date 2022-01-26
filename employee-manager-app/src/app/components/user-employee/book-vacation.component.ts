@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core'
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
 import { NgForm } from '@angular/forms'
 import { VacationService } from '../../services/vacation.service'
 import { HttpErrorResponse } from '@angular/common/http'
@@ -11,6 +11,7 @@ import { CustomErrorMessage } from 'src/app/alerts/custom-error-message'
 export class VacationComponent implements OnInit {
   public vacationDates: Vacation[]
   @Input() public employee: Employee
+  @Output() update = new EventEmitter()
 
   constructor(private vacationService: VacationService) {}
 
@@ -23,7 +24,6 @@ export class VacationComponent implements OnInit {
       (response: MyAnnualAllowance) => { 
         this.vacationDates = new Array
         var futureUnbooked = response.futureUnbooked
-        console.log(futureUnbooked)
         for(var i in futureUnbooked) {
           let vacationData = {} as Vacation 
           let json = JSON.stringify(futureUnbooked[i])
@@ -31,6 +31,7 @@ export class VacationComponent implements OnInit {
           vacationData.date = parts[3]
           vacationData.userId = userId
           this.vacationDates.push(vacationData)
+          this.update.emit()
         }
       },
       (httpError: HttpErrorResponse) => {

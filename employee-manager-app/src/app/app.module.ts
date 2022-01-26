@@ -16,6 +16,7 @@ import { DeleteModalComponent } from './components/employee/delete-employee/dele
 import { VacationComponent } from './components/user-employee/book-vacation.component';
 import { ScheduleVacationComponent } from './components/employee/schedule-vacation/schedule-vacation.component';
 import { TermVacationComponent } from './components/employee/schedule-vacation/vacation-term/term-vacation.component';
+import { ReservedVacationUser } from './components/user-employee/user-reserved-vacation/reserved-vacation-user.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { TermVacationComponent } from './components/employee/schedule-vacation/v
     DeleteModalComponent,
     VacationComponent,
     ScheduleVacationComponent,
-    TermVacationComponent
+    TermVacationComponent,
+    ReservedVacationUser
 
   ],
   imports: [

@@ -9,18 +9,18 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form #addForm="ngForm">
+                <form #vacationForm="ngForm">
                     <div class="form-group">
                         <label for="vacationDates">Vacation Dates</label>
                         <select ngModel name="date" class="form-control">
-                            <option disabled>Select Vacation Date</option>
+                            <option invalid selected="selected">Select Vacation Date</option>
                             <option *ngFor="let vacationDay of vacationDates">{{ vacationDay.date }}</option>
                         </select>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" id="vacation-employee-form" class="btn btn-secondary"
-                            data-dismiss="modal">Close</button>
-                        <button type="submit" [disabled]="addForm.invalid" a (click)='onAddVacation(addForm, employee.userId, employee.jobTitle)' type="submit" data-dismiss="modal"
+                        <button type="button" id="vacation-employee-form"  class="btn btn-secondary"
+                            data-dismiss="modal" >Close</button>
+                        <button type="submit" [disabled]="vacationForm.invalid" a (click)='onAddVacation(vacationForm, employee.userId, employee.jobTitle)' type="submit" data-dismiss="modal"
                         class="btn btn-primary"class="btn btn-primary">Save
                             changes</button>
                     </div>

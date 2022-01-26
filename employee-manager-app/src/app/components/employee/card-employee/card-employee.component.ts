@@ -23,7 +23,7 @@ export class CardComponent implements OnInit {
 
   ngOnChanges() {
     if (this.reload === true) {
-      window.location.reload()
+      this.reloadPage()
     }
   }
 

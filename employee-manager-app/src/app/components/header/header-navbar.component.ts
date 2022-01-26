@@ -9,6 +9,7 @@ import { Employee } from '../employee/employee'
 })
 export class NavbarComponent implements OnInit {
   public userRole: String = localStorage.getItem('userRole')
+  public update: boolean
   @Input() public employee: Employee
   @Output() reload = new EventEmitter()
 
@@ -18,9 +19,11 @@ export class NavbarComponent implements OnInit {
 
   reloadPage() {
     this.reload.emit()
+    this.update = true
   }
 
   onOpenModal(mode: string) {
     this.modalService.onOpenModal(mode)
+    
   }
 }
