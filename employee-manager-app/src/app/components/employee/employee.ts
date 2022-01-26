@@ -14,10 +14,4 @@ export interface Employee {
     endDate?: Date;
     employeeStatus?: string;
 	systemStatus?: string;
-    //imageUrl: string;
 }
-
-/*
-    personalNumber: '860426-XXXX',
-    photo: 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png'
-    */

@@ -1,5 +1,5 @@
-<div class="modal fade" id="vacationTermPeriodsEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="infoEmployeeModal"
-    aria-hidden="true">
+<div class="modal fade" id="vacationTermPeriodsEmployeeModal" tabindex="-1" role="dialog"
+    aria-labelledby="infoEmployeeModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -9,12 +9,30 @@
                 </button>
             </div>
             <div class="modal-body">
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><i class="fa fa-envelope float-right"></i>HEJ HEJ</li>
-                </ul>
-                <div class="modal-footer">
-                    <button type="button" id="" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
+                <form #bookableDatesForm="ngForm">
+                    <div class="form-group">
+                        <label for="jobTitle"> Job Title</label>
+                        <input ngModel type="text" name="jobTitle" class="form-control" id="job-title"
+                            placeholder="Job Title" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="systemStatus">Year</label>
+                        <select ngModel [(ngModel)]='yearSelect' name="year" class="form-control">
+                            <option disabled>Select Year</option>
+                            <option>2022</option>
+                            <option>2023</option>
+                            <option>2024</option>
+                            <option>2025</option>
+                        </select>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><i class="fa fa-envelope float-right"></i> {{ bookableDates }}</li>
+                    </ul>
+                    <div class="modal-footer">
+                        <button type="button" id="" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button [disabled]="bookableDatesForm.invalid" type="submit" (click)='getBookableDatesVacation(bookableDatesForm)' class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

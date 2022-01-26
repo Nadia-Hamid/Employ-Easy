@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms'
 import { LoginService } from '../../services/login.service'
 
 
-@Component({ templateUrl: 'login.component.html' })
+@Component({ templateUrl: 'login.component.html', styleUrls: ['./login.component.css'] })
 export class LoginComponent implements OnInit {
   form: FormGroup
   private responseData: any

@@ -36,12 +36,12 @@ export class ModalService {
     }
 
     if (mode === 'vacationSchedule') {
-        button.setAttribute('data-target', '#vacationScheduleEmployeeModal')
-      }
+      button.setAttribute('data-target', '#vacationScheduleEmployeeModal')
+    }
 
-      if (mode === 'vacationTermPeriods') {
-        button.setAttribute('data-target', '#vacationTermPeriodsEmployeeModal')
-      }
+    if (mode === 'vacationTermPeriods') {
+      button.setAttribute('data-target', '#vacationTermPeriodsEmployeeModal')
+    }
     container?.appendChild(button)
     button.click()
   }
