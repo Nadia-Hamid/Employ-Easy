@@ -25,7 +25,9 @@ export class VacationComponent implements OnInit {
         console.log(futureUnbooked)
         for(var i in futureUnbooked) {
           let vacationData = {} as Vacation 
-          vacationData.date = i;
+          let json = JSON.stringify(futureUnbooked[i])
+          let parts = json.split("\"");
+          vacationData.date = parts[3]
           vacationData.userId = userId
           this.vacationDates.push(vacationData)
         }
