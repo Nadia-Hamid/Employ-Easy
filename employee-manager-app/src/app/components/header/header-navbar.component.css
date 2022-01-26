@@ -1,0 +1,19 @@
+.navbar-brand {
+  letter-spacing: 1px;
+  font-weight: 500;
+  padding-right: 30px;
+}
+
+.divider {
+  padding-right: 6px;
+  padding-left: 6px;
+  font-size: x-large;
+  color: #61656b;
+  pointer-events: none;
+}
+
+@media (max-width: 991px) {
+  .divider {
+    display: none;
+  }
+}
