@@ -5,6 +5,7 @@ import { HttpErrorResponse } from '@angular/common/http'
 import { Vacation } from './vacation'
 import { Employee } from '../employee/employee'
 import { MyAnnualAllowance } from './my-annual-allowance'
+import { CustomErrorMessage } from 'src/app/alerts/custom-error-message'
 
 @Component({ templateUrl: 'book-vacation.component.html', selector: 'book-vacation' })
 export class VacationComponent implements OnInit {
@@ -32,13 +33,8 @@ export class VacationComponent implements OnInit {
           this.vacationDates.push(vacationData)
         }
       },
-      (error: HttpErrorResponse) => {
-        if (error.error instanceof Error) {
-            alert('An error occurred:'+ error.error.message);
-        } else {
-          alert(`${JSON.stringify(error.error)}`);
-        }
-      }
+      (httpError: HttpErrorResponse) => {
+        CustomErrorMessage(httpError)}
     )
   }
 
@@ -50,13 +46,8 @@ export class VacationComponent implements OnInit {
       () => {
         this.getVacationDatesForUser(this.employee?.jobTitle, this.employee?.userId)
       },
-      (error: HttpErrorResponse) => {
-        if (error.error instanceof Error) {
-            alert('An error occurred:'+ error.error.message);
-        } else {
-          alert(`${JSON.stringify(error.error)}`);
-        }
-      }
+      (httpError: HttpErrorResponse) => {
+        CustomErrorMessage(httpError)}
     )
   }
 }

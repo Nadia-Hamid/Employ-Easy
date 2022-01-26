@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core'
 import { HttpErrorResponse } from '@angular/common/http'
 import { EmployeeService } from '../../../services/employee.service'
 import { Employee } from '../employee'
+import { CustomErrorMessage } from 'src/app/alerts/custom-error-message'
 
 @Component({ templateUrl: 'card-employee.component.html', selector: 'card', styleUrls: ['./card-employee.component.css']})
 export class CardComponent implements OnInit {
@@ -35,12 +36,8 @@ export class CardComponent implements OnInit {
       (response: Employee[]) => {
         this.employees = response
       },
-      (error: HttpErrorResponse) => {
-        if (error.error instanceof Error) {
-            alert('An error occurred:'+ error.error.message);
-          } else {
-            alert(`${JSON.stringify(error.error)}`);
-        }
+      (httpError: HttpErrorResponse) => {
+        CustomErrorMessage(httpError)
       }
     )
   }

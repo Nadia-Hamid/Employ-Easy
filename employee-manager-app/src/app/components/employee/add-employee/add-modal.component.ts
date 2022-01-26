@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core'
 import { HttpErrorResponse } from '@angular/common/http'
 import { NgForm } from '@angular/forms'
 import { EmployeeService } from '../../../services/employee.service'
+import { CustomErrorMessage } from 'src/app/alerts/custom-error-message'
 
 @Component({ templateUrl: 'add-modal.component.html', selector: 'add-modal' })
 export class AddModalComponent implements OnInit {
@@ -25,12 +26,8 @@ export class AddModalComponent implements OnInit {
       () => {
         addForm.reset()
       },
-      (error: HttpErrorResponse) => {
-        if (error.error instanceof Error) {
-          alert('An error occurred:'+ error.error.message);
-        } else {
-          alert(`${JSON.stringify(error.error)}`);
-        }
+      (httpError: HttpErrorResponse) => {
+        CustomErrorMessage(httpError)
       }
     )
   }

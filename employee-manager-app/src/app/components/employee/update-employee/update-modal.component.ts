@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
 import { HttpErrorResponse } from '@angular/common/http'
 import { EmployeeService } from '../../../services/employee.service'
 import { Employee } from '../employee'
+import { CustomErrorMessage } from 'src/app/alerts/custom-error-message'
 
 
 @Component({ templateUrl: 'update-modal.component.html', selector: 'update-modal' })
@@ -25,13 +26,8 @@ export class UpdateModalComponent implements OnInit {
     this.employeeService.updateEmployee(employee).subscribe(
       (response: Employee) => {
       },
-      (error: HttpErrorResponse) => {
-        if (error.error instanceof Error) {
-            alert('An error occurred:'+ error.error.message);
-        } else {
-          alert(`${JSON.stringify(error.error)}`);
-        }
-      }
+      (httpError: HttpErrorResponse) => {
+        CustomErrorMessage(httpError)}
     )
   }
 }

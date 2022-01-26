@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms'
 import { HttpErrorResponse } from '@angular/common/http'
 import { VacationService } from '../../../services/vacation.service'
 import { VacationBookedPeriod } from './vacationBookedPeriod'
+import { CustomErrorMessage } from 'src/app/alerts/custom-error-message'
 
 @Component({ templateUrl: 'schedule-vacation.component.html', selector: 'schedule-vacation' })
 export class ScheduleVacationComponent implements OnInit {
@@ -34,12 +35,8 @@ export class ScheduleVacationComponent implements OnInit {
           alert("Confirmed vacation period " + this.confirmedDates.startDate + " / "
             + this.confirmedDates.endDate + ". Multiple: " + this.confirmedDates.multiple + ".")
         },
-        (error: HttpErrorResponse) => {
-          if (error.error instanceof Error) {
-            alert('An error occurred:'+ error.error.message);
-          } else {
-            alert(`${JSON.stringify(error.error)}`);
-          }
+        (httpError: HttpErrorResponse) => {
+          CustomErrorMessage(httpError)
         }
       )
     }

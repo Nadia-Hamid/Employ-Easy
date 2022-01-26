@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core'
 import { NgForm } from '@angular/forms'
 import { VacationService } from 'src/app/services/vacation.service'
 import { HttpErrorResponse } from '@angular/common/http'
+import { CustomErrorMessage } from 'src/app/alerts/custom-error-message'
 
 @Component({ templateUrl: 'term-vacation.component.html', selector: 'term-vacation' })
 export class TermVacationComponent implements OnInit {
@@ -23,13 +24,8 @@ export class TermVacationComponent implements OnInit {
           this.bookableDates = response
           
       },
-      (error: HttpErrorResponse) => {
-        if (error.error instanceof Error) {
-            alert('An error occurred:'+ error.error.message);
-        } else {
-          alert(`${JSON.stringify(error.error)}`);
-        }
-      }
+      (httpError: HttpErrorResponse) => {
+        CustomErrorMessage(httpError)}
     )
   }
   }

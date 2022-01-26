@@ -3,6 +3,7 @@ import { Router } from '@angular/router'
 import { EmployeeService } from '../../services/employee.service'
 import { Employee } from '../employee/employee'
 import { HttpErrorResponse } from '@angular/common/http'
+import { CustomErrorMessage } from 'src/app/alerts/custom-error-message'
 
 @Component({ templateUrl: 'user.component.html', styleUrls: ['./user.component.css'] })
 export class UserComponent implements OnInit {
@@ -25,13 +26,8 @@ export class UserComponent implements OnInit {
         this.employee = response
         this.employeeLoaded = true
       },
-      (error: HttpErrorResponse) => {
-        if (error.error instanceof Error) {
-            alert('An error occurred:'+ error.error.message);
-        } else {
-          alert(`${JSON.stringify(error.error)}`);
-        }
-      }
+      (httpError: HttpErrorResponse) => {
+        CustomErrorMessage(httpError)}
     )
   }
 }

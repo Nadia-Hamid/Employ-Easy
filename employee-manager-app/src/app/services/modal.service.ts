@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core'
 import { HttpErrorResponse } from '@angular/common/http'
 import { Employee } from '../components/employee/employee'
 import { EmployeeService } from './employee.service'
+import { CustomErrorMessage } from '../alerts/custom-error-message'
 
 @Injectable({ providedIn: 'root' })
 export class ModalService {
@@ -14,13 +15,8 @@ export class ModalService {
       (response: Employee[]) => {
         this.employees = response
       },
-      (error: HttpErrorResponse) => {
-        if (error.error instanceof Error) {
-            alert('An error occurred:'+ error.error.message);
-        } else {
-          alert(`${JSON.stringify(error.error)}`);
-        }
-      }
+      (httpError: HttpErrorResponse) => {
+        CustomErrorMessage(httpError)}
     )
   }
 
