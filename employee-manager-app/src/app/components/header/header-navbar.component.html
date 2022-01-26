@@ -6,19 +6,19 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarColor02">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active" *ngIf="userRole === 'ROLE_ADMIN'">
-                <a class="nav-link" a (click)="onOpenModal('add')">Add Employee <span
+            <li class="nav-item" *ngIf="userRole === 'ROLE_ADMIN'">
+                <a class="nav-link" a (click)="onOpenModal('add')">Add Employee<span
                         class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item active" *ngIf="userRole === 'ROLE_ADMIN'">
+            </li><span class="divider">|</span>
+            <li class="nav-item" *ngIf="userRole === 'ROLE_ADMIN'">
                 <a class="nav-link" a (click)="onOpenModal('vacationSchedule')">Vacation Schedule<span
                         class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item active" *ngIf="userRole === 'ROLE_ADMIN'">
-                <a class="nav-link" a (click)="onOpenModal('vacationTermPeriods')">Bookable Vacation Dates<span
+            </li><span class="divider">|</span>
+            <li class="nav-item" *ngIf="userRole === 'ROLE_ADMIN'">
+                <a class="nav-link" a (click)="onOpenModal('vacationTermPeriods')">Search Dates<span
                         class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item active" *ngIf="userRole === 'ROLE_EMPLOYEE'">
+            <li class="nav-item" *ngIf="userRole === 'ROLE_EMPLOYEE'">
                 <a class="nav-link" a (click)="onOpenModal('vacation')">Vacation <span
                         class="sr-only">(current)</span></a>
             </li>
