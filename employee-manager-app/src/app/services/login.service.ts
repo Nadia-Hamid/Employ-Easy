@@ -11,6 +11,6 @@ export class LoginService {
 
   login(username: String, password: String) {
     const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(username + ':' + password) })
-    return this.http.get(`${this.apiServerUrl}/v1/auth`, { headers })
+    return this.http.get(`${this.apiServerUrl}/v1/auth`, { headers, withCredentials: true })
   }
 }
