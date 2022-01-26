@@ -7,7 +7,7 @@ import { CustomErrorMessage } from 'src/app/alerts/custom-error-message'
 @Component({ templateUrl: 'term-vacation.component.html', selector: 'term-vacation' })
 export class TermVacationComponent implements OnInit {
   yearSelect = 2022
-  public bookableDates: any
+  public bookableDates: string[]
 
 
   constructor(private vacationService: VacationService) {}
@@ -18,11 +18,11 @@ export class TermVacationComponent implements OnInit {
     const datesFormValue = bookableDatesForm.value
     const jobTitle: String = datesFormValue.jobTitle
     const year: String = datesFormValue.year
-    
+    this.bookableDates = new Array
     this.vacationService.getBookableDates(jobTitle, year).subscribe(
       (response: any) => {
-          this.bookableDates = response
-          
+        this.bookableDates = response.vacationAvailable
+        console.log(this.bookableDates)
       },
       (httpError: HttpErrorResponse) => {
         CustomErrorMessage(httpError)}

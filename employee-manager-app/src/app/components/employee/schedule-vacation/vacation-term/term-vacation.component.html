@@ -26,11 +26,15 @@
                         </select>
                     </div>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item"><i class="fa fa-envelope float-right"></i> {{ bookableDates }}</li>
+                        <label for="">Available Dates</label>
+                        <li class="list-group-item" *ngFor="let item of bookableDates | keyvalue"><i
+                                class="fa fa-envelope float-right"></i>{{ item.key }} Bookable: {{item.value}}</li>
                     </ul>
                     <div class="modal-footer">
                         <button type="button" id="" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button [disabled]="bookableDatesForm.invalid" type="submit" (click)='getBookableDatesVacation(bookableDatesForm)' class="btn btn-primary">Submit</button>
+                        <button [disabled]="bookableDatesForm.invalid" type="submit"
+                            (click)='getBookableDatesVacation(bookableDatesForm)'
+                            class="btn btn-primary">Submit</button>
                     </div>
                 </form>
             </div>
