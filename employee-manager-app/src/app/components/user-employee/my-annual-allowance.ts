@@ -1,5 +1,5 @@
 export interface MyAnnualAllowance {
-    pastBooked?: BigInt
-    futureBooked?: BigInt
-    futureUnbooked?: Date[]
+    pastBooked?: bigint
+    futureBooked?: bigint
+    futureUnbooked?: string[]
 }
