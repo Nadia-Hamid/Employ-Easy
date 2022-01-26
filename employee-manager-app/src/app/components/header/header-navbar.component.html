@@ -5,7 +5,7 @@
 </div>
 <div *ngIf="userRole === 'ROLE_EMPLOYEE'">
     <book-vacation [employee]="employee" (update)="reloadPage()"></book-vacation>
-    <reserved-vacation-user [employee]="employee" [update]="update"></reserved-vacation-user>
+    <reserved-vacation-user [employee]="employee" (update)="reloadPage()"></reserved-vacation-user>
 </div>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
     <a class="navbar-brand font-styles" style="color: white">Employ Easy</a>
@@ -29,11 +29,11 @@
                         class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item" *ngIf="userRole === 'ROLE_EMPLOYEE'">
-                <a class="nav-link" a (click)="onOpenModal('vacation')">Vacation <span
+                <a class="nav-link" a (click)="onOpenModal('vacation')">Reserve date <span
                         class="sr-only">(current)</span></a>
             </li><span class="divider" *ngIf="userRole === 'ROLE_EMPLOYEE'">|</span>
             <li class="nav-item" *ngIf="userRole === 'ROLE_EMPLOYEE'">
-                <a class="nav-link" a (click)="onOpenModal('reservedVacation')">Reserved Vacation Dates<span
+                <a class="nav-link" a (click)="onOpenModal('reservedVacation')">My reservations<span
                     class="sr-only">(current)</span></a>
         </ul>
         <form class="form-inline my-2 my-lg-0" hidden="true">
