@@ -22,7 +22,6 @@ export class TermVacationComponent implements OnInit {
     this.vacationService.getBookableDates(jobTitle, year).subscribe(
       (response: any) => {
         this.bookableDates = response.vacationAvailable
-        console.log(this.bookableDates)
       },
       (httpError: HttpErrorResponse) => {
         CustomErrorMessage(httpError)}
