@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http'
-import { Component, Input, OnInit, Output, SimpleChanges } from '@angular/core'
+import { Component, Input, OnInit} from '@angular/core'
 import { CustomErrorMessage } from 'src/app/alerts/custom-error-message'
 import { VacationService } from 'src/app/services/vacation.service'
 import { Employee } from '../../employee/employee'
@@ -23,23 +23,23 @@ export class ReservedVacationUser implements OnInit {
   }
 
   ngOnChanges() {
-    this.getVacationDates;
+    this.getMyVacationDates();
   }
   
   
-    getVacationDates() {
-        this.futureUnbookedDates = new Array()
-        this.vacationService.getVacationDatesForUser(this.employee.jobTitle, this.employee.userId).subscribe(
-          (response: MyAnnualAllowance) => {
-            this.annualAllowance = response
-            for (let item in response.futureUnbooked) {
-              this.futureUnbookedDates.push(response.futureUnbooked[item].date.toString())
-            }
-          },
-          (httpError: HttpErrorResponse) => {
-            CustomErrorMessage(httpError)
-          }
-        )
-     this.getVacationDates()
-    }
+  getMyVacationDates() {
+    this.futureUnbookedDates = new Array()
+    this.vacationService
+      .getVacationDatesForUser(this.employee.jobTitle, this.employee.userId)
+      .subscribe((response: MyAnnualAllowance) => {
+        this.annualAllowance = response
+        for (let item in response.futureUnbooked) {
+          this.futureUnbookedDates.push(response.futureUnbooked[item].date.toString())
+        }
+        },
+        (httpError: HttpErrorResponse) => {
+          CustomErrorMessage(httpError)
+        }
+      )
+  }
 }
