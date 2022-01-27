@@ -9,8 +9,8 @@ import { Employee } from '../employee/employee'
 })
 export class NavbarComponent implements OnInit {
   public userRole: String = localStorage.getItem('userRole')
-  public update: boolean
   @Input() public employee: Employee
+  @Input() update: boolean = false
   @Output() reload = new EventEmitter()
 
   constructor(private modalService: ModalService) {}
@@ -18,10 +18,12 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {}
 
   reloadPage() {
+    this.reload.emit()
     this.update = true
   }
 
   onOpenModal(mode: string) {
+    this.update = false
     this.modalService.onOpenModal(mode)
     
   }

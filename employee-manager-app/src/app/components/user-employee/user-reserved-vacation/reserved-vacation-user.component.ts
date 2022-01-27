@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http'
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core'
+import { Component, Input, OnInit, Output, SimpleChanges } from '@angular/core'
 import { CustomErrorMessage } from 'src/app/alerts/custom-error-message'
 import { VacationService } from 'src/app/services/vacation.service'
 import { Employee } from '../../employee/employee'
@@ -15,17 +15,16 @@ export class ReservedVacationUser implements OnInit {
   public annualAllowance: MyAnnualAllowance
   public futureUnbookedDates: String[]
   @Input() employee: Employee
-  @Input() update: boolean = false
+  @Input() update: boolean
 
   constructor(private vacationService: VacationService) {}
 
   ngOnInit() {
-      this.getVacationDates()
   }
 
   ngOnChanges() {
     this.getVacationDates;
-    }
+  }
   
   
     getVacationDates() {
@@ -41,5 +40,6 @@ export class ReservedVacationUser implements OnInit {
             CustomErrorMessage(httpError)
           }
         )
-      }
+     this.getVacationDates()
+    }
 }

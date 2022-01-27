@@ -11,7 +11,7 @@ import { CustomErrorMessage } from 'src/app/alerts/custom-error-message'
 export class VacationComponent implements OnInit {
   public vacationDates: Vacation[]
   @Input() public employee: Employee
-  @Output() update = new EventEmitter()
+  @Output() reload = new EventEmitter()
 
   constructor(private vacationService: VacationService) {}
 
@@ -31,7 +31,6 @@ export class VacationComponent implements OnInit {
           vacationData.date = parts[3]
           vacationData.userId = userId
           this.vacationDates.push(vacationData)
-          this.update.emit()
         }
       },
       (httpError: HttpErrorResponse) => {
@@ -46,6 +45,7 @@ export class VacationComponent implements OnInit {
     this.vacationService.reserveVacationDate(jobTitle, vacation).subscribe(
       () => {
         this.getVacationDatesForUser(this.employee?.jobTitle, this.employee?.userId)
+        this.reload.emit()
       },
       (httpError: HttpErrorResponse) => {
         CustomErrorMessage(httpError)}

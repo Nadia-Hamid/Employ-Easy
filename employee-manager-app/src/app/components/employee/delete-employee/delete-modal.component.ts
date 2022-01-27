@@ -10,7 +10,7 @@ export class DeleteModalComponent implements OnInit {
   @Input() public deleteEmployee: Employee
   @Output() reload = new EventEmitter()
 
-  constructor(private employeeService: EmployeeService, private modalService: ModalService) {}
+  constructor(private employeeService: EmployeeService) {}
 
   ngOnInit() {}
 

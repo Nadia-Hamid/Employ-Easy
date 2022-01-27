@@ -4,8 +4,8 @@
     <term-vacation></term-vacation>
 </div>
 <div *ngIf="userRole === 'ROLE_EMPLOYEE'">
-    <book-vacation [employee]="employee" (update)="reloadPage()"></book-vacation>
-    <reserved-vacation-user [employee]="employee" (update)="reloadPage()"></reserved-vacation-user>
+    <book-vacation [employee]="employee" (reload)="reloadPage()"></book-vacation>
+    <reserved-vacation-user [employee]="employee" [update]="update"></reserved-vacation-user>
 </div>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
     <a class="navbar-brand font-styles" style="color: white">Employ Easy</a>
