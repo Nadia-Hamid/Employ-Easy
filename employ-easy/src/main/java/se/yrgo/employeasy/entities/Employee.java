@@ -40,8 +40,6 @@ public class Employee {
     private int employeeStatus;
     private int systemStatus;
 
-    //private int vacationsPerYear;
-
     public Employee() {}
 
     private Employee(

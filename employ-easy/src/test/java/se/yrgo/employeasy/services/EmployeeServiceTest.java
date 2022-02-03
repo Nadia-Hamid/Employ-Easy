@@ -29,7 +29,7 @@ class EmployeeServiceTest {
     private EmployeeRepository mockedEmployeeRepository;
 
     @InjectMocks
-    private EmployeeService employeeServiceTest;
+    private EmployeeServiceTransactional employeeServiceTest;
 
     @Test
     void findEmployeeByBadUserId() {
